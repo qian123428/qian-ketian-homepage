@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>钱柯天 - 生活集锦</title>
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Long+Cang&family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5EFE3;
+    --ink:#2B2420;
+    --seal:#B03A2E;
+    --seal-light:rgba(176,58,46,.1);
+    --ink-light:rgba(43,36,32,.55);
+    --ink-faint:rgba(43,36,32,.35);
+    --card-bg:rgba(255,253,247,.88);
+    --card-border:rgba(43,36,32,.1);
+    --shadow-sm:0 2px 8px rgba(43,36,32,.06);
+    --shadow-md:0 6px 20px rgba(43,36,32,.1);
+    --shadow-lg:0 12px 32px rgba(43,36,32,.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{
+    width:100%;
+    min-height:100vh;
+    background:var(--paper);
+    font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;
+    color:var(--ink);
+  }
+  body{
+    background:
+      radial-gradient(ellipse at 20% 10%,rgba(176,58,46,.03),transparent 50%),
+      radial-gradient(ellipse at 80% 90%,rgba(43,36,32,.03),transparent 50%),
+      var(--paper);
+    padding:clamp(40px,6vh,80px) clamp(20px,5vw,60px);
+  }
+
+  /* ===== 页面标题 ===== */
+  .page-header{
+    max-width:1100px;
+    margin:0 auto clamp(32px,5vh,56px);
+    text-align:center;
+  }
+  .page-title{
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(32px,5vw,48px);
+    color:var(--ink);
+    letter-spacing:.2em;
+    text-indent:.2em;
+    margin-bottom:12px;
+    position:relative;
+    display:inline-block;
+    min-height:1.2em;
+  }
+  .page-title::after{
+    content:'';
+    position:absolute;
+    bottom:-10px;left:50%;
+    transform:translateX(-50%);
+    width:60px;height:2px;
+    background:var(--seal);
+    opacity:0;
+    animation:lineGrow .6s ease 1.5s forwards;
+  }
+  @keyframes lineGrow{
+    to{opacity:1;}
+  }
+  .typing-cursor{
+    display:inline-block;
+    width:3px;
+    height:.9em;
+    background:var(--seal);
+    margin-left:4px;
+    vertical-align:middle;
+    animation:cursorBlink .8s step-end infinite;
+  }
+  @keyframes cursorBlink{
+    0%,100%{opacity:1;}
+    50%{opacity:0;}
+  }
+  .page-subtitle{
+    font-family:'Songti SC','STSong','SimSun','宋体',serif;
+    font-size:clamp(13px,1.6vw,16px);
+    color:var(--ink-faint);
+    letter-spacing:.35em;
+    text-indent:.35em;
+    margin-top:20px;
+    opacity:0;
+    animation:subtitleFade .8s ease 1.6s forwards;
+  }
+  @keyframes subtitleFade{
+    to{opacity:1;}
+  }
+
+  /* ===== 卡片网格 ===== */
+  .card-grid{
+    max-width:1100px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:clamp(20px,3vw,32px);
+  }
+
+  /* ===== 卡片 ===== */
+  .life-card{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:20px;
+    padding:clamp(24px,3.5vw,40px);
+    box-shadow:var(--shadow-sm);
+    transition:transform .35s cubic-bezier(.25,.46,.45,.94),box-shadow .35s ease,border-color .35s ease;
+    position:relative;
+    overflow:hidden;
+    cursor:pointer;
+    opacity:0;
+    filter:blur(12px);
+    transform:translateY(24px);
+    animation:cardReveal .8s cubic-bezier(.25,.46,.45,.94) forwards;
+  }
+  .card-grid .life-card:nth-child(1){animation-delay:.1s;}
+  .card-grid .life-card:nth-child(2){animation-delay:.25s;}
+  .card-grid .life-card:nth-child(3){animation-delay:.4s;}
+  .card-grid .life-card:nth-child(4){animation-delay:.55s;}
+  .card-grid .life-card:nth-child(5){animation-delay:.7s;}
+  .card-grid .life-card:nth-child(6){animation-delay:.85s;}
+  @keyframes cardReveal{
+    0%{opacity:0;filter:blur(12px);transform:translateY(24px);}
+    100%{opacity:1;filter:blur(0);transform:translateY(0);}
+  }
+  .life-card::before{
+    content:'';
+    position:absolute;
+    top:0;left:0;right:0;
+    height:3px;
+    background:linear-gradient(90deg,var(--seal),transparent);
+    opacity:0;
+    transition:opacity .35s ease;
+  }
+  .life-card:hover{
+    transform:translateY(-6px);
+    box-shadow:var(--shadow-lg);
+    border-color:rgba(176,58,46,.25);
+  }
+  .life-card:hover::before{
+    opacity:1;
+  }
+
+  /* 卡片图标 */
+  .card-icon-wrap{
+    width:clamp(48px,6vw,64px);
+    height:clamp(48px,6vw,64px);
+    border-radius:16px;
+    background:var(--seal-light);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:clamp(16px,2.5vh,24px);
+    transition:background .35s ease,transform .35s ease;
+  }
+  .life-card:hover .card-icon-wrap{
+    background:rgba(176,58,46,.16);
+    transform:scale(1.05);
+  }
+  .card-icon-wrap svg{
+    width:clamp(26px,3.2vw,34px);
+    height:clamp(26px,3.2vw,34px);
+    color:var(--seal);
+  }
+
+  /* 卡片标题 */
+  .card-title{
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(20px,2.8vw,26px);
+    color:var(--ink);
+    letter-spacing:.12em;
+    margin-bottom:clamp(8px,1.5vh,12px);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .card-title::before{
+    content:'';
+    display:inline-block;
+    width:4px;height:20px;
+    background:var(--seal);
+    border-radius:2px;
+  }
+
+  /* 卡片描述 */
+  .card-desc{
+    font-family:'Songti SC','STSong','SimSun','宋体',serif;
+    font-size:clamp(14px,1.8vw,16px);
+    color:var(--ink-light);
+    line-height:1.85;
+    letter-spacing:.03em;
+  }
+
+  /* 卡片标签 */
+  .card-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:clamp(14px,2vh,20px);
+  }
+  .card-tags span{
+    font-size:clamp(11px,1.3vw,13px);
+    color:var(--seal);
+    background:var(--seal-light);
+    padding:4px 12px;
+    border-radius:20px;
+    letter-spacing:.05em;
+  }
+
+  /* 跑马灯 */
+  .marquee{
+    margin-top:clamp(14px,2vh,20px);
+    overflow:hidden;
+    width:100%;
+    -webkit-mask-image:linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+    mask-image:linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+  }
+  .marquee-track{
+    display:flex;
+    gap:10px;
+    width:max-content;
+    animation:marqueeScroll 18s linear infinite;
+  }
+  .marquee:hover .marquee-track{
+    animation-play-state:paused;
+  }
+  .marquee-track img{
+    width:clamp(80px,10vw,120px);
+    height:clamp(60px,7.5vw,90px);
+    object-fit:cover;
+    border-radius:8px;
+    border:1px solid rgba(43,36,32,.1);
+  }
+  @keyframes marqueeScroll{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-50%);}
+  }
+
+  /* 音乐播放器 */
+  .music-list{
+    margin-top:clamp(14px,2vh,20px);
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+
+  /* 名言 */
+  .quote-list{
+    margin-top:clamp(14px,2vh,20px);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .quote-item{
+    padding:10px 12px;
+    background:rgba(176,58,46,.04);
+    border-radius:6px;
+    cursor:default;
+  }
+  .quote-preview{
+    font-size:clamp(13px,1.4vw,15px);
+    color:var(--ink);
+    font-weight:500;
+    margin:0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .quote-hint{
+    font-size:clamp(10px,1.1vw,11px);
+    color:var(--text-muted);
+  }
+  .quote-full{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .5s ease;
+  }
+  .quote-item.open .quote-full{
+    max-height:200px;
+  }
+  .quote-text{
+    font-size:clamp(12px,1.3vw,14px);
+    color:var(--ink);
+    line-height:1.8;
+    margin:10px 0 0 0;
+    font-style:italic;
+  }
+  .quote-author{
+    font-size:clamp(11px,1.2vw,12px);
+    color:var(--text-muted);
+    margin:6px 0 0 0;
+    text-align:right;
+  }
+  .music-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 8px;
+    border-radius:6px;
+    text-decoration:none;
+    color:var(--ink);
+    transition:all .3s ease;
+    cursor:default;
+  }
+  .music-item:visited{
+    color:var(--ink);
+  }
+  .music-item:hover{
+    background:rgba(176,58,46,.06);
+  }
+  .music-icon{
+    width:20px;
+    height:20px;
+    flex-shrink:0;
+    color:var(--seal);
+  }
+  .music-info{
+    flex:1;
+    min-width:0;
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+  }
+  .music-name{
+    font-size:clamp(13px,1.4vw,15px);
+    font-weight:600;
+    color:var(--ink);
+    margin:0;
+  }
+  .music-artist{
+    font-size:clamp(11px,1.2vw,12px);
+    color:var(--text-muted);
+    margin:0;
+  }
+
+  /* 卡片序号 */
+  .card-num{
+    position:absolute;
+    top:clamp(16px,2.5vh,24px);
+    right:clamp(16px,2.5vh,24px);
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体',serif;
+    font-size:clamp(36px,5vw,56px);
+    color:rgba(176,58,46,.06);
+    font-weight:700;
+    line-height:1;
+    pointer-events:none;
+  }
+
+  /* ===== 响应式 ===== */
+  @media (max-width:720px){
+    .card-grid{
+      grid-template-columns:1fr;
+    }
+  }
+
+  /* ===== Lightbox 图片画廊 ===== */
+  .lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(43,36,32,.85);
+    backdrop-filter:blur(8px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:1000;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .4s ease,visibility .4s ease;
+  }
+  .lightbox.active{
+    opacity:1;
+    visibility:visible;
+  }
+  .lightbox-content{
+    max-width:90vw;
+    max-height:85vh;
+    position:relative;
+    transform:scale(.9);
+    transition:transform .4s cubic-bezier(.25,.46,.45,.94);
+  }
+  .lightbox.active .lightbox-content{
+    transform:scale(1);
+  }
+  .lightbox-content img{
+    max-width:100%;
+    max-height:85vh;
+    border-radius:12px;
+    box-shadow:0 20px 60px rgba(0,0,0,.4);
+    display:block;
+  }
+  .lightbox-text{
+    display:none;
+    max-width:80vw;
+    max-height:85vh;
+    padding:50px 60px;
+    background:rgba(245,239,227,.97);
+    border-radius:12px;
+    box-shadow:0 20px 60px rgba(0,0,0,.4);
+    text-align:center;
+  }
+  .lightbox-text.show{
+    display:block;
+  }
+  .lightbox-text .poem{
+    font-size:clamp(20px,3vw,30px);
+    color:var(--ink);
+    line-height:2.2;
+    font-family:'Ma Shan Zheng','Kaiti SC','STKaiti','KaiTi','楷体',serif;
+    margin:0 0 24px 0;
+    white-space:pre-line;
+    letter-spacing:.05em;
+  }
+  .lightbox-text .poem-author{
+    font-size:clamp(14px,1.5vw,18px);
+    color:var(--seal);
+    font-family:'Long Cang','Kaiti SC','STKaiti','KaiTi','楷体',serif;
+    text-align:right;
+    margin:0;
+  }
+  .lightbox-close{
+    position:absolute;
+    top:-40px;right:0;
+    width:32px;height:32px;
+    border-radius:50%;
+    background:rgba(255,255,255,.15);
+    border:none;
+    color:#fff;
+    font-size:20px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:background .2s ease;
+  }
+  .lightbox-close:hover{background:rgba(255,255,255,.3);}
+  .lightbox-nav{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:44px;height:44px;
+    border-radius:50%;
+    background:rgba(255,255,255,.15);
+    border:none;
+    color:#fff;
+    font-size:22px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:background .2s ease;
+    z-index:10;
+  }
+  .lightbox-nav:hover{background:rgba(255,255,255,.3);}
+  .lightbox-prev{left:-60px;}
+  .lightbox-next{right:-60px;}
+  .lightbox-caption{
+    position:absolute;
+    bottom:-40px;left:50%;
+    transform:translateX(-50%);
+    color:rgba(255,255,255,.8);
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体',serif;
+    font-size:16px;
+    letter-spacing:.1em;
+    white-space:nowrap;
+  }
+  @media (max-width:720px){
+    .lightbox-prev{left:10px;}
+    .lightbox-next{right:10px;}
+  }
+
+  /* ===== 页脚 ===== */
+  .page-footer{
+    max-width:1100px;
+    margin:clamp(40px,6vh,64px) auto 0;
+    text-align:center;
+    font-family:'Songti SC','STSong','SimSun','宋体',serif;
+    font-size:clamp(12px,1.4vw,14px);
+    color:var(--ink-faint);
+    letter-spacing:.2em;
+  }
+  .page-footer .seal-mark{
+    display:inline-block;
+    width:32px;height:32px;
+    line-height:32px;
+    border:1.5px solid var(--seal);
+    border-radius:50%;
+    color:var(--seal);
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体',serif;
+    font-size:14px;
+    margin-bottom:12px;
+    opacity:.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1 class="page-title" id="typingTitle"><span id="typingText"></span></h1>
+  <p class="page-subtitle">LIFE COLLECTION</p>
+</div>
+
+<div class="card-grid">
+
+  <!-- 沿途风景 -->
+  <div class="life-card" onclick="openGallery('scenery')" style="cursor:pointer;">
+    <span class="card-num">01</span>
+    <div class="card-icon-wrap">
+      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="32" cy="20" r="8"/>
+        <path d="M8 52c4-12 12-18 24-18s20 6 24 18"/>
+        <path d="M20 52l8-14 6 10 6-8 8 12"/>
+      </svg>
+    </div>
+    <h2 class="card-title">沿途风景</h2>
+    <p class="card-desc">足迹所至，皆是风景。游历十余个国家，用镜头记录下每一段旅途的光影与感动。</p>
+    <div class="marquee">
+      <div class="marquee-track">
+        <img src="九寨沟秋瀑.jpg" alt="九寨沟秋瀑">
+        <img src="卡帕多奇亚热气球.jpg" alt="卡帕多奇亚热气球">
+        <img src="波西塔诺海岸.jpg" alt="波西塔诺海岸">
+        <img src="九寨沟秋瀑.jpg" alt="九寨沟秋瀑">
+        <img src="卡帕多奇亚热气球.jpg" alt="卡帕多奇亚热气球">
+        <img src="波西塔诺海岸.jpg" alt="波西塔诺海岸">
+      </div>
+    </div>
+  </div>
+
+  <!-- 球星风采 -->
+  <div class="life-card" onclick="openGallery('stars')" style="cursor:pointer;">
+    <span class="card-num">02</span>
+    <div class="card-icon-wrap">
+      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="32" cy="32" r="22"/>
+        <path d="M32 10v12M32 42v12M10 32h12M42 32h12"/>
+        <path d="M20 20l8 8M36 36l8 8M44 20l-8 8M28 36l-8 8"/>
+      </svg>
+    </div>
+    <h2 class="card-title">球星风采</h2>
+    <p class="card-desc">绿茵场上的传奇，C罗与梅西的励志语录，是激励我前行的精神力量。</p>
+    <div class="marquee">
+      <div class="marquee-track">
+        <img src="球星-梅西.jpg" alt="梅西">
+        <img src="球星-内马尔.jpg" alt="内马尔">
+        <img src="球星-C罗.jpg" alt="C罗">
+        <img src="球星-梅西.jpg" alt="梅西">
+        <img src="球星-内马尔.jpg" alt="内马尔">
+        <img src="球星-C罗.jpg" alt="C罗">
+      </div>
+    </div>
+  </div>
+
+  <!-- 体育爱好 -->
+  <div class="life-card" onclick="openGallery('sports')" style="cursor:pointer;">
+    <span class="card-num">03</span>
+    <div class="card-icon-wrap">
+      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M32 8v12M32 44v12"/>
+        <ellipse cx="32" cy="32" rx="20" ry="12"/>
+        <path d="M12 32h40"/>
+        <circle cx="32" cy="32" r="4" fill="currentColor"/>
+      </svg>
+    </div>
+    <h2 class="card-title">体育爱好</h2>
+    <p class="card-desc">足球代表学校参加区级市级比赛屡获前三，桥牌市级比赛前八，运动让我充满活力。</p>
+    <div class="card-tags">
+      <span>足球</span><span>桥牌</span><span>竞赛</span>
+    </div>
+  </div>
+
+  <!-- 文学小憩 -->
+  <div class="life-card" onclick="openGallery('books')" style="cursor:pointer;">
+    <span class="card-num">04</span>
+    <div class="card-icon-wrap">
+      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 14h20a8 8 0 018 8v30H20a8 8 0 01-8-8V14z"/>
+        <path d="M12 14v30a8 8 0 008 8"/>
+        <path d="M24 24h12M24 32h12M24 40h8"/>
+        <path d="M44 14h8a4 4 0 014 4v34h-12V14z"/>
+      </svg>
+    </div>
+    <h2 class="card-title">文学小憩</h2>
+    <p class="card-desc">在文字的世界里休憩，品读经典，感受语言之美，让心灵在墨香中沉淀。</p>
+    <div class="card-tags">
+      <span>阅读</span><span>写作</span><span>经典</span>
+    </div>
+  </div>
+
+  <!-- 音乐共享 -->
+  <div class="life-card">
+    <span class="card-num">05</span>
+    <div class="card-icon-wrap">
+      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M24 48V16l24-6v32"/>
+        <circle cx="18" cy="48" r="6"/>
+        <circle cx="42" cy="42" r="6"/>
+      </svg>
+    </div>
+    <h2 class="card-title">音乐共享</h2>
+    <p class="card-desc">小提琴的旋律伴随成长，用音乐表达情感，分享每一段动人的旋律。</p>
+    <div class="music-list">
+      <a class="music-item" href="https://music.163.com/#/song?id=4875729" target="_blank">
+        <svg class="music-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/>
+        </svg>
+        <div class="music-info">
+          <p class="music-name">遇见</p>
+          <p class="music-artist">— 孙燕姿</p>
+        </div>
+      </a>
+      <a class="music-item" href="https://music.163.com/#/song?id=186016" target="_blank">
+        <svg class="music-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/>
+        </svg>
+        <div class="music-info">
+          <p class="music-name">晴天</p>
+          <p class="music-artist">— 周杰伦</p>
+        </div>
+      </a>
+    </div>
+    <div class="card-tags">
+      <span>小提琴</span><span>旋律</span><span>情感</span>
+    </div>
+  </div>
+
+  <!-- 收藏生活 -->
+  <div class="life-card" onclick="openGallery('collection')" style="cursor:pointer;">
+    <span class="card-num">06</span>
+    <div class="card-icon-wrap">
+      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 20h40v32H12z"/>
+        <path d="M12 20l4-8h32l4 8"/>
+        <path d="M26 36h12M32 30v12"/>
+      </svg>
+    </div>
+    <h2 class="card-title">收藏生活</h2>
+    <p class="card-desc">围棋的智慧、生活的点滴，每一份收藏都是时光的印记，值得细细品味。</p>
+    <div class="card-tags">
+      <span>围棋</span><span>收藏</span><span>时光</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-footer">
+  <div class="seal-mark">钱</div>
+  <p>钱柯天 · 生活集锦</p>
+</div>
+
+<!-- Lightbox 图片画廊 -->
+<div class="lightbox" id="lightbox" onclick="closeGallery(event)">
+  <button class="lightbox-close" onclick="closeGallery()">&times;</button>
+  <button class="lightbox-nav lightbox-prev" onclick="event.stopPropagation();navGallery(-1)">&#10094;</button>
+  <div class="lightbox-content">
+    <img id="lightbox-img" src="" alt="">
+    <div class="lightbox-text" id="lightbox-text">
+      <p class="poem" id="lightbox-poem"></p>
+      <p class="poem-author" id="lightbox-poem-author"></p>
+    </div>
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  </div>
+  <button class="lightbox-nav lightbox-next" onclick="event.stopPropagation();navGallery(1)">&#10095;</button>
+</div>
+
+<script>
+  // 标题打字机效果
+  (function(){
+    var text = '生活集锦';
+    var target = document.getElementById('typingText');
+    var i = 0;
+    function type(){
+      if(i < text.length){
+        target.textContent += text.charAt(i);
+        i++;
+        setTimeout(type, 300);
+      }
+    }
+    setTimeout(type, 300);
+  })();
+
+  // 沿途风景图片数据
+  var galleryData = {
+    scenery: [
+      {src: '九寨沟秋瀑.jpg', caption: '九寨沟秋瀑'},
+      {src: '卡帕多奇亚热气球.jpg', caption: '卡帕多奇亚热气球'},
+      {src: '波西塔诺海岸.jpg', caption: '波西塔诺海岸'}
+    ],
+    stars: [
+      {src: '球星-梅西.jpg', caption: '梅西'},
+      {src: '球星-内马尔.jpg', caption: '内马尔'},
+      {src: '球星-C罗.jpg', caption: 'C罗'}
+    ],
+    sports: [
+      {src: '足球夜跑.jpg', caption: '足球夜跑'}
+    ],
+    collection: [
+      {src: '窗边围棋.jpg', caption: '窗边围棋'},
+      {src: '窗边茶席.jpg', caption: '窗边茶席'}
+    ],
+    books: [
+      {type: 'text', poem: '采菊东篱下，悠然见南山。\n山气日夕佳，飞鸟相与还。\n此中有真意，欲辨已忘言。', author: '陶渊明《饮酒》'},
+      {type: 'text', poem: '中岁颇好道，晚家南山陲。\n兴来每独往，胜事空自知。\n行到水穷处，坐看云起时。\n偶然值林叟，谈笑无还期。', author: '王维《终南别业》'},
+      {type: 'text', poem: '莫听穿林打叶声，何妨吟啸且徐行。\n竹杖芒鞋轻胜马，谁怕？\n一蓑烟雨任平生。', author: '苏轼《定风波》'}
+    ]
+  };
+  var currentGallery = null;
+  var currentIndex = 0;
+
+  function openGallery(name){
+    if(!galleryData[name]) return;
+    currentGallery = name;
+    currentIndex = 0;
+    showImage();
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function showImage(){
+    var data = galleryData[currentGallery][currentIndex];
+    var img = document.getElementById('lightbox-img');
+    var text = document.getElementById('lightbox-text');
+    var caption = document.getElementById('lightbox-caption');
+    
+    if(data.type === 'text'){
+      img.style.display = 'none';
+      text.classList.add('show');
+      caption.style.display = 'none';
+      document.getElementById('lightbox-poem').textContent = data.poem;
+      document.getElementById('lightbox-poem-author').textContent = '— ' + data.author;
+    } else {
+      text.classList.remove('show');
+      img.style.display = 'block';
+      caption.style.display = 'block';
+      img.src = data.src;
+      caption.textContent = data.caption;
+    }
+  }
+
+  function navGallery(dir){
+    var len = galleryData[currentGallery].length;
+    currentIndex = (currentIndex + dir + len) % len;
+    showImage();
+  }
+
+  function closeGallery(e){
+    if(e && e.target.closest('.lightbox-content') && e.type === 'click') return;
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // 键盘左右切换
+  document.addEventListener('keydown', function(e){
+    if(!document.getElementById('lightbox').classList.contains('active')) return;
+    if(e.key === 'Escape') closeGallery();
+    if(e.key === 'ArrowLeft') navGallery(-1);
+    if(e.key === 'ArrowRight') navGallery(1);
+  });
+
+  // 连续上滑两次返回个人主页
+  var upCount = 0;
+  var upTimer = null;
+  var wheelLock = false;
+
+  document.addEventListener('wheel', function(e){
+    if(wheelLock) return;
+    if(document.getElementById('lightbox').classList.contains('active')) return; // lightbox打开时不触发
+    
+    if(e.deltaY < -30){ // 向上滚动
+      upCount++;
+      wheelLock = true;
+      setTimeout(function(){wheelLock = false;}, 500);
+      
+      if(upCount >= 2){
+        window.location.href = '2.4-电脑版.html';
+        return;
+      }
+      
+      clearTimeout(upTimer);
+      upTimer = setTimeout(function(){
+        upCount = 0;
+      }, 1000);
+    }
+  });
+</script>
+
+</body>
+</html>

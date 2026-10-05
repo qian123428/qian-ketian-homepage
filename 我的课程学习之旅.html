@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的课程学习之旅 · 3D Sphere Gallery</title>
+  <style>
+:root {
+  --bg-dark: #0a0a0b;
+  --text-main: #f4f4f5;
+  --text-muted: #a1a1aa;
+
+  /* Clay-like variables */
+  --clay-base: #18181b;
+  --clay-highlight: rgba(255, 255, 255, 0.08);
+  --clay-shadow: rgba(0, 0, 0, 0.9);
+  --clay-inset-light: rgba(255, 255, 255, 0.04);
+  --clay-inset-dark: rgba(0, 0, 0, 0.6);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* Clinical SaaS Grid Overlay */
+.grid-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.02) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Typography */
+h1,
+h2 {
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+a {
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+a:hover {
+  color: var(--text-muted);
+}
+
+/* Navigation */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 3rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  background: linear-gradient(to bottom, rgba(10, 10, 11, 0.9), transparent);
+  backdrop-filter: blur(10px);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background: var(--clay-base);
+  padding: 0.5rem 1rem 0.5rem 2rem;
+  border-radius: 40px;
+  box-shadow: 4px 4px 10px var(--clay-shadow),
+    inset 1px 1px 2px var(--clay-inset-light),
+    inset -1px -1px 2px var(--clay-inset-dark);
+  border: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+/* Clay-like Chunky Buttons */
+.btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 30px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  color: var(--bg-dark);
+  background: var(--text-main);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chunky-btn {
+  box-shadow: 0px 4px 0px rgba(161, 161, 170, 0.4),
+    /* Chunky bottom edge */ 0px 6px 10px rgba(0, 0, 0, 0.4),
+    inset 0px -2px 5px rgba(0, 0, 0, 0.1),
+    inset 0px 2px 5px rgba(255, 255, 255, 0.8);
+}
+.chunky-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0px 0px 0px rgba(161, 161, 170, 0.4),
+    0px 2px 5px rgba(0, 0, 0, 0.4), inset 0px -1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.menu-btn {
+  background: var(--clay-base);
+  color: var(--text-main);
+  box-shadow: 0px 4px 0px #09090a, 0px 6px 10px rgba(0, 0, 0, 0.6),
+    inset 1px 1px 2px var(--clay-inset-light);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Hero Section */
+.hero {
+  padding: 12rem 2rem 4rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.chunky-badge {
+  background: var(--clay-base);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 4px 4px 8px var(--clay-shadow),
+    inset 2px 2px 4px var(--clay-inset-light),
+    inset -2px -2px 4px var(--clay-inset-dark);
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  max-width: 800px;
+}
+.hero p {
+  color: var(--text-muted);
+  max-width: 500px;
+}
+
+/* 3D Gallery Section */
+.gallery-container {
+  position: relative;
+  height: 300vh; /* Scroll length */
+  width: 100%;
+}
+
+.scene {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1200px;
+  overflow: hidden;
+}
+
+.sphere {
+  position: relative;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+
+/* Clay Card Styling */
+.clay-card {
+  position: absolute;
+  width: 160px;
+  height: 220px;
+  left: -80px;
+  top: -110px;
+  background: var(--clay-base);
+  border-radius: 16px;
+  padding: 8px;
+  transform-style: preserve-3d;
+  backface-visibility: visible;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  /* Matte, chunky clay shadow */
+  box-shadow: 8px 8px 16px var(--clay-shadow),
+    -4px -4px 10px rgba(255, 255, 255, 0.02),
+    inset 3px 3px 6px var(--clay-inset-light),
+    inset -3px -3px 6px var(--clay-inset-dark);
+  transition: filter 0.4s ease;
+}
+
+.clay-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  filter: grayscale(80%) brightness(0.6);
+  transition: all 0.4s ease;
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.8);
+}
+
+.clay-card.active-card {
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
+}
+.clay-card.active-card img {
+  filter: grayscale(0%) brightness(1);
+}
+
+/* Floating Text Side Panels */
+.floating-text {
+  position: absolute;
+  top: 50%;
+  left: 35%;
+  transform: translateY(-50%);
+  width: 320px;
+  z-index: 10;
+}
+.floating-text h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.2rem;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+}
+.floating-text p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.network-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Journey Section */
+.journey-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #111113 0%, var(--bg-dark) 70%);
+}
+
+.journey-content {
+  text-align: center;
+  z-index: 2;
+  background: rgba(10, 10, 11, 0.6);
+  padding: 3rem;
+  border-radius: 24px;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.journey-content h2 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.journey-content p {
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.large-btn {
+  font-size: 1.1rem;
+  padding: 1rem 2.5rem;
+  border-radius: 40px;
+}
+
+.constellation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.constellation-card {
+  position: absolute;
+  width: 100px;
+  height: 140px;
+  opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  .hero {
+    padding: 80px 24px 40px !important;
+  }
+  .hero h1 {
+    font-size: 2rem !important;
+  }
+  .hero p {
+    font-size: 0.85rem !important;
+  }
+  .gallery-container {
+    height: 250vh;
+  }
+  .scene {
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding-top: 20px !important;
+  }
+  .sphere {
+    position: relative !important;
+    z-index: 1 !important;
+  }
+  .floating-text {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin-left: 0 !important;
+    margin-top: 175px !important;
+    width: 90% !important;
+    text-align: center !important;
+    z-index: 2 !important;
+  }
+  .floating-text h2 {
+    font-size: 1.95rem !important;
+    margin-bottom: 1.2rem !important;
+    letter-spacing: 0.05em !important;
+    position: relative !important;
+  }
+  .floating-text h2::after {
+    content: "" !important;
+    display: block !important;
+    width: 40px !important;
+    height: 1px !important;
+    background: rgba(255,255,255,0.2) !important;
+    margin: 8px auto 0 !important;
+  }
+  .floating-text p {
+    font-size: 1.1rem !important;
+    line-height: 1.8 !important;
+    letter-spacing: 0.02em !important;
+    color: rgba(244,244,245,0.8) !important;
+    max-width: 390px !important;
+    margin: 0 auto !important;
+  }
+  .clay-card {
+    width: 80px !important;
+    height: 105px !important;
+    left: -40px !important;
+    top: -52px !important;
+    border-radius: 12px !important;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="grid-overlay"></div>
+
+  <nav class="navbar">
+    <div class="logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="6" cy="6" r="2"></circle>
+        <circle cx="12" cy="6" r="2"></circle>
+        <circle cx="18" cy="6" r="2"></circle>
+        <circle cx="6" cy="12" r="2"></circle>
+        <circle cx="12" cy="12" r="2"></circle>
+        <circle cx="18" cy="12" r="2"></circle>
+        <circle cx="6" cy="18" r="2"></circle>
+        <circle cx="12" cy="18" r="2"></circle>
+        <circle cx="18" cy="18" r="2"></circle>
+      </svg>
+      DermExcel
+    </div>
+    <div class="nav-links">
+      <a href="#">Manifesto</a>
+      <a href="#">Careers</a>
+      <a href="#">Log in</a>
+      <a href="#" class="btn chunky-btn">Sign up</a>
+    </div>
+    <button class="btn chunky-btn menu-btn">Menu <span>=</span></button>
+  </nav>
+
+  <header class="hero">
+    <div class="badge chunky-badge">✦ 课程学习 · Course Journey</div>
+    <h1>我的课程学习之旅</h1>
+    <p>微积分、线性代数、Python 编程、个人主页设计与 CLC 语言学习，在旋转的知识球体中回顾每一门课程的收获与成长。</p>
+  </header>
+
+  <section class="gallery-container">
+    <div class="scene">
+      <div class="sphere" id="sphere">
+      </div>
+      <div class="floating-text left-text">
+        <h2 id="dynamic-title">微积分</h2>
+        <p id="dynamic-desc">先吃透极限、连续等核心定义，重视定理证明推导，课后勤刷题，整理错题，重点掌握等价无穷小、导数与积分的计算与应用。</p>
+      </div>
+    </div>
+
+    <svg class="network-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <path d="M0,50 Q25,30 50,50 T100,50" stroke="rgba(255,255,255,0.05)" stroke-width="0.2" fill="none" />
+      <path d="M20,0 L80,100" stroke="rgba(255,255,255,0.03)" stroke-width="0.2" fill="none" />
+    </svg>
+  </section>
+
+  <section class="journey-section">
+    <div class="constellation" id="constellation">
+    </div>
+    <div class="journey-content">
+      <h2>Start Your Journey</h2>
+      <p>We Would Like To Start A Project With You</p>
+      <a href="#" class="btn chunky-btn large-btn">Sign up</a>
+    </div>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script>
+// Register GSAP Plugins
+gsap.registerPlugin(ScrollTrigger);
+
+// Provided Image Assets — 24 STEM concept images (6 per subject)
+const images = [
+  // Calculus · 微积分 (6)
+  "Ey1yZ9OU8M.jpg",
+  "sJYzAEIegU.jpg",
+  "4o8otklLOG.jpg",
+  "dnlXlYx6PM.jpg",
+  "HR8S2l1qI3.jpg",
+  "Y04g9Nf4lB.jpg",
+  // Linear Algebra · 线性代数 (6)
+  "jTlTjV5Csh.jpg",
+  "xgtjgNd9HS.jpg",
+  "sl3RosgzVp.jpg",
+  "EOsKs75woO.jpg",
+  "ecV465DRJV.jpg",
+  "D651YiOv7U.jpg",
+  // Programming · 编程 (6)
+  "aWnOUJYUCc.jpg",
+  "1m6iwexo16.jpg",
+  "9AGIVoRAiB.jpg",
+  "sZVdcsfpYW.jpg",
+  "WMfnvkj5pa.jpg",
+  "cDUU8l2XWU.jpg",
+  // Artificial Intelligence · 人工智能 (6)
+  "wcZ4pa12gP.jpg",
+  "WWTp7xnRzg.jpg",
+  "T6L9WUD8nC.jpg",
+  "bhVm2wF9hc.jpg",
+  "2TB4PNTMq6.jpg",
+  "5d5MoaRQYC.jpg"
+];
+
+// Use all 24 images directly for the sphere
+const galleryItems = images;
+
+const textContent = [
+  {
+    title: "微积分",
+    desc:
+      "先吃透极限、连续等核心定义，重视定理证明推导，课后勤刷题，整理错题，重点掌握等价无穷小、导数与积分的计算与应用。"
+  },
+  {
+    title: "线性代数",
+    desc:
+      "以矩阵为核心，理清行列式、向量、方程组逻辑，牢记初等变换，多动手演算，理解几何含义，归纳定理之间的等价关系。"
+  },
+  {
+    title: "Python 编程",
+    desc:
+      "优先掌握基础语法与流程控制，理解循环、分支逻辑，多上手写简短代码，通过小练习巩固，逐步练习简单计算、数据处理类小程序。"
+  },
+  {
+    title: "个人主页设计",
+    desc:
+      "经历四个版本迭代：从「麻雀虽小，五脏俱全」的框架，到利用模版美化的二代，再到收集外界评价的 version 3，最后到完成针对性优化的第四版，合理运用现有资源和 AI 创建属于自己的网站。"
+  },
+  {
+    title: "CLC · AI 语言学习",
+    desc:
+      "以 AI 为辅助工具进行语言学习，掌握语言学习的窍门并领悟 AI 在学习中的使用方法，将其运用到日后的学习中。"
+  }
+];
+
+const sphere = document.getElementById("sphere");
+const radius = window.innerWidth < 768 ? 160 : 380;
+
+// 1. Generate Fibonacci Sphere 3D Layout
+galleryItems.forEach((src, i) => {
+  const card = document.createElement("div");
+  card.classList.add("clay-card");
+
+  const img = document.createElement("img");
+  img.src = src;
+  card.appendChild(img);
+
+  // Math for Fibonacci sphere distribution
+  const phi = Math.acos(1 - (2 * (i + 0.5)) / galleryItems.length);
+  const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+
+  const x = radius * Math.cos(theta) * Math.sin(phi);
+  const y = radius * Math.sin(theta) * Math.sin(phi);
+  const z = radius * Math.cos(phi);
+
+  // Calculate rotation so cards face outward relative to the center
+  const rotY = Math.atan2(x, z) * (180 / Math.PI);
+  const rotX = Math.asin(-y / radius) * (180 / Math.PI);
+
+  card.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+
+  // Store original Z rotation for scroll highlighting
+  card.dataset.index = i;
+  sphere.appendChild(card);
+});
+
+// 2. Animate Sphere on Scroll
+let sphereRotation = gsap.to(sphere, {
+  rotateY: 360 * 2, // 2 full rotations
+  rotateX: 45, // Slight tilt for 3D depth
+  ease: "none",
+  scrollTrigger: {
+    trigger: ".gallery-container",
+    start: "top top",
+    end: "bottom bottom",
+    scrub: 1,
+    onUpdate: (self) => updateActiveCard(self.progress)
+  }
+});
+
+// 3. Highlight Front-Facing Card and Update Text
+const titleEl = document.getElementById("dynamic-title");
+const descEl = document.getElementById("dynamic-desc");
+const allCards = document.querySelectorAll(".clay-card");
+
+function updateActiveCard(progress) {
+  // Determine which text index to show based on progress
+  // 球体转2圈(720度)，对应5段文字，每段文字占144度
+  const textIndex =
+    Math.floor(progress * textContent.length) % textContent.length;
+
+  if (titleEl.innerText !== textContent[textIndex].title) {
+    // 更平滑的淡入淡出
+    gsap.to([titleEl, descEl], {
+      opacity: 0,
+      y: 8,
+      duration: 0.25,
+      ease: "power2.out",
+      onComplete: () => {
+        titleEl.innerText = textContent[textIndex].title;
+        descEl.innerText = textContent[textIndex].desc;
+        gsap.fromTo([titleEl, descEl],
+          { opacity: 0, y: -8 },
+          { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }
+        );
+      }
+    });
+  }
+
+  // Highlight a few cards simulating coming to the front focus
+  const focusIndex = Math.floor(progress * galleryItems.length);
+  allCards.forEach((card, idx) => {
+    if (Math.abs(idx - focusIndex) < 2) {
+      card.classList.add("active-card");
+    } else {
+      card.classList.remove("active-card");
+    }
+  });
+}
+
+// 4. Generate Scatter/Constellation in Journey Section
+const constellation = document.getElementById("constellation");
+const scatterPositions = [
+  { top: "10%", left: "15%" },
+  { top: "20%", left: "80%" },
+  { top: "60%", left: "10%" },
+  { top: "75%", left: "85%" },
+  { top: "85%", left: "30%" },
+  { top: "15%", left: "50%" }
+];
+
+scatterPositions.forEach((pos, i) => {
+  const card = document.createElement("div");
+  card.classList.add("clay-card", "constellation-card");
+  card.style.top = pos.top;
+  card.style.left = pos.left;
+
+  // Add varying rotation for messy scatter look
+  const rot = (Math.random() - 0.5) * 40;
+  card.style.transform = `rotate(${rot}deg) scale(0.8)`;
+
+  const img = document.createElement("img");
+  img.src = images[i % images.length];
+  card.appendChild(img);
+
+  constellation.appendChild(card);
+});
+
+// Parallax effect for scattered cards
+gsap.to(".constellation-card", {
+  y: -100,
+  ease: "none",
+  stagger: 0.1,
+  scrollTrigger: {
+    trigger: ".journey-section",
+    start: "top bottom",
+    end: "bottom top",
+    scrub: true
+  }
+});
+  </script>
+</body>
+</html>
