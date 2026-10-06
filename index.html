@@ -1699,25 +1699,34 @@
       line-height:1.7;
     }
 
-    /* 返回按钮 - 顶部居中胶囊 */
+    /* 返回按钮 - 底部左下角，与下一页对称 */
     #page2 .back-btn{
-      top:14px !important;
-      left:50% !important;
-      transform:translateX(-50%) !important;
-      font-size:14px !important;
-      padding:8px 40px !important;
+      top:auto !important;
+      bottom:12px !important;
+      left:12px !important;
+      transform:none !important;
+      font-size:12px !important;
+      padding:8px 20px !important;
       border-radius:20px !important;
-      background:rgba(255,253,247,.85) !important;
+      background:rgba(255,253,247,.9) !important;
       backdrop-filter:blur(6px) !important;
-      border:1px solid rgba(176,58,46,.2) !important;
+      border:1px solid rgba(176,58,46,.25) !important;
       color:var(--ink) !important;
+      display:inline-block !important;
     }
 
-    /* 下一页按钮 */
-    .next-btn{
-      bottom:8px !important;
-      padding:6px 14px !important;
-      display:none !important;
+    /* 下一页按钮 - 底部右下角，与返回对称 */
+    #page2 .next-btn{
+      bottom:12px !important;
+      right:12px !important;
+      left:auto !important;
+      padding:8px 20px !important;
+      font-size:12px !important;
+      display:inline-block !important;
+      border-radius:20px !important;
+      background:rgba(255,253,247,.9) !important;
+      backdrop-filter:blur(6px) !important;
+      border:1px solid rgba(176,58,46,.25) !important;
     }
 
     /* 第一页 - 按钮 */
@@ -1945,8 +1954,8 @@
     .mobile-quote-card{padding:6px 8px !important;height:42% !important;}
     .mobile-quote-who{font-size:11px !important;}
     .mobile-quote-text{font-size:9px !important;}
-    .back-btn{bottom:10px !important;left:10px !important;font-size:11px !important;padding:6px 12px !important;}
-    .next-btn{bottom:10px !important;right:10px !important;font-size:11px !important;padding:6px 12px !important;}
+    #page2 .back-btn{bottom:10px !important;left:10px !important;font-size:11px !important;padding:6px 16px !important;top:auto !important;transform:none !important;}
+    #page2 .next-btn{bottom:10px !important;right:10px !important;left:auto !important;font-size:11px !important;padding:6px 16px !important;display:inline-block !important;}
   }
 
   /* 强制手机模式 */
