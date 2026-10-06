@@ -668,11 +668,15 @@
     background:linear-gradient(160deg, #FFFEF9 0%, #F8F2E6 100%);
     border:1px solid rgba(176,58,46,.12);
     border-radius:16px;
-    padding:20px 14px 16px;
+    padding:24px 16px 20px;
     text-align:center;
     transition:all .4s cubic-bezier(.4,0,.2,1);
     cursor:default;
     overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
   }
   .hobby-item::before{
     content:'';
@@ -683,38 +687,23 @@
     opacity:0;
     transition:opacity .4s ease;
   }
-  .hobby-item::after{
-    content:'';
-    position:absolute;
-    top:8px;right:8px;
-    width:24px;height:24px;
-    border-top:1px solid rgba(176,58,46,.2);
-    border-right:1px solid rgba(176,58,46,.2);
-    border-radius:0 8px 0 0;
-    opacity:0;
-    transition:opacity .4s ease;
-  }
   .hobby-item:hover{
     transform:translateY(-6px);
     box-shadow:0 12px 28px rgba(176,58,46,.12), 0 4px 8px rgba(43,36,32,.06);
     border-color:rgba(176,58,46,.3);
   }
   .hobby-item:hover::before{opacity:.6;}
-  .hobby-item:hover::after{opacity:1;}
   .hobby-icon-wrap{
-    width:52px;height:52px;
-    margin:0 auto 10px;
+    width:64px;height:64px;
+    margin:0 auto 14px;
     display:flex;align-items:center;justify-content:center;
-    background:rgba(176,58,46,.06);
-    border-radius:50%;
     transition:all .4s ease;
   }
   .hobby-item:hover .hobby-icon-wrap{
-    background:rgba(176,58,46,.12);
-    transform:scale(1.08);
+    transform:scale(1.1);
   }
   .hobby-svg{
-    width:32px;height:32px;
+    width:56px;height:56px;
     transition:transform .4s ease;
   }
   .hobby-item:hover .hobby-svg{
@@ -724,25 +713,21 @@
     font-family:'Kaiti SC','STKaiti','楷体',serif;
     font-weight:700;
     color:var(--ink);
-    font-size:1.05em;
+    font-size:1.1em;
     letter-spacing:.05em;
+    margin-bottom:6px;
   }
   .hobby-divider{
-    width:24px;height:1px;
-    background:linear-gradient(90deg, transparent, rgba(176,58,46,.4), transparent);
-    margin:8px auto;
+    display:none;
   }
   .hobby-desc{
-    font-size:.75em;
+    font-size:.78em;
     color:rgba(43,36,32,.55);
     line-height:1.5;
   }
   .hobby-item.highlight{
     background:linear-gradient(160deg, #FDF5F3 0%, #F8E8E4 100%);
     border-color:rgba(176,58,46,.25);
-  }
-  .hobby-item.highlight .hobby-icon-wrap{
-    background:rgba(176,58,46,.1);
   }
   .hobby-item.highlight .hobby-name{
     color:var(--seal);
@@ -1845,25 +1830,28 @@
     .exp-item .exp-title{font-size:16px !important;margin-bottom:6px !important;}
     .exp-item .exp-text{font-size:14px !important;line-height:1.8 !important;}
     
-    /* 兴趣爱好 - 手机改为2列 */
+    /* 兴趣爱好 - 手机改为2列，大图标样式 */
     .hobby-grid{
       grid-template-columns:repeat(2, 1fr) !important;
       gap:14px !important;
       margin:14px 0 !important;
     }
     .hobby-item{
-      padding:18px 12px 14px !important;
+      padding:22px 14px 18px !important;
       border-radius:14px !important;
+      display:flex !important;
+      flex-direction:column !important;
+      align-items:center !important;
     }
     .hobby-icon-wrap{
-      width:52px !important;
-      height:52px !important;
-      margin-bottom:10px !important;
+      width:60px !important;
+      height:60px !important;
+      margin-bottom:12px !important;
     }
-    .hobby-svg{width:44px !important;height:44px !important;}
-    .hobby-name{font-size:15px !important;margin-bottom:6px !important;}
-    .hobby-divider{margin:6px auto !important;width:24px !important;}
-    .hobby-desc{font-size:11px !important;line-height:1.5 !important;}
+    .hobby-svg{width:52px !important;height:52px !important;}
+    .hobby-name{font-size:16px !important;margin-bottom:6px !important;}
+    .hobby-divider{display:none !important;}
+    .hobby-desc{font-size:12px !important;line-height:1.5 !important;}
 
     /* 专业信息页 */
     .major-wrap{padding:24px 18px 60px !important;max-width:100% !important;}
