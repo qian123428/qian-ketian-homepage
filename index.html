@@ -1394,37 +1394,40 @@
     /* 导航 - 印章右侧，横向并列，每个按钮内文字竖直 */
     #page2 .nav{
       position:absolute !important;
-      top:75px !important;
-      left:265px !important;
+      top:70px !important;
+      left:225px !important;
       right:auto !important;
       flex-direction:row !important;
-      gap:8px !important;
+      gap:6px !important;
       padding:0 !important;
       background:none !important;
       backdrop-filter:none !important;
       border:none !important;
+      flex-wrap:nowrap !important;
     }
     #page2 .nav a{
-      font-size:15px !important;
-      padding:12px 8px !important;
+      font-size:13px !important;
+      padding:10px 6px !important;
       writing-mode:vertical-rl !important;
       text-orientation:upright !important;
-      letter-spacing:.15em !important;
+      letter-spacing:.12em !important;
       background:linear-gradient(180deg, #f8f2e5 0%, #f0e6d2 50%, #e6d9bf 100%) !important;
       color:#8B2E22 !important;
       font-weight:600 !important;
-      border-radius:12px !important;
+      border-radius:10px !important;
       border:1px solid rgba(139,46,34,.15) !important;
       box-shadow:
-        0 6px 0 #c9b896,
-        0 8px 16px rgba(139,46,34,.18),
+        0 4px 0 #c9b896,
+        0 6px 12px rgba(139,46,34,.15),
         inset 0 1px 0 rgba(255,255,255,.8),
         inset 0 -1px 0 rgba(139,46,34,.1) !important;
       transition:all .15s ease !important;
       display:flex !important;
       flex-direction:column !important;
       align-items:center !important;
-      gap:8px !important;
+      gap:6px !important;
+      white-space:nowrap !important;
+      flex-shrink:0 !important;
     }
     #page2 .nav a:hover{
       transform:translateY(-4px) !important;
@@ -1451,20 +1454,20 @@
 
     /* 第二页 - 印章 左上 */
     .seal-wrap{
-      top:65px !important;
-      left:15px !important;
+      top:60px !important;
+      left:12px !important;
       transform:none !important;
     }
     .seal{
-      width:240px !important;
-      height:240px !important;
+      width:200px !important;
+      height:200px !important;
     }
-    .seal .name-top{font-size:62px !important;}
-    .seal .name-bottom{font-size:34px !important;}
+    .seal .name-top{font-size:52px !important;}
+    .seal .name-bottom{font-size:28px !important;}
 
     /* 第二页 - 问候语 居中 */
     .greeting{
-      top:320px !important;
+      top:280px !important;
       left:50% !important;
       right:auto !important;
       transform:translateX(-50%) !important;
@@ -1472,19 +1475,19 @@
       width:85% !important;
     }
     .greeting .gl{
-      font-size:21px !important;
+      font-size:20px !important;
       display:inline !important;
     }
 
     /* 第二页 - 提示框 居中 */
     .note{
-      top:370px !important;
+      top:325px !important;
       left:50% !important;
       right:auto !important;
       transform:translateX(-50%) !important;
       max-width:80% !important;
-      font-size:15px !important;
-      padding:14px 28px !important;
+      font-size:14px !important;
+      padding:12px 24px !important;
     }
 
     /* 第二页 - 学校信息 移到海报之间 */
@@ -1612,19 +1615,170 @@
     }
 
     /* 基本信息页 */
-    .info-wrap{padding:20px 16px !important;}
-    .info-title{font-size:24px !important;}
-    .reveal-card{padding:16px !important;}
-    .reveal-title{font-size:18px !important;}
-    .reveal-body p{font-size:13px !important;}
+    .info-wrap{padding:24px 18px 60px !important;max-width:100% !important;}
+    .info-title{font-size:28px !important;margin-bottom:4px !important;}
+    .info-sub{font-size:11px !important;letter-spacing:.2em !important;margin-bottom:24px !important;}
+    .info-section{margin-bottom:28px !important;}
+    .reveal-title{font-size:19px !important;margin-bottom:16px !important;padding-bottom:10px !important;}
+    
+    /* 时间线 - 手机改为竖直排列 */
+    .timeline{
+      flex-direction:column !important;
+      align-items:flex-start !important;
+      padding:0 0 0 8px !important;
+      margin:12px 0 !important;
+      gap:0 !important;
+    }
+    .timeline::before{
+      left:14px !important;
+      right:auto !important;
+      top:8px !important;
+      bottom:8px !important;
+      width:2px !important;
+      height:auto !important;
+      background:linear-gradient(to bottom, var(--seal), rgba(176,58,46,.3), var(--seal)) !important;
+    }
+    .timeline-item{
+      text-align:left !important;
+      flex:none !important;
+      padding:0 0 20px 36px !important;
+      position:relative !important;
+      width:100% !important;
+    }
+    .timeline-item::before{
+      position:absolute !important;
+      left:7px !important;
+      top:2px !important;
+      margin:0 !important;
+      width:14px !important;
+      height:14px !important;
+    }
+    .timeline-item .tl-year{
+      font-size:14px !important;
+      margin-bottom:2px !important;
+      display:inline-block !important;
+    }
+    .timeline-item .tl-text{
+      font-size:14px !important;
+      line-height:1.6 !important;
+    }
+    
+    /* 个人经历 */
+    .experience-list{margin:12px 0 !important;}
+    .exp-item{gap:14px !important;padding:16px 0 !important;}
+    .exp-item .exp-dot{width:10px !important;height:10px !important;margin-top:7px !important;}
+    .exp-item .exp-title{font-size:16px !important;margin-bottom:6px !important;}
+    .exp-item .exp-text{font-size:14px !important;line-height:1.8 !important;}
+    
+    /* 兴趣爱好 - 手机改为2列 */
+    .hobby-grid{
+      grid-template-columns:repeat(2, 1fr) !important;
+      gap:14px !important;
+      margin:14px 0 !important;
+    }
+    .hobby-item{
+      padding:18px 12px 14px !important;
+      border-radius:14px !important;
+    }
+    .hobby-icon-wrap{
+      width:52px !important;
+      height:52px !important;
+      margin-bottom:10px !important;
+    }
+    .hobby-svg{width:44px !important;height:44px !important;}
+    .hobby-name{font-size:15px !important;margin-bottom:6px !important;}
+    .hobby-divider{margin:6px auto !important;width:24px !important;}
+    .hobby-desc{font-size:11px !important;line-height:1.5 !important;}
 
     /* 专业信息页 */
-    .major-wrap{padding:20px 16px !important;}
-    .major-title{font-size:24px !important;}
-    .major-card{padding:16px !important;}
-    .major-card h3{font-size:17px !important;}
-    .major-card p{font-size:13px !important;}
-    .course-tags span{font-size:12px !important;padding:4px 10px !important;}
+    .major-wrap{padding:24px 18px 60px !important;max-width:100% !important;}
+    .major-title{font-size:28px !important;margin-bottom:4px !important;}
+    .major-sub{font-size:11px !important;letter-spacing:.2em !important;margin-bottom:24px !important;}
+    .major-card{
+      padding:20px 18px !important;
+      border-radius:16px !important;
+      margin-bottom:18px !important;
+    }
+    .major-card h3{
+      font-size:18px !important;
+      margin-bottom:14px !important;
+      padding-bottom:10px !important;
+      gap:10px !important;
+    }
+    .major-card h3 .card-icon{width:26px !important;height:26px !important;}
+    .major-card p{font-size:14px !important;line-height:1.9 !important;}
+    
+    /* 专业与学院 - 高亮信息 */
+    .major-highlight{
+      padding:12px 14px !important;
+      margin-bottom:10px !important;
+      border-radius:10px !important;
+    }
+    .mh-label{font-size:10px !important;margin-bottom:4px !important;}
+    .mh-value{font-size:15px !important;line-height:1.5 !important;}
+    
+    /* 统计行 */
+    .stat-row{
+      gap:8px !important;
+      margin-top:14px !important;
+    }
+    .stat-item{
+      padding:12px 6px !important;
+      border-radius:10px !important;
+    }
+    .stat-num{font-size:16px !important;margin-bottom:2px !important;}
+    .stat-label{font-size:10px !important;}
+    
+    /* 课程标签 */
+    .course-tags{gap:8px !important;margin-top:12px !important;}
+    .course-tags span{
+      font-size:12px !important;
+      padding:6px 14px !important;
+      border-radius:20px !important;
+    }
+    
+    /* 学习规划 - 手机改为竖直时间线 */
+    .plan-timeline{
+      flex-direction:column !important;
+      gap:0 !important;
+      padding-left:8px !important;
+      margin:12px 0 !important;
+    }
+    .plan-timeline::before{
+      left:14px !important;
+      top:8px !important;
+      bottom:8px !important;
+      width:2px !important;
+      height:auto !important;
+      background:linear-gradient(to bottom, var(--seal), rgba(176,58,46,.3)) !important;
+    }
+    .plan-item{
+      flex:none !important;
+      text-align:left !important;
+      padding:0 0 22px 36px !important;
+      position:relative !important;
+      width:100% !important;
+    }
+    .plan-node{
+      position:absolute !important;
+      left:7px !important;
+      top:3px !important;
+      width:14px !important;
+      height:14px !important;
+    }
+    .plan-year{
+      font-size:15px !important;
+      margin-bottom:4px !important;
+      display:inline-block !important;
+    }
+    .plan-text{font-size:13px !important;line-height:1.7 !important;}
+    
+    /* 彩蛋提示 */
+    .hint-easter{
+      font-size:10px !important;
+      padding:3px 10px !important;
+      margin-left:8px !important;
+    }
 
     /* 交互内容页 */
     .interact-wrap{padding:20px 16px !important;}
@@ -1635,27 +1789,27 @@
   }
 
   @media (max-width: 480px){
-    #page2 .nav{top:65px !important;left:220px !important;gap:5px !important;}
-    #page2 .nav a{font-size:12px !important;padding:10px 6px !important;gap:6px !important;}
-    .nav-icon{width:18px !important;height:18px !important;}
-    .seal-wrap{top:60px !important;left:12px !important;}
-    .seal{width:205px !important;height:205px !important;}
-    .seal .name-top{font-size:54px !important;}
-    .seal .name-bottom{font-size:30px !important;}
-    .greeting{top:280px !important;}
-    .greeting .gl{font-size:19px !important;}
-    .note{top:325px !important;font-size:13px !important;padding:12px 22px !important;}
+    #page2 .nav{top:55px !important;left:175px !important;gap:4px !important;}
+    #page2 .nav a{font-size:11px !important;padding:8px 4px !important;gap:4px !important;border-radius:8px !important;}
+    .nav-icon{width:16px !important;height:16px !important;}
+    .seal-wrap{top:50px !important;left:10px !important;}
+    .seal{width:160px !important;height:160px !important;}
+    .seal .name-top{font-size:42px !important;}
+    .seal .name-bottom{font-size:24px !important;}
+    .greeting{top:230px !important;}
+    .greeting .gl{font-size:18px !important;}
+    .note{top:275px !important;font-size:12px !important;padding:10px 18px !important;}
     .profile-info{
-      bottom:165px !important;
-      left:32% !important;
-      right:32% !important;
-      width:36% !important;
+      bottom:155px !important;
+      left:30% !important;
+      right:30% !important;
+      width:40% !important;
     }
-    .profile-info .school{font-size:11px !important;}
-    .profile-info .major{font-size:10px !important;}
-    .mobile-posters{height:200px;}
-    .mobile-poster{height:200px;}
-    .mobile-quote-text{font-size:10px !important;}
+    .profile-info .school{font-size:10px !important;}
+    .profile-info .major{font-size:9px !important;}
+    .mobile-posters{height:180px;}
+    .mobile-poster{height:180px;}
+    .mobile-quote-text{font-size:9px !important;}
   }
 
   /* 强制手机模式 */
