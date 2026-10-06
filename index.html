@@ -2763,27 +2763,6 @@
     setTimeout(function(){initFadeInObserver();}, 100);
     // 进入数字分身页时触发开场白
     if(n===6 && typeof avatarInit === 'function'){ avatarInit(); }
-    // 进入基本信息页时监听滚动，到底部显示提示
-    if(n===3){
-      var infoPage = document.querySelector('#page3 .info-page');
-      var hint = document.getElementById('slideHint');
-      if(infoPage && hint){
-        hint.classList.remove('show');
-        var hintShown = false;
-        infoPage.onscroll = function(){
-          if(hintShown) return;
-          var scrollBottom = infoPage.scrollTop + infoPage.clientHeight;
-          var scrollHeight = infoPage.scrollHeight;
-          if(scrollHeight - scrollBottom < 80){
-            hintShown = true;
-            hint.classList.add('show');
-            setTimeout(function(){
-              hint.classList.remove('show');
-            }, 6000);
-          }
-        };
-      }
-    }
   }
 
   // 滚动渐入动画
@@ -3041,6 +3020,18 @@
     if(!document.getElementById('page3').classList.contains('active')) return;
     
     if(e.deltaY > 30){ // 向下滚动
+      // 检查是否滚动到底部，显示"持续下滑有惊喜"
+      var infoPage = document.querySelector('#page3 .info-page');
+      var slideHint = document.getElementById('slideHint');
+      if(infoPage && slideHint && !slideHint.classList.contains('show')){
+        var scrollBottom = infoPage.scrollTop + infoPage.clientHeight;
+        var scrollHeight = infoPage.scrollHeight;
+        if(scrollHeight - scrollBottom < 100){
+          slideHint.classList.add('show');
+          setTimeout(function(){slideHint.classList.remove('show');}, 6000);
+        }
+      }
+      
       if(!hintShown){
         hintShown=true;
         lifeGalleryHint.classList.add('show');
