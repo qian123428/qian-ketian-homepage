@@ -1615,19 +1615,170 @@
     }
 
     /* 基本信息页 */
-    .info-wrap{padding:20px 16px !important;}
-    .info-title{font-size:24px !important;}
-    .reveal-card{padding:16px !important;}
-    .reveal-title{font-size:18px !important;}
-    .reveal-body p{font-size:13px !important;}
+    .info-wrap{padding:24px 18px 60px !important;max-width:100% !important;}
+    .info-title{font-size:28px !important;margin-bottom:4px !important;}
+    .info-sub{font-size:11px !important;letter-spacing:.2em !important;margin-bottom:24px !important;}
+    .info-section{margin-bottom:28px !important;}
+    .reveal-title{font-size:19px !important;margin-bottom:16px !important;padding-bottom:10px !important;}
+    
+    /* 时间线 - 手机改为竖直排列 */
+    .timeline{
+      flex-direction:column !important;
+      align-items:flex-start !important;
+      padding:0 0 0 8px !important;
+      margin:12px 0 !important;
+      gap:0 !important;
+    }
+    .timeline::before{
+      left:14px !important;
+      right:auto !important;
+      top:8px !important;
+      bottom:8px !important;
+      width:2px !important;
+      height:auto !important;
+      background:linear-gradient(to bottom, var(--seal), rgba(176,58,46,.3), var(--seal)) !important;
+    }
+    .timeline-item{
+      text-align:left !important;
+      flex:none !important;
+      padding:0 0 20px 36px !important;
+      position:relative !important;
+      width:100% !important;
+    }
+    .timeline-item::before{
+      position:absolute !important;
+      left:7px !important;
+      top:2px !important;
+      margin:0 !important;
+      width:14px !important;
+      height:14px !important;
+    }
+    .timeline-item .tl-year{
+      font-size:14px !important;
+      margin-bottom:2px !important;
+      display:inline-block !important;
+    }
+    .timeline-item .tl-text{
+      font-size:14px !important;
+      line-height:1.6 !important;
+    }
+    
+    /* 个人经历 */
+    .experience-list{margin:12px 0 !important;}
+    .exp-item{gap:14px !important;padding:16px 0 !important;}
+    .exp-item .exp-dot{width:10px !important;height:10px !important;margin-top:7px !important;}
+    .exp-item .exp-title{font-size:16px !important;margin-bottom:6px !important;}
+    .exp-item .exp-text{font-size:14px !important;line-height:1.8 !important;}
+    
+    /* 兴趣爱好 - 手机改为2列 */
+    .hobby-grid{
+      grid-template-columns:repeat(2, 1fr) !important;
+      gap:14px !important;
+      margin:14px 0 !important;
+    }
+    .hobby-item{
+      padding:18px 12px 14px !important;
+      border-radius:14px !important;
+    }
+    .hobby-icon-wrap{
+      width:52px !important;
+      height:52px !important;
+      margin-bottom:10px !important;
+    }
+    .hobby-svg{width:44px !important;height:44px !important;}
+    .hobby-name{font-size:15px !important;margin-bottom:6px !important;}
+    .hobby-divider{margin:6px auto !important;width:24px !important;}
+    .hobby-desc{font-size:11px !important;line-height:1.5 !important;}
 
     /* 专业信息页 */
-    .major-wrap{padding:20px 16px !important;}
-    .major-title{font-size:24px !important;}
-    .major-card{padding:16px !important;}
-    .major-card h3{font-size:17px !important;}
-    .major-card p{font-size:13px !important;}
-    .course-tags span{font-size:12px !important;padding:4px 10px !important;}
+    .major-wrap{padding:24px 18px 60px !important;max-width:100% !important;}
+    .major-title{font-size:28px !important;margin-bottom:4px !important;}
+    .major-sub{font-size:11px !important;letter-spacing:.2em !important;margin-bottom:24px !important;}
+    .major-card{
+      padding:20px 18px !important;
+      border-radius:16px !important;
+      margin-bottom:18px !important;
+    }
+    .major-card h3{
+      font-size:18px !important;
+      margin-bottom:14px !important;
+      padding-bottom:10px !important;
+      gap:10px !important;
+    }
+    .major-card h3 .card-icon{width:26px !important;height:26px !important;}
+    .major-card p{font-size:14px !important;line-height:1.9 !important;}
+    
+    /* 专业与学院 - 高亮信息 */
+    .major-highlight{
+      padding:12px 14px !important;
+      margin-bottom:10px !important;
+      border-radius:10px !important;
+    }
+    .mh-label{font-size:10px !important;margin-bottom:4px !important;}
+    .mh-value{font-size:15px !important;line-height:1.5 !important;}
+    
+    /* 统计行 */
+    .stat-row{
+      gap:8px !important;
+      margin-top:14px !important;
+    }
+    .stat-item{
+      padding:12px 6px !important;
+      border-radius:10px !important;
+    }
+    .stat-num{font-size:16px !important;margin-bottom:2px !important;}
+    .stat-label{font-size:10px !important;}
+    
+    /* 课程标签 */
+    .course-tags{gap:8px !important;margin-top:12px !important;}
+    .course-tags span{
+      font-size:12px !important;
+      padding:6px 14px !important;
+      border-radius:20px !important;
+    }
+    
+    /* 学习规划 - 手机改为竖直时间线 */
+    .plan-timeline{
+      flex-direction:column !important;
+      gap:0 !important;
+      padding-left:8px !important;
+      margin:12px 0 !important;
+    }
+    .plan-timeline::before{
+      left:14px !important;
+      top:8px !important;
+      bottom:8px !important;
+      width:2px !important;
+      height:auto !important;
+      background:linear-gradient(to bottom, var(--seal), rgba(176,58,46,.3)) !important;
+    }
+    .plan-item{
+      flex:none !important;
+      text-align:left !important;
+      padding:0 0 22px 36px !important;
+      position:relative !important;
+      width:100% !important;
+    }
+    .plan-node{
+      position:absolute !important;
+      left:7px !important;
+      top:3px !important;
+      width:14px !important;
+      height:14px !important;
+    }
+    .plan-year{
+      font-size:15px !important;
+      margin-bottom:4px !important;
+      display:inline-block !important;
+    }
+    .plan-text{font-size:13px !important;line-height:1.7 !important;}
+    
+    /* 彩蛋提示 */
+    .hint-easter{
+      font-size:10px !important;
+      padding:3px 10px !important;
+      margin-left:8px !important;
+    }
 
     /* 交互内容页 */
     .interact-wrap{padding:20px 16px !important;}
