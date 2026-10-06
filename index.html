@@ -1517,18 +1517,19 @@
       line-height:1.5 !important;
     }
 
-    /* 移动端海报 - 左右两侧，拉长 */
+    /* 移动端海报 - 左右两侧，适当高度 */
     .mobile-posters{
       position:relative;
-      height:250px;
-      margin-bottom:12px;
+      height:140px;
+      margin-bottom:10px;
       display:flex;
       justify-content:space-between;
+      gap:10px;
     }
     .mobile-poster{
       position:relative;
-      width:30%;
-      height:250px;
+      flex:1;
+      height:140px;
       border-radius:12px;
       overflow:hidden;
       box-shadow:0 6px 20px rgba(0,0,0,.2);
@@ -1540,6 +1541,7 @@
       height:100%;
       object-fit:cover;
       object-position:top;
+      display:block;
     }
 
     /* 移动端名言 - 底部两个卡片 */
@@ -1807,8 +1809,8 @@
     }
     .profile-info .school{font-size:10px !important;}
     .profile-info .major{font-size:9px !important;}
-    .mobile-posters{height:180px;}
-    .mobile-poster{height:180px;}
+    .mobile-posters{height:120px;}
+    .mobile-poster{height:120px;}
     .mobile-quote-text{font-size:9px !important;}
   }
 
