@@ -1382,51 +1382,109 @@
     /* 隐藏电脑版海报布局 */
     .bottom-row{display:none !important;}
 
-    /* 显示移动端布局 - 照片左右，名言中间，个人简介在上 */
+    /* ===== 手机版主页重新设计 ===== */
+    /* 印章 - 左上角，缩小 */
+    .seal-wrap{
+      top:16px !important;
+      left:12px !important;
+    }
+    .seal{
+      width:130px !important;
+      height:130px !important;
+    }
+    .seal .name-top{font-size:36px !important;}
+    .seal .name-bottom{font-size:20px !important;}
+
+    /* 问候语 - 印章导航下方，紧凑 */
+    .greeting{
+      top:155px !important;
+      left:50% !important;
+      right:auto !important;
+      transform:translateX(-50%) !important;
+      text-align:center !important;
+      width:90% !important;
+    }
+    .greeting .gl{
+      font-size:20px !important;
+      display:inline !important;
+      line-height:1.5 !important;
+    }
+
+    /* 提示框 - 紧跟问候语 */
+    .note{
+      top:210px !important;
+      left:50% !important;
+      right:auto !important;
+      transform:translateX(-50%) !important;
+      max-width:75% !important;
+      font-size:12px !important;
+      padding:8px 18px !important;
+    }
+
+    /* 个人简介 - 提示框下方 */
+    .profile-info{
+      position:absolute !important;
+      top:260px !important;
+      bottom:auto !important;
+      left:50% !important;
+      transform:translateX(-50%) !important;
+      text-align:center !important;
+      width:85% !important;
+    }
+    .profile-info .school{
+      font-size:13px !important;
+      margin-bottom:4px !important;
+    }
+    .profile-info .major{
+      font-size:12px !important;
+    }
+
+    /* 球星区域 - 左右分栏，照片在上名言在下 */
     .mobile-layout{
       display:flex !important;
       position:absolute !important;
-      bottom:20px !important;
+      top:320px !important;
+      bottom:50px !important;
       left:0 !important;
       right:0 !important;
-      padding:0 12px !important;
-      align-items:center !important;
-      justify-content:space-between !important;
-      gap:8px !important;
+      padding:0 10px !important;
+      gap:10px !important;
+      align-items:stretch !important;
     }
-    /* 照片在左右两边 */
     .mobile-posters{
       display:contents !important;
     }
     .mobile-poster{
-      flex:0 0 28% !important;
-      width:28% !important;
-      height:auto !important;
-    }
-    .mobile-poster img{
-      width:100% !important;
-      height:auto !important;
-      display:block !important;
-      border:2px solid #8a7355 !important;
-      box-shadow:0 6px 16px rgba(0,0,0,.3) !important;
-    }
-    /* 名言在中间 */
-    .mobile-quotes{
       flex:1 !important;
       display:flex !important;
       flex-direction:column !important;
-      gap:8px !important;
-      align-items:center !important;
-      text-align:center !important;
-      max-width:40% !important;
+      gap:6px !important;
+      height:100% !important;
+    }
+    .mobile-poster img{
+      width:100% !important;
+      height:55% !important;
+      object-fit:cover !important;
+      display:block !important;
+      border:2px solid #8a7355 !important;
+      box-shadow:0 4px 12px rgba(0,0,0,.25) !important;
+      border-radius:4px !important;
+    }
+    .mobile-quotes{
+      display:contents !important;
     }
     .mobile-quote-card{
-      background:rgba(250,244,232,.92) !important;
+      flex:1 !important;
+      background:rgba(250,244,232,.95) !important;
       border:1px solid rgba(138,115,85,.3) !important;
-      border-radius:10px !important;
-      padding:8px 12px !important;
-      width:100% !important;
-      box-shadow:0 2px 8px rgba(0,0,0,.1) !important;
+      border-radius:8px !important;
+      padding:8px 10px !important;
+      box-shadow:0 2px 6px rgba(0,0,0,.1) !important;
+      display:flex !important;
+      flex-direction:column !important;
+      justify-content:center !important;
+      text-align:center !important;
+      height:40% !important;
     }
     .mobile-quote-who{
       display:block !important;
@@ -1438,59 +1496,60 @@
     }
     .mobile-quote-text{
       display:block !important;
-      font-size:11px !important;
+      font-size:10px !important;
       line-height:1.5 !important;
       color:#5a4a3a !important;
     }
-    /* 个人简介在名言上方 */
-    .profile-info{
-      position:absolute !important;
-      top:auto !important;
-      bottom:180px !important;
-      left:50% !important;
-      transform:translateX(-50%) !important;
-      text-align:center !important;
-      width:70% !important;
+
+    /* 返回和下一页按钮 */
+    .back-btn{
+      bottom:12px !important;
+      left:12px !important;
+      font-size:12px !important;
+      padding:8px 16px !important;
+    }
+    .next-btn{
+      bottom:12px !important;
+      right:12px !important;
+      font-size:12px !important;
+      padding:8px 16px !important;
     }
 
-    /* 导航 - 印章右侧，横向并列，每个按钮内文字竖直 */
+    /* 导航 - 印章右侧，紧凑横向排列 */
     #page2 .nav{
       position:absolute !important;
-      top:70px !important;
-      left:225px !important;
-      right:auto !important;
+      top:20px !important;
+      left:150px !important;
+      right:10px !important;
       flex-direction:row !important;
-      gap:6px !important;
+      gap:4px !important;
       padding:0 !important;
       background:none !important;
       backdrop-filter:none !important;
       border:none !important;
       flex-wrap:nowrap !important;
+      justify-content:flex-end !important;
     }
     #page2 .nav a{
-      font-size:13px !important;
-      padding:10px 6px !important;
+      font-size:11px !important;
+      padding:8px 4px !important;
       writing-mode:vertical-rl !important;
       text-orientation:upright !important;
-      letter-spacing:.12em !important;
+      letter-spacing:.1em !important;
       background:linear-gradient(180deg, #f8f2e5 0%, #f0e6d2 50%, #e6d9bf 100%) !important;
       color:#8B2E22 !important;
       font-weight:600 !important;
-      border-radius:10px !important;
+      border-radius:8px !important;
       border:1px solid rgba(139,46,34,.15) !important;
-      box-shadow:
-        0 4px 0 #c9b896,
-        0 6px 12px rgba(139,46,34,.15),
-        inset 0 1px 0 rgba(255,255,255,.8),
-        inset 0 -1px 0 rgba(139,46,34,.1) !important;
-      transition:all .15s ease !important;
+      box-shadow:0 3px 0 #c9b896, 0 4px 8px rgba(139,46,34,.12) !important;
       display:flex !important;
       flex-direction:column !important;
       align-items:center !important;
-      gap:6px !important;
+      gap:4px !important;
       white-space:nowrap !important;
       flex-shrink:0 !important;
     }
+    .nav-icon{width:14px !important;height:14px !important;}
     #page2 .nav a:hover{
       transform:translateY(-4px) !important;
       box-shadow:
@@ -1854,30 +1913,40 @@
   }
 
   @media (max-width: 480px){
-    #page2 .nav{top:55px !important;left:175px !important;gap:4px !important;}
-    #page2 .nav a{font-size:11px !important;padding:8px 4px !important;gap:4px !important;border-radius:8px !important;}
-    .nav-icon{width:16px !important;height:16px !important;}
-    .seal-wrap{top:50px !important;left:10px !important;}
-    .seal{width:160px !important;height:160px !important;}
-    .seal .name-top{font-size:42px !important;}
-    .seal .name-bottom{font-size:24px !important;}
-    .greeting{top:230px !important;}
-    .greeting .gl{font-size:18px !important;}
-    .note{top:275px !important;font-size:12px !important;padding:10px 18px !important;}
+    /* 小屏适配 - 更紧凑 */
+    .seal-wrap{top:12px !important;left:10px !important;}
+    .seal{width:110px !important;height:110px !important;}
+    .seal .name-top{font-size:30px !important;}
+    .seal .name-bottom{font-size:17px !important;}
+    #page2 .nav{top:14px !important;left:128px !important;right:8px !important;gap:3px !important;}
+    #page2 .nav a{font-size:10px !important;padding:6px 3px !important;gap:3px !important;border-radius:6px !important;}
+    .nav-icon{width:12px !important;height:12px !important;}
+    .greeting{top:130px !important;}
+    .greeting .gl{font-size:17px !important;}
+    .note{top:180px !important;font-size:11px !important;padding:6px 14px !important;}
     .profile-info{
-      bottom:160px !important;
+      top:225px !important;
+      bottom:auto !important;
       left:50% !important;
       right:auto !important;
       transform:translateX(-50%) !important;
-      width:70% !important;
+      width:85% !important;
       text-align:center !important;
     }
-    .profile-info .school{font-size:10px !important;}
-    .profile-info .major{font-size:9px !important;}
-    .mobile-posters{height:auto !important;}
-    .mobile-poster{height:auto !important;}
-    .mobile-quote-text{font-size:9px !important;}
+    .profile-info .school{font-size:11px !important;}
+    .profile-info .major{font-size:10px !important;}
+    .mobile-layout{
+      top:280px !important;
+      bottom:45px !important;
+      padding:0 8px !important;
+      gap:8px !important;
+    }
+    .mobile-poster img{height:52% !important;}
+    .mobile-quote-card{padding:6px 8px !important;height:42% !important;}
     .mobile-quote-who{font-size:11px !important;}
+    .mobile-quote-text{font-size:9px !important;}
+    .back-btn{bottom:10px !important;left:10px !important;font-size:11px !important;padding:6px 12px !important;}
+    .next-btn{bottom:10px !important;right:10px !important;font-size:11px !important;padding:6px 12px !important;}
   }
 
   /* 强制手机模式 */
