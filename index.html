@@ -1384,25 +1384,23 @@
 
     /* 显示移动端布局 - 照片左右，名言中间，个人简介在上 */
     .mobile-layout{
-      display:block !important;
+      display:flex !important;
       position:absolute !important;
       bottom:20px !important;
       left:0 !important;
       right:0 !important;
-      padding:0 16px !important;
+      padding:0 12px !important;
+      align-items:center !important;
+      justify-content:space-between !important;
+      gap:8px !important;
     }
     /* 照片在左右两边 */
     .mobile-posters{
-      display:flex !important;
-      justify-content:space-between !important;
-      align-items:flex-end !important;
-      gap:12px !important;
-      margin-bottom:12px !important;
-      height:auto !important;
+      display:contents !important;
     }
     .mobile-poster{
-      flex:0 0 auto !important;
-      width:42% !important;
+      flex:0 0 28% !important;
+      width:28% !important;
       height:auto !important;
     }
     .mobile-poster img{
@@ -1412,45 +1410,47 @@
       border:2px solid #8a7355 !important;
       box-shadow:0 6px 16px rgba(0,0,0,.3) !important;
     }
-    /* 名言在中间居中 */
+    /* 名言在中间 */
     .mobile-quotes{
+      flex:1 !important;
       display:flex !important;
       flex-direction:column !important;
       gap:8px !important;
       align-items:center !important;
       text-align:center !important;
+      max-width:40% !important;
     }
     .mobile-quote-card{
       background:rgba(250,244,232,.92) !important;
       border:1px solid rgba(138,115,85,.3) !important;
       border-radius:10px !important;
-      padding:8px 16px !important;
-      max-width:85% !important;
+      padding:8px 12px !important;
+      width:100% !important;
       box-shadow:0 2px 8px rgba(0,0,0,.1) !important;
     }
     .mobile-quote-who{
       display:block !important;
       font-family:'Kaiti SC','STKaiti','楷体',serif !important;
-      font-size:14px !important;
+      font-size:13px !important;
       font-weight:700 !important;
       color:#B03A2E !important;
       margin-bottom:4px !important;
     }
     .mobile-quote-text{
       display:block !important;
-      font-size:12px !important;
-      line-height:1.6 !important;
+      font-size:11px !important;
+      line-height:1.5 !important;
       color:#5a4a3a !important;
     }
     /* 个人简介在名言上方 */
     .profile-info{
       position:absolute !important;
       top:auto !important;
-      bottom:200px !important;
+      bottom:180px !important;
       left:50% !important;
       transform:translateX(-50%) !important;
       text-align:center !important;
-      width:80% !important;
+      width:70% !important;
     }
 
     /* 导航 - 印章右侧，横向并列，每个按钮内文字竖直 */
@@ -1865,18 +1865,19 @@
     .greeting .gl{font-size:18px !important;}
     .note{top:275px !important;font-size:12px !important;padding:10px 18px !important;}
     .profile-info{
-      bottom:170px !important;
+      bottom:160px !important;
       left:50% !important;
       right:auto !important;
       transform:translateX(-50%) !important;
-      width:80% !important;
+      width:70% !important;
       text-align:center !important;
     }
-    .profile-info .school{font-size:11px !important;}
-    .profile-info .major{font-size:10px !important;}
+    .profile-info .school{font-size:10px !important;}
+    .profile-info .major{font-size:9px !important;}
     .mobile-posters{height:auto !important;}
     .mobile-poster{height:auto !important;}
-    .mobile-quote-text{font-size:10px !important;}
+    .mobile-quote-text{font-size:9px !important;}
+    .mobile-quote-who{font-size:11px !important;}
   }
 
   /* 强制手机模式 */
