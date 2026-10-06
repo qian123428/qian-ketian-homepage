@@ -1275,10 +1275,11 @@
   }
   .tab-nav{
     display:flex;
+    flex-direction:column;
+    align-items:center;
     justify-content:center;
-    gap:clamp(8px,1.5vw,16px);
+    gap:12px;
     margin-bottom:clamp(24px,4vh,36px);
-    flex-wrap:wrap;
   }
   .tab-btn{
     background:rgba(255,253,247,.8);
@@ -1290,6 +1291,9 @@
     color:var(--ink);
     cursor:pointer;
     transition:all .25s ease;
+    width:80%;
+    max-width:320px;
+    text-align:center;
   }
   .tab-btn.active,.tab-btn:hover{
     background:var(--seal);
@@ -1959,6 +1963,18 @@
     .contact-tabs{gap:8px !important;}
     .contact-tab{font-size:13px !important;padding:8px 14px !important;}
     .contact-content{font-size:14px !important;padding:16px !important;}
+    /* 四个导航垂直排列在一列 */
+    .tab-nav{
+      flex-direction:column !important;
+      align-items:center !important;
+      gap:10px !important;
+    }
+    .tab-btn{
+      width:80% !important;
+      max-width:280px !important;
+      padding:12px 20px !important;
+      font-size:15px !important;
+    }
   }
 
   @media (max-width: 480px){
@@ -2108,6 +2124,8 @@
   body.mobile-mode .contact-tabs{gap:8px !important;}
   body.mobile-mode .contact-tab{font-size:13px !important;padding:8px 14px !important;}
   body.mobile-mode .contact-content{font-size:14px !important;padding:16px !important;}
+  body.mobile-mode .tab-nav{flex-direction:column !important;align-items:center !important;gap:10px !important;}
+  body.mobile-mode .tab-btn{width:80% !important;max-width:280px !important;padding:12px 20px !important;font-size:15px !important;}
 
   /* ===== 数字分身页 ===== */
   #page6{overflow:visible !important;}
