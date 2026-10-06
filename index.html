@@ -3195,42 +3195,68 @@
   // 生活集锦隐藏入口：基本信息页底部下滑触发
   var lifeGalleryHint=document.getElementById('lifeGalleryHint');
   var hintShown=false;
-  var wheelLock=false;
+  var touchStartY=0;
 
   lifeGalleryHint.addEventListener('click',function(){
     window.location.href='生活集锦.html';
   });
 
-  document.addEventListener('wheel',function(e){
-    if(wheelLock) return;
+  // 检查是否滚动到底部
+  function isAtBottom(){
+    var infoPage = document.querySelector('#page3 .info-page');
+    if(!infoPage) return false;
+    var scrollBottom = infoPage.scrollTop + infoPage.clientHeight;
+    var scrollHeight = infoPage.scrollHeight;
+    return scrollHeight - scrollBottom < 80;
+  }
+
+  // 显示生活集锦提示
+  function showLifeHint(){
     if(!document.getElementById('page3').classList.contains('active')) return;
-    
-    if(e.deltaY > 30){ // 向下滚动
-      // 检查是否滚动到底部，显示"持续下滑有惊喜"
-      var infoPage = document.querySelector('#page3 .info-page');
-      var slideHint = document.getElementById('slideHint');
-      if(infoPage && slideHint && !slideHint.classList.contains('show')){
-        var scrollBottom = infoPage.scrollTop + infoPage.clientHeight;
-        var scrollHeight = infoPage.scrollHeight;
-        if(scrollHeight - scrollBottom < 100){
-          slideHint.classList.add('show');
-          setTimeout(function(){slideHint.classList.remove('show');}, 6000);
-        }
-      }
-      
-      if(!hintShown){
-        hintShown=true;
-        lifeGalleryHint.classList.add('show');
-        wheelLock=true;
-        setTimeout(function(){wheelLock=false;},800);
-      } else {
-        window.location.href='生活集锦.html';
-      }
-    } else if(e.deltaY < -30){ // 向上滚动
+    if(!isAtBottom()) return;
+    if(!hintShown){
+      hintShown=true;
+      lifeGalleryHint.classList.add('show');
+    }
+  }
+
+  // 鼠标滚轮事件
+  document.addEventListener('wheel',function(e){
+    if(!document.getElementById('page3').classList.contains('active')) return;
+    if(e.deltaY > 30){
+      showLifeHint();
+    } else if(e.deltaY < -30){
       hintShown=false;
       lifeGalleryHint.classList.remove('show');
     }
   });
+
+  // 触摸事件支持（手机）
+  document.addEventListener('touchstart',function(e){
+    touchStartY = e.touches[0].clientY;
+  }, {passive:true});
+
+  document.addEventListener('touchend',function(e){
+    if(!document.getElementById('page3').classList.contains('active')) return;
+    var touchEndY = e.changedTouches[0].clientY;
+    var diff = touchStartY - touchEndY;
+    if(diff > 30){ // 向下滑动
+      showLifeHint();
+    } else if(diff < -30){ // 向上滑动
+      hintShown=false;
+      lifeGalleryHint.classList.remove('show');
+    }
+  }, {passive:true});
+
+  // 滚动事件监听
+  var infoPageEl = document.querySelector('#page3 .info-page');
+  if(infoPageEl){
+    infoPageEl.addEventListener('scroll',function(){
+      if(isAtBottom()){
+        showLifeHint();
+      }
+    });
+  }
 
   // 切换页面时重置
   var origGoPage=goPage;
