@@ -1467,7 +1467,7 @@
 
     /* 第二页 - 问候语 居中 */
     .greeting{
-      top:280px !important;
+      top:270px !important;
       left:50% !important;
       right:auto !important;
       transform:translateX(-50%) !important;
@@ -1475,13 +1475,13 @@
       width:85% !important;
     }
     .greeting .gl{
-      font-size:20px !important;
+      font-size:22px !important;
       display:inline !important;
     }
 
     /* 第二页 - 提示框 居中 */
     .note{
-      top:325px !important;
+      top:318px !important;
       left:50% !important;
       right:auto !important;
       transform:translateX(-50%) !important;
@@ -1490,47 +1490,48 @@
       padding:12px 24px !important;
     }
 
-    /* 第二页 - 学校信息 移到海报之间 */
+    /* 第二页 - 学校信息 移到海报上方 */
     .profile-info{
       top:auto !important;
-      bottom:195px !important;
-      left:33% !important;
-      right:33% !important;
+      bottom:170px !important;
+      left:15% !important;
+      right:15% !important;
       transform:none !important;
       max-width:none !important;
-      width:34% !important;
+      width:70% !important;
       text-align:center !important;
       z-index:3 !important;
       position:absolute !important;
     }
     .profile-info .school{
-      font-size:13px !important;
+      font-size:14px !important;
       padding-left:0 !important;
       border-left:none !important;
-      margin-bottom:8px !important;
+      margin-bottom:6px !important;
       line-height:1.5 !important;
+      font-weight:600 !important;
     }
     .profile-info .major{
-      font-size:11px !important;
+      font-size:12px !important;
       padding-left:0 !important;
       border-left:none !important;
       line-height:1.5 !important;
     }
 
-    /* 移动端海报 - 左右两侧，适当高度 */
+    /* 移动端海报 - 左右两侧，紧凑高度 */
     .mobile-posters{
       position:relative;
-      height:140px;
+      height:110px;
       margin-bottom:10px;
       display:flex;
       justify-content:space-between;
-      gap:10px;
+      gap:12px;
     }
     .mobile-poster{
       position:relative;
       flex:1;
-      height:140px;
-      border-radius:12px;
+      height:110px;
+      border-radius:14px;
       overflow:hidden;
       box-shadow:0 6px 20px rgba(0,0,0,.2);
     }
@@ -1547,24 +1548,24 @@
     /* 移动端名言 - 底部两个卡片 */
     .mobile-quotes{
       display:flex;
-      gap:10px;
+      gap:12px;
       justify-content:center;
     }
     .mobile-quote-card{
       flex:1;
       max-width:48%;
-      background:rgba(255,253,247,.85);
+      background:rgba(255,253,247,.9);
       backdrop-filter:blur(6px);
-      border:1px solid rgba(176,58,46,.15);
+      border:1px solid rgba(176,58,46,.18);
       border-radius:14px;
-      padding:12px 14px;
+      padding:14px 12px;
       text-align:center;
-      box-shadow:0 4px 12px rgba(0,0,0,.1);
+      box-shadow:0 4px 14px rgba(0,0,0,.12);
     }
     .mobile-quote-who{
       display:block;
       font-family:'Kaiti SC','STKaiti','KaiTi','楷体',serif;
-      font-size:16px;
+      font-size:17px;
       font-weight:bold;
       color:var(--seal);
       margin-bottom:6px;
@@ -1574,7 +1575,7 @@
       font-family:'Songti SC','STSong','SimSun','宋体',serif;
       font-size:11px;
       color:var(--ink);
-      line-height:1.6;
+      line-height:1.7;
     }
 
     /* 返回按钮 - 顶部居中胶囊 */
@@ -1809,9 +1810,13 @@
     }
     .profile-info .school{font-size:10px !important;}
     .profile-info .major{font-size:9px !important;}
-    .mobile-posters{height:120px;}
-    .mobile-poster{height:120px;}
-    .mobile-quote-text{font-size:9px !important;}
+    .mobile-posters{height:95px;}
+    .mobile-poster{height:95px;}
+    .mobile-quote-text{font-size:10px !important;}
+    .profile-info{bottom:155px !important;}
+    .greeting{top:260px !important;}
+    .greeting .gl{font-size:20px !important;}
+    .note{top:305px !important;}
   }
 
   /* 强制手机模式 */
