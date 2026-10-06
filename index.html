@@ -1379,42 +1379,78 @@
 
   /* 移动端适配 */
   @media (max-width: 768px){
-    /* 手机版使用电脑版star-card布局 */
-    .bottom-row{
-      display:flex !important;
-      flex-direction:column !important;
+    /* 隐藏电脑版海报布局 */
+    .bottom-row{display:none !important;}
+
+    /* 显示移动端布局 - 照片左右，名言中间，个人简介在上 */
+    .mobile-layout{
+      display:block !important;
       position:absolute !important;
       bottom:20px !important;
-      left:16px !important;
-      right:16px !important;
-      gap:16px !important;
-      align-items:center !important;
+      left:0 !important;
+      right:0 !important;
+      padding:0 16px !important;
     }
-    .star-card{
-      max-width:100% !important;
+    /* 照片在左右两边 */
+    .mobile-posters{
+      display:flex !important;
+      justify-content:space-between !important;
+      align-items:flex-end !important;
+      gap:12px !important;
+      margin-bottom:12px !important;
+      height:auto !important;
+    }
+    .mobile-poster{
+      flex:0 0 auto !important;
+      width:42% !important;
+      height:auto !important;
+    }
+    .mobile-poster img{
       width:100% !important;
-      justify-content:center !important;
+      height:auto !important;
+      display:block !important;
+      border:2px solid #8a7355 !important;
+      box-shadow:0 6px 16px rgba(0,0,0,.3) !important;
     }
-    .star-card img{
-      height:140px !important;
-      width:auto !important;
+    /* 名言在中间居中 */
+    .mobile-quotes{
+      display:flex !important;
+      flex-direction:column !important;
+      gap:8px !important;
+      align-items:center !important;
+      text-align:center !important;
     }
-    .blade{
-      max-width:55% !important;
-      font-size:12px !important;
-      padding:10px 14px !important;
+    .mobile-quote-card{
+      background:rgba(250,244,232,.92) !important;
+      border:1px solid rgba(138,115,85,.3) !important;
+      border-radius:10px !important;
+      padding:8px 16px !important;
+      max-width:85% !important;
+      box-shadow:0 2px 8px rgba(0,0,0,.1) !important;
     }
-    .blade .who{
+    .mobile-quote-who{
+      display:block !important;
+      font-family:'Kaiti SC','STKaiti','楷体',serif !important;
       font-size:14px !important;
+      font-weight:700 !important;
+      color:#B03A2E !important;
+      margin-bottom:4px !important;
     }
-    .blade .quote-text{
-      font-size:11px !important;
-      line-height:1.5 !important;
+    .mobile-quote-text{
+      display:block !important;
+      font-size:12px !important;
+      line-height:1.6 !important;
+      color:#5a4a3a !important;
     }
-
-    /* 隐藏移动端专用布局 */
-    .mobile-layout{
-      display:none !important;
+    /* 个人简介在名言上方 */
+    .profile-info{
+      position:absolute !important;
+      top:auto !important;
+      bottom:200px !important;
+      left:50% !important;
+      transform:translateX(-50%) !important;
+      text-align:center !important;
+      width:80% !important;
     }
 
     /* 导航 - 印章右侧，横向并列，每个按钮内文字竖直 */
@@ -1829,20 +1865,18 @@
     .greeting .gl{font-size:18px !important;}
     .note{top:275px !important;font-size:12px !important;padding:10px 18px !important;}
     .profile-info{
-      bottom:155px !important;
-      left:30% !important;
-      right:30% !important;
-      width:40% !important;
+      bottom:170px !important;
+      left:50% !important;
+      right:auto !important;
+      transform:translateX(-50%) !important;
+      width:80% !important;
+      text-align:center !important;
     }
-    .profile-info .school{font-size:10px !important;}
-    .profile-info .major{font-size:9px !important;}
-    .mobile-posters{height:95px;}
-    .mobile-poster{height:95px;}
+    .profile-info .school{font-size:11px !important;}
+    .profile-info .major{font-size:10px !important;}
+    .mobile-posters{height:auto !important;}
+    .mobile-poster{height:auto !important;}
     .mobile-quote-text{font-size:10px !important;}
-    .profile-info{bottom:155px !important;}
-    .greeting{top:305px !important;}
-    .greeting .gl{font-size:20px !important;}
-    .note{top:350px !important;}
   }
 
   /* 强制手机模式 */
