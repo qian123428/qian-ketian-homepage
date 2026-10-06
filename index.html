@@ -826,45 +826,46 @@
   /* ===== 持续下滑有惊喜提示 ===== */
   .hint-slide{
     position:absolute;
-    top:50px;
-    left:50px;
+    bottom:90px;
+    left:50%;
+    transform:translateX(-50%);
     z-index:100;
     display:flex;
     align-items:center;
-    gap:10px;
-    padding:16px 32px;
-    background:linear-gradient(135deg, #F5EFE3, #EDE0C8);
-    border:2.5px solid #B03A2E;
-    border-radius:50px;
-    font-size:1.4rem;
+    gap:8px;
+    padding:8px 22px;
+    background:rgba(255,253,247,.85);
+    backdrop-filter:blur(8px);
+    border:1px solid rgba(176,58,46,.35);
+    border-radius:30px;
+    font-size:14px;
     font-family:"KaiTi","STKaiti","楷体",serif;
-    font-weight:bold;
-    letter-spacing:0.2em;
+    font-weight:600;
+    letter-spacing:0.15em;
     color:#B03A2E;
-    text-shadow:0 1px 2px rgba(176,58,46,0.15);
-    box-shadow:0 8px 25px rgba(176,58,46,0.35), inset 0 2px 8px rgba(255,255,255,0.6);
-    animation: hintSlideBounce 2s ease-in-out infinite, hintFade 12s ease forwards;
+    box-shadow:0 4px 16px rgba(176,58,46,.18);
+    animation: hintSlideFloat 2.5s ease-in-out infinite, hintFade 10s ease forwards;
     pointer-events:none;
   }
   .hint-slide::after{
     content:"↓";
-    font-size:1.2em;
+    font-size:16px;
     font-weight:bold;
-    animation: arrowBounce 1s ease-in-out infinite;
+    animation: arrowBounce 1.2s ease-in-out infinite;
   }
-  @keyframes hintSlideBounce{
-    0%,100%{ transform:translateY(0); }
-    50%{ transform:translateY(-6px); }
+  @keyframes hintSlideFloat{
+    0%,100%{ transform:translateX(-50%) translateY(0); }
+    50%{ transform:translateX(-50%) translateY(-5px); }
   }
   @keyframes arrowBounce{
     0%,100%{ transform:translateY(0); opacity:1; }
-    50%{ transform:translateY(5px); opacity:.6; }
+    50%{ transform:translateY(4px); opacity:.5; }
   }
   @keyframes hintFade{
-    0% { opacity:0; transform:translateY(-10px) scale(.9); }
-    8% { opacity:1; transform:translateY(0) scale(1); }
-    85% { opacity:1; }
-    100% { opacity:0; transform:translateY(-5px); }
+    0% { opacity:0; transform:translateX(-50%) translateY(10px); }
+    10% { opacity:1; transform:translateX(-50%) translateY(0); }
+    80% { opacity:1; }
+    100% { opacity:0; transform:translateX(-50%) translateY(-5px); }
   }
 
   /* ===== 基本信息页：宣纸掀页转场 ===== */
