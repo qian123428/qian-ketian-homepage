@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>钱柯天个人主页 - 版本历史</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'KaiTi', 'STKaiti', '楷体', serif;
+    background: linear-gradient(135deg, #f5f0e6 0%, #e8dcc8 100%);
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  h1 {
+    text-align: center;
+    color: #B03A2E;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    letter-spacing: 4px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #8B7355;
+    font-size: 1.1em;
+    margin-bottom: 40px;
+  }
+  .version-card {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(139, 115, 85, 0.15);
+    border-left: 5px solid #B03A2E;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .version-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(139, 115, 85, 0.25);
+  }
+  .version-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .version-number {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #B03A2E;
+  }
+  .version-date {
+    color: #8B7355;
+    font-size: 0.95em;
+  }
+  .version-title {
+    font-size: 1.2em;
+    color: #5D4E37;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  .version-desc {
+    color: #6B5D4F;
+    line-height: 1.8;
+    margin-bottom: 14px;
+  }
+  .version-desc ul {
+    padding-left: 20px;
+  }
+  .version-desc li {
+    margin-bottom: 4px;
+  }
+  .view-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #B03A2E, #922B21);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 0.95em;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+  }
+  .view-btn:hover {
+    background: linear-gradient(135deg, #922B21, #7B241C);
+    transform: scale(1.05);
+  }
+  .current-badge {
+    display: inline-block;
+    background: #27AE60;
+    color: white;
+    padding: 3px 12px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin-left: 10px;
+  }
+  .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 30px;
+    color: #B03A2E;
+    text-decoration: none;
+    font-size: 1.1em;
+  }
+  .back-link:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>版本历史</h1>
+  <p class="subtitle">钱柯天个人主页 · 迭代记录</p>
+
+  <div class="version-card">
+    <div class="version-header">
+      <span class="version-number">v3.1 <span class="current-badge">当前版本</span></span>
+      <span class="version-date">2026-10-07</span>
+    </div>
+    <div class="version-title">数字分身多姿势修复</div>
+    <div class="version-desc">
+      <ul>
+        <li>修复数字分身人像加载不出来的问题</li>
+        <li>生成并上传5张同样画风的Q版人物图片</li>
+        <li>数字分身根据问题类型自动切换6种姿势</li>
+        <li>建立版本记录系统</li>
+      </ul>
+    </div>
+    <a href="v3.1.html" class="view-btn" target="_blank">查看此版本</a>
+  </div>
+
+  <div class="version-card">
+    <div class="version-header">
+      <span class="version-number">v3.0</span>
+      <span class="version-date">2026-10-06</span>
+    </div>
+    <div class="version-title">正式发布版</div>
+    <div class="version-desc">
+      <ul>
+        <li>发布到GitHub Pages正式上线</li>
+        <li>集成Supabase反馈系统</li>
+        <li>7个主页面 + 2个隐藏页面</li>
+        <li>手机/电脑响应式适配</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="version-card">
+    <div class="version-header">
+      <span class="version-number">v2.5</span>
+      <span class="version-date">2026-10-05</span>
+    </div>
+    <div class="version-title">交互优化版</div>
+    <div class="version-desc">
+      <ul>
+        <li>"下滑有惊喜"提示美化</li>
+        <li>数字分身改为同页面展示</li>
+        <li>增加浏览反馈页面</li>
+        <li>导航栏统一为5项</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="version-card">
+    <div class="version-header">
+      <span class="version-number">v2.4</span>
+      <span class="version-date">2026-10-04</span>
+    </div>
+    <div class="version-title">电脑/手机版拆分</div>
+    <div class="version-desc">
+      <ul>
+        <li>拆分为独立的电脑版和手机版</li>
+        <li>基本信息/专业信息页面美化</li>
+        <li>增加数字分身页面</li>
+        <li>兴趣爱好大图标重设计</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="version-card">
+    <div class="version-header">
+      <span class="version-number">v2.3</span>
+      <span class="version-date">2026-10-03</span>
+    </div>
+    <div class="version-title">提示功能版</div>
+    <div class="version-desc">
+      <ul>
+        <li>增加"下滑有惊喜"提示</li>
+        <li>增加"点击有彩蛋"提示</li>
+        <li>提示样式美化（楷体、印章红、胶囊形）</li>
+      </ul>
+    </div>
+  </div>
+
+  <a href="index.html" class="back-link">← 返回主页</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,3632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>钱柯天的个人主页</title>
+<style>
+  :root{
+    --paper:#F5EFE3;
+    --ink:#2B2420;
+    --seal:#B03A2E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:100%;height:100%;overflow:hidden;background:var(--paper);font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;}
+  .page{position:absolute;inset:0;display:none;overflow:hidden;}
+  .page.active{display:block;}
+
+  /* ===== 通用按钮 ===== */
+  .back-btn{
+    position:absolute;top:12px;right:22px;
+    background:rgba(255,253,247,.7);
+    border:1px solid rgba(43,36,32,.2);
+    border-radius:20px;
+    padding:8px 24px;
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(16px,2vw,20px);
+    color:var(--ink);
+    cursor:pointer;
+    box-shadow:0 4px 14px rgba(43,36,32,.08);
+    transition:background .25s ease,color .25s ease,transform .25s ease;
+    z-index:10;
+  }
+  .back-btn:hover{
+    background:rgba(176,58,46,.08);
+    color:var(--seal);
+    transform:translateY(-2px);
+  }
+
+  /* ===== 第一页：对话气泡排版 ===== */
+  #page1{
+    background:url('背景-首页.jpg') center / cover no-repeat;
+  }
+  #page1::before{
+    content:'';
+    position:absolute;inset:0;
+    background:rgba(245,239,227,.78);
+    pointer-events:none;
+    z-index:1;
+  }
+  .page1-bg{
+    position:absolute;inset:0;
+    pointer-events:none;
+    z-index:0;
+    opacity:.05;
+  }
+  .page1-bg svg{width:100%;height:100%;}
+
+  .bubble{
+    position:absolute;
+    border-radius:18px;
+    padding:12px 24px;
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-weight:700;
+    text-align:center;
+    box-shadow:0 4px 14px rgba(0,0,0,.12);
+    opacity:0;
+    animation:bubblePop .5s cubic-bezier(.22,.9,.4,1) both;
+    z-index:2;
+  }
+  .bubble-gray{
+    background:#e8e4dc;
+    color:#2B2420;
+    border:2px solid #c9c2b4;
+  }
+  .bubble-blue{
+    background:#a8c8f0;
+    color:#1a1a2e;
+    border:2px solid #7ba8e0;
+  }
+  .bubble .bubble-text{
+    display:block;
+    font-size:clamp(22px,3vw,38px);
+    line-height:1.2;
+  }
+  .bubble .bubble-lang{
+    display:block;
+    font-size:clamp(10px,1.1vw,13px);
+    font-weight:600;
+    margin-top:3px;
+    opacity:.65;
+    letter-spacing:.05em;
+    font-family:'PingFang SC','Microsoft YaHei',sans-serif;
+  }
+  .bubble-large .bubble-text{
+    font-size:clamp(30px,4.2vw,52px);
+  }
+  .bubble-clickable{cursor:pointer;transition:transform .2s ease;}
+  .bubble-clickable:hover{transform:scale(1.06);}
+  @keyframes bubblePop{
+    0%{opacity:0;transform:scale(.5);}
+    60%{opacity:1;transform:scale(1.08);}
+    100%{opacity:1;transform:scale(1);}
+  }
+
+  .enter-btn-square{
+    position:absolute;
+    top:58%;left:42%;
+    transform:translate(-50%,-50%);
+    background:linear-gradient(180deg, #f8f2e5 0%, #f0e6d2 50%, #e6d9bf 100%);
+    color:#8B2E22;
+    border:1px solid rgba(139,46,34,.2);
+    border-radius:16px;
+    padding:22px 44px;
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(20px,2.8vw,30px);
+    font-weight:700;
+    letter-spacing:.15em;
+    text-indent:.15em;
+    cursor:pointer;
+    box-shadow:
+      0 6px 0 #c9b896,
+      0 8px 16px rgba(139,46,34,.15),
+      inset 0 1px 0 rgba(255,255,255,.8),
+      inset 0 -1px 0 rgba(139,46,34,.1);
+    transition:all .15s ease;
+    z-index:3;
+  }
+  .enter-btn-square:hover{
+    transform:translate(-50%,-54%) scale(1.03);
+    box-shadow:
+      0 8px 0 #c9b896,
+      0 12px 24px rgba(139,46,34,.2),
+      inset 0 1px 0 rgba(255,255,255,.9),
+      inset 0 -1px 0 rgba(139,46,34,.1);
+  }
+  .enter-btn-square:active{
+    transform:translate(-50%,-48%) scale(1.0);
+    box-shadow:
+      0 2px 0 #c9b896,
+      0 3px 8px rgba(139,46,34,.15),
+      inset 0 1px 0 rgba(255,255,255,.6),
+      inset 0 -1px 0 rgba(139,46,34,.15);
+  }
+
+  .cloud-tip{
+    position:absolute;
+    bottom:calc(100% + 10px);
+    left:50%;
+    transform:translateX(-50%);
+    background:rgba(255,255,255,.18);
+    backdrop-filter:blur(12px) saturate(180%);
+    -webkit-backdrop-filter:blur(12px) saturate(180%);
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:20px;
+    padding:8px 16px;
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体',serif;
+    font-size:clamp(10px,1.2vw,13px);
+    color:#3a2e24;
+    white-space:nowrap;
+    box-shadow:0 8px 32px rgba(31,38,135,.15), inset 0 1px 0 rgba(255,255,255,.4);
+    animation:cloudFloat 3s ease-in-out infinite;
+    pointer-events:none;
+    z-index:20;
+    line-height:1.3;
+    font-weight:600;
+  }
+  .cloud-tip::before{
+    content:'';
+    position:absolute;
+    bottom:-7px;
+    left:50%;
+    transform:translateX(-50%);
+    width:0;height:0;
+    border-left:7px solid transparent;
+    border-right:7px solid transparent;
+    border-top:7px solid rgba(255,255,255,.18);
+  }
+  @keyframes cloudFloat{
+    0%,100%{transform:translateX(-50%) translateY(0);}
+    50%{transform:translateX(-50%) translateY(-4px);}
+  }
+
+  .next-btn{
+    position:absolute;
+    bottom:clamp(14px,3vh,28px);
+    left:50%;
+    transform:translateX(-50%);
+    z-index:10;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    background:rgba(255,253,247,.85);
+    border:1px solid rgba(43,36,32,.18);
+    border-radius:20px;
+    padding:8px 22px 6px;
+    cursor:pointer;
+    transition:all .25s ease;
+    animation:nextBounce 2s ease-in-out infinite;
+    text-decoration:none;
+  }
+  .next-btn:hover{
+    background:var(--seal);
+    border-color:var(--seal);
+    transform:translateX(-50%) translateY(-3px);
+    box-shadow:0 8px 20px rgba(176,58,46,.3);
+    animation:none;
+  }
+  .next-btn:hover .next-arrow,.next-btn:hover .next-label{color:#F5EFE3;}
+  .next-arrow{width:22px;height:22px;color:var(--ink);transition:color .25s ease;}
+  .next-label{
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(12px,1.6vw,15px);
+    color:var(--ink);
+    letter-spacing:.15em;
+    text-indent:.15em;
+    transition:color .25s ease;
+  }
+  .next-btn-text{
+    padding:10px 28px;
+    flex-direction:row;
+  }
+  @keyframes nextBounce{
+    0%,100%{transform:translateX(-50%) translateY(0);}
+    50%{transform:translateX(-50%) translateY(6px);}
+  }
+
+  /* 生活集锦隐藏入口提示 */
+  .life-gallery-hint{
+    position:absolute;
+    bottom:20px;left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    opacity:0;
+    transition:opacity .6s ease;
+    z-index:5;
+    cursor:pointer;
+  }
+  .life-gallery-hint.show{
+    opacity:.6;
+    animation:hintBounce 2s ease infinite;
+  }
+  .life-gallery-hint svg{
+    width:24px;height:24px;
+    color:var(--seal);
+  }
+  .life-gallery-hint p{
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体',serif;
+    font-size:clamp(12px,1.4vw,14px);
+    color:var(--ink);
+    letter-spacing:.1em;
+  }
+  @keyframes hintBounce{
+    0%,100%{transform:translateX(-50%) translateY(0);}
+    50%{transform:translateX(-50%) translateY(8px);}
+  }
+
+  /* 生活集锦入口按钮 */
+  .life-gallery-entry{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin:24px auto 0;
+    padding:18px 24px;
+    background:linear-gradient(135deg, #FDF5F3 0%, #F8E8E4 100%);
+    border:1px solid rgba(176,58,46,.25);
+    border-radius:16px;
+    cursor:pointer;
+    transition:all .3s ease;
+    max-width:520px;
+  }
+  .life-gallery-entry:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px rgba(176,58,46,.15);
+    border-color:rgba(176,58,46,.4);
+  }
+  .life-entry-icon{
+    width:48px;height:48px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(176,58,46,.1);
+    border-radius:12px;
+    flex-shrink:0;
+  }
+  .life-entry-icon svg{
+    width:24px;height:24px;
+    color:var(--seal);
+  }
+  .life-entry-text{
+    flex:1;
+    text-align:left;
+  }
+  .life-entry-title{
+    font-family:'Kaiti SC','STKaiti','楷体',serif;
+    font-size:18px;
+    font-weight:700;
+    color:var(--seal);
+    letter-spacing:.1em;
+    margin-bottom:4px;
+  }
+  .life-entry-sub{
+    font-size:12px;
+    color:rgba(43,36,32,.6);
+    line-height:1.4;
+  }
+  .life-entry-arrow{
+    flex-shrink:0;
+    color:var(--seal);
+    opacity:.6;
+  }
+  .life-entry-arrow svg{
+    width:20px;height:20px;
+  }
+
+  /* ===== 第二页：主页 ===== */
+  #page2{
+    background:url('背景-主页.jpg') center / cover no-repeat;
+  }
+  #page2::before{
+    content:'';
+    position:absolute;inset:0;
+    background:rgba(245,239,227,.78);
+    z-index:0;
+    pointer-events:none;
+  }
+  .nav{
+    position:absolute;
+    top:clamp(16px,3vh,32px);
+    right:clamp(16px,3vw,40px);
+    left:auto;
+    transform:none;
+    display:flex;
+    gap:clamp(10px,1.5vw,20px);
+    z-index:5;
+  }
+  .nav a{
+    background:rgba(255,253,247,.85);
+    border:1px solid rgba(43,36,32,.15);
+    border-radius:14px;
+    padding:clamp(14px,2vh,24px) clamp(16px,2vw,28px);
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(18px,2.2vw,26px);
+    color:var(--ink);
+    text-decoration:none;
+    transition:all .25s ease;
+    cursor:pointer;
+    writing-mode:vertical-rl;
+    letter-spacing:.15em;
+    min-height:clamp(90px,14vh,140px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .nav a:hover{
+    background:var(--seal);
+    color:#F5EFE3;
+    transform:translateY(-2px);
+    box-shadow:0 6px 16px rgba(176,58,46,.3);
+  }
+
+  .seal-wrap{
+    position:absolute;
+    top:clamp(20px,5vh,60px);
+    left:clamp(15px,3vw,50px);
+    z-index:4;
+  }
+  .seal{
+    width:clamp(220px,30vw,340px);
+    height:clamp(220px,30vw,340px);
+    border-radius:50%;
+    border:4px double var(--seal);
+    background:rgba(255,253,247,.6);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 8px 28px rgba(43,36,32,.18);
+  }
+  .seal img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:.35;
+  }
+  .seal .name-top{
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(48px,6vw,72px);
+    font-weight:700;
+    color:var(--seal);
+    line-height:1;
+    position:relative;
+    z-index:1;
+    text-shadow:0 2px 4px rgba(255,253,247,.8);
+  }
+  .seal .name-bottom{
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(28px,3.5vw,42px);
+    font-weight:600;
+    color:var(--ink);
+    letter-spacing:.1em;
+    margin-top:4px;
+    position:relative;
+    z-index:1;
+    text-shadow:0 1px 3px rgba(255,253,247,.8);
+  }
+
+  .greeting{
+    position:absolute;
+    top:clamp(360px,48vh,500px);
+    right:clamp(80px,15vw,180px);
+    text-align:left;
+    z-index:3;
+  }
+  .greeting .gl{
+    display:block;
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(36px,5vw,58px);
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .greeting .gl span{
+    display:inline-block;
+    opacity:0;
+    animation:charBounce .3s ease forwards;
+  }
+  @keyframes charBounce{
+    0%{opacity:0;transform:translateY(20px) scale(.5);}
+    60%{opacity:1;transform:translateY(-6px) scale(1.1);}
+    100%{opacity:1;transform:translateY(0) scale(1);}
+  }
+
+  .note{
+    position:absolute;
+    top:clamp(240px,32vh,320px);
+    right:clamp(80px,15vw,180px);
+    max-width:min(46vw,480px);
+    background:rgba(255,253,247,.92);
+    border:1px solid rgba(43,36,32,.12);
+    border-radius:20px;
+    padding:clamp(18px,3vh,28px) clamp(28px,4vw,44px);
+    font-family:'Songti SC','STSong','SimSun','宋体',serif;
+    font-size:clamp(18px,2.6vw,26px);
+    color:rgba(43,36,32,.8);
+    line-height:1.6;
+    box-shadow:0 4px 16px rgba(43,36,32,.1);
+    z-index:3;
+    opacity:0;
+    animation:fade .6s ease 2.6s forwards;
+    text-align:center;
+  }
+  .note::after{
+    content:'';
+    position:absolute;
+    top:-8px;
+    right:30px;
+    width:0;height:0;
+    border-left:8px solid transparent;
+    border-right:8px solid transparent;
+    border-bottom:8px solid rgba(255,253,247,.92);
+  }
+  @keyframes fade{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+
+  .profile-info{
+    position:absolute;
+    left:clamp(120px,18vw,200px);
+    top:clamp(380px,50vh,480px);
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    z-index:3;
+    max-width:min(40vw,440px);
+    animation:fade .9s ease .4s both;
+  }
+  .profile-info .school{
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(24px,3.4vw,34px);
+    color:var(--ink);
+    letter-spacing:.12em;
+    line-height:1.5;
+    padding-left:20px;
+    border-left:4px solid var(--seal);
+  }
+  .profile-info .major{
+    font-family:'Songti SC','STSong','SimSun','宋体',serif;
+    font-size:clamp(20px,2.8vw,26px);
+    color:rgba(43,36,32,.78);
+    letter-spacing:.1em;
+    padding-left:20px;
+    border-left:4px solid rgba(43,36,32,.25);
+  }
+
+  .bottom-row{
+    position:absolute;
+    bottom:50px;
+    left:40px;
+    right:40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:40px;
+    z-index:4;
+  }
+  .star-left{
+    align-self:flex-end;
+  }
+  .star-right{
+    align-self:flex-start;
+    margin-top:40px;
+  }
+  .star-card{
+    display:flex;
+    align-items:flex-end;
+    gap:16px;
+    max-width:46%;
+  }
+  .star-card img{
+    height:clamp(220px,32vh,360px);
+    width:auto;
+    object-fit:cover;
+    border:2px solid #8a7355;
+    box-shadow:0 8px 24px rgba(0,0,0,.35);
+    flex-shrink:0;
+  }
+  .blade{
+    position:relative;
+    background:rgba(250,244,232,.96);
+    border:2px solid #7a5c3a;
+    color:#3a2e24;
+    padding:18px 28px;
+    font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;
+    font-weight:700;
+    font-size:clamp(15px,1.9vw,19px);
+    line-height:1.6;
+    letter-spacing:.03em;
+    box-shadow:0 6px 20px rgba(43,36,32,.22);
+    max-width:300px;
+  }
+  .blade-l{
+    clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));
+    text-align:left;
+  }
+  .blade-r{
+    clip-path:polygon(16px 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%,0 16px);
+    text-align:right;
+  }
+  .blade .who{
+    display:block;
+    font-size:.82em;
+    color:#8a5a2b;
+    letter-spacing:.18em;
+    margin-bottom:8px;
+    font-weight:600;
+    text-align:center;
+  }
+
+  /* ===== 第三页：基本信息 ===== */
+  .info-page{
+    position:absolute;inset:0;
+    overflow-y:auto;
+    padding:clamp(60px,8vh,100px) clamp(28px,6vw,80px) clamp(40px,6vh,60px);
+    box-sizing:border-box;
+    background:url('背景-基本信息.jpg') center / cover no-repeat;
+  }
+  .info-page::before{
+    content:'';
+    position:absolute;inset:0;
+    background:rgba(245,239,227,.78);
+    z-index:0;
+    pointer-events:none;
+  }
+  .info-wrap{max-width:860px;margin:0 auto;position:relative;z-index:1;}
+  .info-title{
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(32px,5vw,48px);
+    color:var(--ink);
+    letter-spacing:.18em;
+    text-indent:.18em;
+    text-align:center;
+  }
+  .info-sub{
+    text-align:center;
+    font-size:clamp(12px,1.5vw,16px);
+    color:rgba(43,36,32,.45);
+    letter-spacing:.3em;
+    margin-top:8px;
+    margin-bottom:clamp(30px,5vh,50px);
+  }
+  .info-section{
+    background:rgba(255,253,247,.7);
+    border-radius:16px;
+    padding:clamp(20px,3vh,32px) clamp(24px,4vw,40px);
+    margin-bottom:clamp(18px,3vh,28px);
+    border-left:4px solid var(--seal);
+    box-shadow:0 4px 16px rgba(43,36,32,.08);
+  }
+  .info-section h3{
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(20px,2.8vw,28px);
+    color:var(--seal);
+    margin-bottom:12px;
+    letter-spacing:.1em;
+  }
+  .info-section p{
+    font-size:clamp(15px,2vw,19px);
+    color:rgba(43,36,32,.85);
+    line-height:1.9;
+    margin-bottom:8px;
+  }
+  .info-section .tag{
+    display:inline-block;
+    background:var(--seal);
+    color:#F5EFE3;
+    padding:2px 12px;
+    border-radius:8px;
+    font-size:.88em;
+    margin-right:8px;
+    font-weight:600;
+  }
+
+  /* ===== 增强样式：横向时间线 ===== */
+  .timeline{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    margin:16px 0;
+    position:relative;
+    padding:0 10px;
+  }
+  .timeline::before{
+    content:'';
+    position:absolute;
+    left:30px;right:30px;top:14px;
+    height:2px;
+    background:linear-gradient(to right, var(--seal), rgba(176,58,46,.3), var(--seal));
+  }
+  .timeline-item{
+    position:relative;
+    text-align:center;
+    flex:1;
+    padding:0 8px;
+    z-index:1;
+  }
+  .timeline-item::before{
+    content:'';
+    display:block;
+    width:16px;height:16px;
+    background:var(--seal);
+    border-radius:50%;
+    border:3px solid #F5EFE3;
+    box-shadow:0 0 0 2px var(--seal);
+    margin:0 auto 10px;
+  }
+  .timeline-item .tl-year{
+    font-family:'Kaiti SC','STKaiti','楷体',serif;
+    font-size:.82em;
+    color:var(--seal);
+    font-weight:700;
+    letter-spacing:.1em;
+    margin-bottom:4px;
+  }
+  .timeline-item .tl-text{
+    font-size:.92em;
+    color:rgba(43,36,32,.85);
+    line-height:1.5;
+  }
+  .timeline-item .tl-sub{
+    font-size:.78em;
+    color:rgba(43,36,32,.55);
+    font-style:italic;
+  }
+
+  /* ===== 个人经历：优雅列表样式 ===== */
+  .experience-list{
+    margin:8px 0;
+  }
+  .exp-item{
+    display:flex;
+    align-items:flex-start;
+    gap:16px;
+    padding:14px 0;
+    border-bottom:1px dashed rgba(176,58,46,.15);
+  }
+  .exp-item:last-child{border-bottom:none;}
+  .exp-item .exp-dot{
+    width:10px;height:10px;
+    background:var(--seal);
+    border-radius:50%;
+    margin-top:8px;
+    flex-shrink:0;
+    opacity:.7;
+  }
+  .exp-item .exp-content{
+    flex:1;
+  }
+  .exp-item .exp-title{
+    font-family:'Kaiti SC','STKaiti','楷体',serif;
+    font-weight:700;
+    color:var(--seal);
+    font-size:1.02em;
+    margin-bottom:4px;
+    letter-spacing:.05em;
+  }
+  .exp-item .exp-text{
+    font-size:.92em;
+    color:rgba(43,36,32,.8);
+    line-height:1.8;
+  }
+
+  /* ===== 兴趣爱好：雅致卡片 ===== */
+  .hobby-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:16px;
+    margin:16px 0;
+  }
+  .hobby-item{
+    position:relative;
+    background:linear-gradient(160deg, #FFFEF9 0%, #F8F2E6 100%);
+    border:1px solid rgba(176,58,46,.12);
+    border-radius:16px;
+    padding:24px 16px 20px;
+    text-align:center;
+    transition:all .4s cubic-bezier(.4,0,.2,1);
+    cursor:default;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+  }
+  .hobby-item::before{
+    content:'';
+    position:absolute;
+    top:0;left:0;right:0;
+    height:3px;
+    background:linear-gradient(90deg, transparent, var(--seal), transparent);
+    opacity:0;
+    transition:opacity .4s ease;
+  }
+  .hobby-item:hover{
+    transform:translateY(-6px);
+    box-shadow:0 12px 28px rgba(176,58,46,.12), 0 4px 8px rgba(43,36,32,.06);
+    border-color:rgba(176,58,46,.3);
+  }
+  .hobby-item:hover::before{opacity:.6;}
+  .hobby-icon-wrap{
+    width:64px;height:64px;
+    margin:0 auto 14px;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .4s ease;
+  }
+  .hobby-item:hover .hobby-icon-wrap{
+    transform:scale(1.1);
+  }
+  .hobby-svg{
+    width:56px;height:56px;
+    transition:transform .4s ease;
+  }
+  .hobby-item:hover .hobby-svg{
+    transform:rotate(-5deg);
+  }
+  .hobby-name{
+    font-family:'Kaiti SC','STKaiti','楷体',serif;
+    font-weight:700;
+    color:var(--ink);
+    font-size:1.1em;
+    letter-spacing:.05em;
+    margin-bottom:6px;
+  }
+  .hobby-divider{
+    display:none;
+  }
+  .hobby-desc{
+    font-size:.78em;
+    color:rgba(43,36,32,.55);
+    line-height:1.5;
+  }
+  .hobby-item.highlight{
+    background:linear-gradient(160deg, #FDF5F3 0%, #F8E8E4 100%);
+    border-color:rgba(176,58,46,.25);
+  }
+  .hobby-item.highlight .hobby-name{
+    color:var(--seal);
+  }
+
+  /* ===== 卡片增强：hover效果 ===== */
+  .reveal-card .info-section{
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .reveal-card.revealed .info-section:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 24px rgba(43,36,32,.12);
+  }
+
+  /* ===== 渐入动画 ===== */
+  @keyframes fadeInUp{
+    from{opacity:0;transform:translateY(20px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  .animate-in{
+    animation:fadeInUp .6s ease forwards;
+    opacity:0;
+  }
+
+  /* ===== 滚动渐入动画 ===== */
+  .fade-in-section{
+    opacity:0;
+    transform:translateY(24px);
+    transition:opacity .7s ease, transform .7s ease;
+  }
+  .fade-in-section.visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .fade-in-section .fade-child{
+    opacity:0;
+    transform:translateY(16px);
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .fade-in-section.visible .fade-child{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .fade-in-section.visible .fade-child:nth-child(1){transition-delay:.1s;}
+  .fade-in-section.visible .fade-child:nth-child(2){transition-delay:.25s;}
+  .fade-in-section.visible .fade-child:nth-child(3){transition-delay:.4s;}
+  .fade-in-section.visible .fade-child:nth-child(4){transition-delay:.55s;}
+  .fade-in-section.visible .fade-child:nth-child(5){transition-delay:.7s;}
+
+  /* ===== 点击有彩蛋提示 ===== */
+  .hint-easter{
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-left:14px;
+    vertical-align:middle;
+    padding:8px 18px;
+    background:linear-gradient(135deg, #B03A2E, #8E2E24);
+    border:2px solid #B03A2E;
+    border-radius:20px;
+    font-size:0.9rem;
+    font-family:"KaiTi","STKaiti","楷体",serif;
+    font-weight:bold;
+    letter-spacing:0.15em;
+    color:#F5EFE3;
+    text-shadow:0 1px 2px rgba(0,0,0,0.3);
+    box-shadow:0 4px 15px rgba(176,58,46,0.4), inset 0 1px 3px rgba(255,255,255,0.2);
+    animation: hintPulse 2s ease-in-out infinite, hintFade 12s ease forwards;
+    pointer-events:none;
+  }
+  .hint-easter::before{
+    content:"✦";
+    font-size:0.85em;
+    animation: sparkle 1.5s ease-in-out infinite;
+  }
+  @keyframes hintPulse{
+    0%,100%{ transform:scale(1); box-shadow:0 4px 15px rgba(176,58,46,0.4); }
+    50%{ transform:scale(1.05); box-shadow:0 6px 20px rgba(176,58,46,0.6); }
+  }
+  @keyframes sparkle{
+    0%,100%{ opacity:1; transform:rotate(0deg); }
+    50%{ opacity:.6; transform:rotate(180deg); }
+  }
+
+  /* ===== 持续下滑有惊喜提示 ===== */
+  .hint-slide{
+    position:absolute;
+    bottom:90px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:100;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 22px;
+    background:rgba(255,253,247,.92);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    border:1px solid rgba(176,58,46,.4);
+    border-radius:30px;
+    font-size:14px;
+    font-family:"KaiTi","STKaiti","楷体",serif;
+    font-weight:600;
+    letter-spacing:0.15em;
+    color:#B03A2E;
+    box-shadow:0 4px 16px rgba(176,58,46,.2);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .hint-slide.show{
+    opacity:1;
+    animation: hintSlideFloat 2.5s ease-in-out infinite;
+  }
+  .hint-slide::after{
+    content:"↓";
+    font-size:16px;
+    font-weight:bold;
+    animation: arrowBounce 1.2s ease-in-out infinite;
+  }
+  @keyframes hintSlideFloat{
+    0%,100%{ transform:translateX(-50%) translateY(0); }
+    50%{ transform:translateX(-50%) translateY(-5px); }
+  }
+  @keyframes arrowBounce{
+    0%,100%{ transform:translateY(0); opacity:1; }
+    50%{ transform:translateY(4px); opacity:.5; }
+  }
+
+  /* ===== 基本信息页：宣纸掀页转场 ===== */
+  .reveal-card{
+    position:relative;
+    margin-bottom:clamp(18px,3vh,28px);
+  }
+  .reveal-title{
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(20px,2.8vw,28px);
+    color:var(--seal);
+    margin-bottom:10px;
+    letter-spacing:.1em;
+    padding-left:16px;
+    border-left:4px solid var(--seal);
+    position:relative;
+    z-index:11;
+  }
+  .reveal-body{
+    position:relative;
+    overflow:hidden;
+    border-radius:16px;
+  }
+  .reveal-body .info-section{
+    margin-bottom:0;
+    opacity:0;
+    transform:translateY(12px);
+    transition:opacity .7s ease .15s,transform .7s ease .15s;
+  }
+  .reveal-card.revealed .reveal-body .info-section{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .reveal-mask{
+    position:absolute;
+    inset:0;
+    border-radius:16px;
+    background:
+      repeating-linear-gradient(0deg,rgba(176,58,46,.02) 0px,rgba(176,58,46,.02) 1px,transparent 1px,transparent 4px),
+      linear-gradient(135deg,rgba(245,239,227,.96) 0%,rgba(235,226,208,.96) 100%);
+    border:1px solid rgba(176,58,46,.18);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:transform .8s cubic-bezier(.25,.46,.45,.94),opacity .8s ease;
+    overflow:hidden;
+    z-index:10;
+    cursor:pointer;
+  }
+  .reveal-mask::before{
+    content:'';
+    position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse at 30% 20%,rgba(255,255,255,.4),transparent 50%),
+      radial-gradient(ellipse at 70% 80%,rgba(176,58,46,.04),transparent 50%);
+  }
+  .reveal-mask::after{
+    content:'';
+    position:absolute;inset:8px;
+    border:1px solid rgba(176,58,46,.12);
+    border-radius:12px;
+  }
+  .reveal-seal{
+    width:clamp(48px,6.5vw,72px);
+    height:clamp(48px,6.5vw,72px);
+    border-radius:50%;
+    background:rgba(176,58,46,.08);
+    border:2px solid rgba(176,58,46,.3);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    z-index:1;
+    transition:transform .3s ease;
+  }
+  .reveal-seal span{
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(20px,2.8vw,30px);
+    font-weight:700;
+    color:rgba(176,58,46,.55);
+    letter-spacing:0;
+  }
+  .reveal-hint{
+    position:absolute;
+    bottom:12px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:clamp(10px,1.1vw,12px);
+    color:rgba(43,36,32,.35);
+    letter-spacing:.25em;
+    text-indent:.25em;
+    z-index:1;
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体',serif;
+    white-space:nowrap;
+  }
+  .reveal-card.revealed .reveal-mask{
+    transform:translateY(-100%) rotate(-2deg);
+    opacity:0;
+    pointer-events:none;
+  }
+  .reveal-card:not(.revealed):hover .reveal-mask{
+    border-color:rgba(176,58,46,.35);
+    background:rgba(245,239,227,.85);
+  }
+  .particle-container{
+    position:fixed;inset:0;
+    pointer-events:none;
+    z-index:200;
+    overflow:hidden;
+  }
+  .particle{
+    position:absolute;
+    border-radius:50%;
+    pointer-events:none;
+    animation:particleFly 1s ease-out forwards;
+  }
+  @keyframes particleFly{
+    0%{opacity:.8;transform:translate(0,0) scale(1);}
+    100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.2);}
+  }
+
+  /* ===== 第四页：专业信息 ===== */
+  .major-page{
+    position:absolute;inset:0;
+    overflow-y:auto;
+    padding:clamp(60px,8vh,100px) clamp(28px,6vw,80px) clamp(40px,6vh,60px);
+    box-sizing:border-box;
+    background-image:url('背景-专业信息.jpg');
+    background-size:cover;
+    background-position:center;
+  }
+  .major-page::before{
+    content:'';
+    position:absolute;inset:0;
+    background:rgba(245,239,227,.78);
+    pointer-events:none;
+  }
+  .major-wrap{max-width:900px;margin:0 auto;position:relative;z-index:1;}
+  .major-title{
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(32px,5vw,48px);
+    color:var(--ink);
+    letter-spacing:.18em;
+    text-indent:.18em;
+    text-align:center;
+  }
+  .major-sub{
+    text-align:center;
+    font-size:clamp(12px,1.5vw,16px);
+    color:rgba(43,36,32,.45);
+    letter-spacing:.3em;
+    margin-top:8px;
+    margin-bottom:clamp(30px,5vh,50px);
+  }
+  .major-card{
+    background:rgba(255,253,247,.85);
+    border-radius:16px;
+    padding:clamp(20px,3vh,30px) clamp(24px,4vw,40px);
+    margin-bottom:clamp(16px,2.5vh,24px);
+    box-shadow:0 4px 16px rgba(43,36,32,.1);
+    border:1px solid rgba(43,36,32,.08);
+  }
+  .major-card h3{
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(20px,2.8vw,26px);
+    color:var(--seal);
+    margin-bottom:12px;
+    letter-spacing:.1em;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .major-card h3 .card-icon{
+    width:clamp(28px,3.5vw,36px);
+    height:clamp(28px,3.5vw,36px);
+    flex-shrink:0;
+    color:var(--seal);
+  }
+  .major-card p{
+    font-size:clamp(15px,2vw,18px);
+    color:rgba(43,36,32,.85);
+    line-height:1.9;
+    margin-bottom:6px;
+  }
+  .major-card .clickable{
+    color:var(--seal);
+    cursor:pointer;
+    text-decoration:underline;
+    text-decoration-style:dashed;
+  }
+  .course-tags{display:flex;flex-wrap:wrap;gap:10px;}
+  .course-tags span{
+    background:rgba(176,58,46,.1);
+    color:var(--seal);
+    padding:6px 16px;
+    border-radius:20px;
+    font-size:clamp(13px,1.6vw,16px);
+    font-weight:600;
+    transition:all .3s ease;
+  }
+  .course-tags span:hover{
+    background:var(--seal);
+    color:#F5EFE3;
+    transform:translateY(-2px);
+    box-shadow:0 4px 12px rgba(176,58,46,.3);
+  }
+
+  /* ===== 专业信息增强：卡片彩色竖条 ===== */
+  .major-card{
+    position:relative;
+    overflow:hidden;
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .major-card::before{
+    content:'';
+    position:absolute;
+    left:0;top:0;bottom:0;
+    width:4px;
+    background:linear-gradient(to bottom, var(--seal), rgba(176,58,46,.3));
+  }
+  .major-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 28px rgba(43,36,32,.15);
+  }
+
+  /* ===== 专业信息增强：专业展示 ===== */
+  .major-highlight{
+    background:linear-gradient(135deg, rgba(176,58,46,.08), rgba(176,58,46,.02));
+    border-radius:14px;
+    padding:20px 24px;
+    margin:10px 0;
+    border:1px solid rgba(176,58,46,.15);
+  }
+  .major-highlight .mh-label{
+    font-size:.85em;
+    color:rgba(43,36,32,.5);
+    letter-spacing:.1em;
+    margin-bottom:4px;
+  }
+  .major-highlight .mh-value{
+    font-family:'Kaiti SC','STKaiti','楷体',serif;
+    font-size:1.3em;
+    font-weight:700;
+    color:var(--seal);
+  }
+  .major-highlight .mh-value.clickable{
+    cursor:pointer;
+    text-decoration:underline;
+    text-decoration-style:dashed;
+  }
+
+  /* ===== 专业信息增强：学习规划成熟时间线 ===== */
+  .plan-timeline{
+    display:flex;
+    align-items:stretch;
+    margin:20px 0 10px;
+    position:relative;
+  }
+  .plan-timeline::before{
+    content:'';
+    position:absolute;
+    left:0;right:0;top:22px;
+    height:2px;
+    background:linear-gradient(to right, rgba(176,58,46,.2), var(--seal), rgba(176,58,46,.2));
+  }
+  .plan-item{
+    flex:1;
+    text-align:center;
+    padding:0 12px;
+    position:relative;
+    z-index:1;
+  }
+  .plan-item .plan-node{
+    width:20px;height:20px;
+    background:#F5EFE3;
+    border:3px solid var(--seal);
+    border-radius:50%;
+    margin:0 auto 14px;
+    transition:all .3s ease;
+  }
+  .plan-item:hover .plan-node{
+    background:var(--seal);
+    transform:scale(1.2);
+  }
+  .plan-item .plan-year{
+    font-family:'Kaiti SC','STKaiti','楷体',serif;
+    font-size:1.05em;
+    font-weight:700;
+    color:var(--seal);
+    margin-bottom:8px;
+    letter-spacing:.1em;
+  }
+  .plan-item .plan-text{
+    font-size:.85em;
+    color:rgba(43,36,32,.75);
+    line-height:1.7;
+  }
+
+  /* ===== 专业信息增强：数据展示 ===== */
+  .stat-row{
+    display:flex;
+    gap:16px;
+    margin:12px 0;
+    flex-wrap:wrap;
+  }
+  .stat-item{
+    flex:1;
+    min-width:100px;
+    text-align:center;
+    padding:12px 8px;
+    background:rgba(176,58,46,.05);
+    border-radius:10px;
+  }
+  .stat-item .stat-num{
+    font-family:'Kaiti SC','STKaiti','楷体',serif;
+    font-size:1.8em;
+    font-weight:700;
+    color:var(--seal);
+    line-height:1;
+  }
+  .stat-item .stat-label{
+    font-size:.78em;
+    color:rgba(43,36,32,.6);
+    margin-top:4px;
+  }
+
+  .modal-mask{
+    position:fixed;inset:0;
+    background:rgba(0,0,0,.5);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+  }
+  .modal-mask.show{display:flex;}
+  .modal-box{
+    background:var(--paper);
+    border-radius:16px;
+    padding:clamp(24px,4vw,40px);
+    max-width:min(90vw,600px);
+    max-height:80vh;
+    overflow-y:auto;
+    position:relative;
+    box-shadow:0 20px 60px rgba(0,0,0,.3);
+  }
+  .modal-close{
+    position:absolute;
+    top:12px;right:16px;
+    background:none;border:none;
+    font-size:28px;
+    color:rgba(43,36,32,.5);
+    cursor:pointer;
+    line-height:1;
+  }
+  .modal-close:hover{color:var(--seal);}
+  .modal-title{
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(22px,3vw,30px);
+    color:var(--seal);
+    margin-bottom:16px;
+    letter-spacing:.1em;
+  }
+  .modal-text{
+    font-size:clamp(14px,1.8vw,17px);
+    color:rgba(43,36,32,.85);
+    line-height:1.9;
+  }
+  .modal-text strong{color:var(--seal);font-weight:600;}
+
+  /* ===== 第五页：交互内容 ===== */
+  .interact-page{
+    position:absolute;inset:0;
+    overflow-y:auto;
+    padding:clamp(60px,8vh,100px) clamp(28px,6vw,80px) clamp(40px,6vh,60px);
+    box-sizing:border-box;
+    background-image:url('交互页背景.jpg');
+    background-size:cover;
+    background-position:center;
+  }
+  .interact-page::before{
+    content:'';
+    position:absolute;inset:0;
+    background:rgba(245,239,227,.78);
+    pointer-events:none;
+  }
+  .interact-wrap{max-width:800px;margin:0 auto;position:relative;z-index:1;}
+  .interact-title{
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(32px,5vw,48px);
+    color:var(--ink);
+    letter-spacing:.18em;
+    text-indent:.18em;
+    text-align:center;
+  }
+  .interact-sub{
+    text-align:center;
+    font-size:clamp(12px,1.5vw,16px);
+    color:rgba(43,36,32,.45);
+    letter-spacing:.3em;
+    margin-top:8px;
+    margin-bottom:clamp(30px,5vh,50px);
+  }
+  .tab-nav{
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    gap:clamp(8px,1.5vw,16px);
+    margin-bottom:clamp(24px,4vh,36px);
+    flex-wrap:wrap;
+  }
+  .tab-btn{
+    background:rgba(255,253,247,.8);
+    border:2px solid rgba(43,36,32,.15);
+    border-radius:12px;
+    padding:clamp(10px,1.5vh,16px) clamp(16px,2.5vw,28px);
+    font-family:'Kaiti SC','STKaiti','KaiTi','楷体','Ma Shan Zheng',serif;
+    font-size:clamp(14px,1.8vw,18px);
+    color:var(--ink);
+    cursor:pointer;
+    transition:all .25s ease;
+  }
+  .tab-btn.active,.tab-btn:hover{
+    background:var(--seal);
+    color:#F5EFE3;
+    border-color:var(--seal);
+  }
+  .tab-content{
+    background:rgba(255,253,247,.9);
+    border-radius:16px;
+    padding:clamp(28px,4vh,44px);
+    text-align:center;
+    box-shadow:0 6px 20px rgba(43,36,32,.12);
+    min-height:160px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
+  .tab-pane{display:none;}
+  .tab-pane.active{display:block;}
+  .contact-link{
+    font-size:clamp(20px,3vw,30px);
+    color:var(--seal);
+    text-decoration:none;
+    font-weight:700;
+    letter-spacing:.05em;
+    word-break:break-all;
+  }
+  .contact-link:hover{text-decoration:underline;}
+  .contact-hint{
+    margin-top:12px;
+    font-size:clamp(13px,1.6vw,16px);
+    color:rgba(43,36,32,.55);
+  }
+
+  .chibi-grid{
+    position:absolute;
+    bottom:20px;
+    right:20px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:6px;
+    z-index:5;
+  }
+  .chibi-cell{
+    width:clamp(50px,7vw,80px);
+    height:clamp(50px,7vw,80px);
+    border-radius:10px;
+    background:rgba(255,253,247,.5);
+    border:1px solid rgba(43,36,32,.1);
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .chibi-cell img{
+    width:100%;height:100%;
+    object-fit:contain;
+    animation:chibiPop .5s cubic-bezier(.22,.9,.4,1) both;
+  }
+  @keyframes chibiPop{
+    0%{opacity:0;transform:scale(.3) rotate(-15deg);}
+    100%{opacity:1;transform:scale(1) rotate(0);}
+  }
+  .chibi-spot{
+    position:absolute;
+    z-index:4;
+    pointer-events:none;
+  }
+  .chibi-spot img{
+    height:clamp(240px,36vh,420px);
+    width:auto;
+    object-fit:contain;
+    animation:chibiPop .6s cubic-bezier(.22,.9,.4,1) both;
+    background:transparent;
+    border:none;
+    box-shadow:none;
+    filter:none;
+  }
+  .chibi-left{bottom:10px;left:10px;}
+  .chibi-bottom{bottom:10px;left:42%;transform:translateX(-50%);}
+
+  @media (prefers-reduced-motion:reduce){
+    .greeting span{animation:none;opacity:1;}
+    .note{animation:none;opacity:1;}
+    .bubble{animation:none;opacity:1;}
+  }
+
+
+  /* 移动端专用布局 - 默认隐藏 */
+  .mobile-layout{display:none;}
+
+  /* 移动端适配 */
+  @media (max-width: 768px){
+    /* 隐藏电脑版海报布局 */
+    .bottom-row{display:none !important;}
+
+    /* ===== 手机版主页重新设计 ===== */
+    /* 印章 - 左上角，缩小 */
+    .seal-wrap{
+      top:16px !important;
+      left:12px !important;
+    }
+    .seal{
+      width:130px !important;
+      height:130px !important;
+    }
+    .seal .name-top{font-size:36px !important;}
+    .seal .name-bottom{font-size:20px !important;}
+
+    /* 问候语 - 印章导航下方，紧凑 */
+    .greeting{
+      top:155px !important;
+      left:50% !important;
+      right:auto !important;
+      transform:translateX(-50%) !important;
+      text-align:center !important;
+      width:90% !important;
+    }
+    .greeting .gl{
+      font-size:20px !important;
+      display:inline !important;
+      line-height:1.5 !important;
+    }
+
+    /* 提示框 - 紧跟问候语 */
+    .note{
+      top:210px !important;
+      left:50% !important;
+      right:auto !important;
+      transform:translateX(-50%) !important;
+      max-width:75% !important;
+      font-size:12px !important;
+      padding:8px 18px !important;
+    }
+
+    /* 个人简介 - 提示框下方 */
+    .profile-info{
+      position:absolute !important;
+      top:260px !important;
+      bottom:auto !important;
+      left:50% !important;
+      transform:translateX(-50%) !important;
+      text-align:center !important;
+      width:85% !important;
+    }
+    .profile-info .school{
+      font-size:13px !important;
+      margin-bottom:4px !important;
+    }
+    .profile-info .major{
+      font-size:12px !important;
+    }
+
+    /* 球星区域 - 左右分栏，照片在上名言在下，分居屏幕两侧 */
+    .mobile-layout{
+      display:flex !important;
+      position:absolute !important;
+      top:320px !important;
+      bottom:50px !important;
+      left:0 !important;
+      right:0 !important;
+      padding:0 !important;
+      gap:0 !important;
+      align-items:stretch !important;
+      justify-content:space-between !important;
+    }
+    .mobile-posters{
+      display:contents !important;
+    }
+    .mobile-poster{
+      flex:0 0 44% !important;
+      width:44% !important;
+      display:flex !important;
+      flex-direction:column !important;
+      gap:6px !important;
+      height:100% !important;
+    }
+    .mobile-poster-left{
+      margin-left:8px !important;
+    }
+    .mobile-poster-right{
+      margin-right:8px !important;
+    }
+    .mobile-poster img{
+      width:100% !important;
+      height:70% !important;
+      object-fit:cover !important;
+      display:block !important;
+      border:2px solid #8a7355 !important;
+      box-shadow:0 4px 12px rgba(0,0,0,.25) !important;
+      border-radius:4px !important;
+    }
+    .mobile-quotes{
+      display:contents !important;
+    }
+    .mobile-quote-card{
+      flex:1 !important;
+      width:100% !important;
+      max-width:100% !important;
+      box-sizing:border-box !important;
+      background:rgba(250,244,232,.95) !important;
+      border:1px solid rgba(138,115,85,.3) !important;
+      border-radius:8px !important;
+      padding:6px 8px !important;
+      box-shadow:0 2px 6px rgba(0,0,0,.1) !important;
+      display:flex !important;
+      flex-direction:column !important;
+      justify-content:center !important;
+      align-items:center !important;
+      text-align:center !important;
+      height:auto !important;
+      margin-top:4px !important;
+      overflow:hidden !important;
+    }
+    .mobile-quote-who{
+      display:block !important;
+      font-family:'Kaiti SC','STKaiti','楷体',serif !important;
+      font-size:15px !important;
+      font-weight:700 !important;
+      color:#B03A2E !important;
+      margin-bottom:3px !important;
+    }
+    .mobile-quote-text{
+      display:block !important;
+      font-size:12px !important;
+      line-height:1.4 !important;
+      color:#5a4a3a !important;
+    }
+
+    /* 返回和下一页按钮 */
+    .back-btn{
+      bottom:12px !important;
+      left:12px !important;
+      font-size:12px !important;
+      padding:8px 16px !important;
+    }
+    .next-btn{
+      bottom:12px !important;
+      right:12px !important;
+      font-size:12px !important;
+      padding:8px 16px !important;
+    }
+
+    /* 导航 - 印章右侧，紧凑横向排列 */
+    #page2 .nav{
+      position:absolute !important;
+      top:20px !important;
+      left:150px !important;
+      right:10px !important;
+      flex-direction:row !important;
+      gap:4px !important;
+      padding:0 !important;
+      background:none !important;
+      backdrop-filter:none !important;
+      border:none !important;
+      flex-wrap:nowrap !important;
+      justify-content:flex-end !important;
+    }
+    #page2 .nav a{
+      font-size:11px !important;
+      padding:8px 4px !important;
+      writing-mode:vertical-rl !important;
+      text-orientation:upright !important;
+      letter-spacing:.1em !important;
+      background:linear-gradient(180deg, #f8f2e5 0%, #f0e6d2 50%, #e6d9bf 100%) !important;
+      color:#8B2E22 !important;
+      font-weight:600 !important;
+      border-radius:8px !important;
+      border:1px solid rgba(139,46,34,.15) !important;
+      box-shadow:0 3px 0 #c9b896, 0 4px 8px rgba(139,46,34,.12) !important;
+      display:flex !important;
+      flex-direction:column !important;
+      align-items:center !important;
+      gap:4px !important;
+      white-space:nowrap !important;
+      flex-shrink:0 !important;
+    }
+    .nav-icon{width:14px !important;height:14px !important;}
+    #page2 .nav a:hover{
+      transform:translateY(-4px) !important;
+      box-shadow:
+        0 10px 0 #c9b896,
+        0 14px 28px rgba(139,46,34,.25),
+        inset 0 1px 0 rgba(255,255,255,.9),
+        inset 0 -1px 0 rgba(139,46,34,.1) !important;
+      color:#6B1E15 !important;
+    }
+    #page2 .nav a:active{
+      transform:translateY(2px) !important;
+      box-shadow:
+        0 2px 0 #c9b896,
+        0 3px 8px rgba(139,46,34,.15),
+        inset 0 1px 0 rgba(255,255,255,.6),
+        inset 0 -1px 0 rgba(139,46,34,.1) !important;
+    }
+    .nav-icon{
+      width:22px !important;
+      height:22px !important;
+      writing-mode:horizontal-tb !important;
+    }
+
+    /* 第二页 - 印章 左上 */
+    .seal-wrap{
+      top:60px !important;
+      left:12px !important;
+      transform:none !important;
+    }
+    .seal{
+      width:200px !important;
+      height:200px !important;
+    }
+    .seal .name-top{font-size:52px !important;}
+    .seal .name-bottom{font-size:28px !important;}
+
+    /* 第二页 - 问候语 居中 */
+    .greeting{
+      top:315px !important;
+      left:50% !important;
+      right:auto !important;
+      transform:translateX(-50%) !important;
+      text-align:center !important;
+      width:85% !important;
+    }
+    .greeting .gl{
+      font-size:22px !important;
+      display:inline !important;
+    }
+
+    /* 第二页 - 提示框 居中 */
+    .note{
+      top:363px !important;
+      left:50% !important;
+      right:auto !important;
+      transform:translateX(-50%) !important;
+      max-width:80% !important;
+      font-size:14px !important;
+      padding:12px 24px !important;
+    }
+
+    /* 第二页 - 学校信息 移到海报上方 */
+    .profile-info{
+      top:auto !important;
+      bottom:170px !important;
+      left:15% !important;
+      right:15% !important;
+      transform:none !important;
+      max-width:none !important;
+      width:70% !important;
+      text-align:center !important;
+      z-index:3 !important;
+      position:absolute !important;
+    }
+    .profile-info .school{
+      font-size:14px !important;
+      padding-left:0 !important;
+      border-left:none !important;
+      margin-bottom:6px !important;
+      line-height:1.5 !important;
+      font-weight:600 !important;
+    }
+    .profile-info .major{
+      font-size:12px !important;
+      padding-left:0 !important;
+      border-left:none !important;
+      line-height:1.5 !important;
+    }
+
+    /* 移动端海报 - 左右两侧，紧凑高度 */
+    .mobile-posters{
+      position:relative;
+      height:110px;
+      margin-bottom:10px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .mobile-poster{
+      position:relative;
+      flex:1;
+      height:110px;
+      border-radius:14px;
+      overflow:hidden;
+      box-shadow:0 6px 20px rgba(0,0,0,.2);
+    }
+    .mobile-poster-left{}
+    .mobile-poster-right{}
+    .mobile-poster img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:top;
+      display:block;
+    }
+
+    /* 移动端名言 - 底部两个卡片 */
+    .mobile-quotes{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+    }
+    .mobile-quote-card{
+      flex:1;
+      max-width:48%;
+      background:rgba(255,253,247,.9);
+      backdrop-filter:blur(6px);
+      border:1px solid rgba(176,58,46,.18);
+      border-radius:14px;
+      padding:14px 12px;
+      text-align:center;
+      box-shadow:0 4px 14px rgba(0,0,0,.12);
+    }
+    .mobile-quote-who{
+      display:block;
+      font-family:'Kaiti SC','STKaiti','KaiTi','楷体',serif;
+      font-size:17px;
+      font-weight:bold;
+      color:var(--seal);
+      margin-bottom:6px;
+    }
+    .mobile-quote-text{
+      display:block;
+      font-family:'Songti SC','STSong','SimSun','宋体',serif;
+      font-size:11px;
+      color:var(--ink);
+      line-height:1.7;
+    }
+
+    /* 所有页面返回按钮 - 统一在底部左下角 */
+    .back-btn{
+      top:auto !important;
+      right:auto !important;
+      bottom:12px !important;
+      left:12px !important;
+      transform:none !important;
+      font-size:12px !important;
+      padding:8px 20px !important;
+      border-radius:20px !important;
+      background:rgba(255,253,247,.9) !important;
+      backdrop-filter:blur(6px) !important;
+      border:1px solid rgba(176,58,46,.25) !important;
+      color:var(--ink) !important;
+      display:inline-block !important;
+    }
+
+    /* 返回按钮 - 底部左下角，与下一页对称 */
+    #page2 .back-btn{
+      top:auto !important;
+      bottom:12px !important;
+      left:12px !important;
+      transform:none !important;
+      font-size:12px !important;
+      padding:8px 20px !important;
+      border-radius:20px !important;
+      background:rgba(255,253,247,.9) !important;
+      backdrop-filter:blur(6px) !important;
+      border:1px solid rgba(176,58,46,.25) !important;
+      color:var(--ink) !important;
+      display:inline-block !important;
+    }
+
+    /* 下一页按钮 - 底部右下角，与返回对称 */
+    #page2 .next-btn{
+      bottom:12px !important;
+      right:12px !important;
+      left:auto !important;
+      padding:8px 20px !important;
+      font-size:12px !important;
+      display:inline-block !important;
+      border-radius:20px !important;
+      background:rgba(255,253,247,.9) !important;
+      backdrop-filter:blur(6px) !important;
+      border:1px solid rgba(176,58,46,.25) !important;
+    }
+
+    /* 第一页 - 按钮 */
+    .enter-btn-square{
+      top:60% !important;
+      left:50% !important;
+      padding:16px 32px !important;
+      font-size:20px !important;
+    }
+
+    /* 第一页 - 语言气泡 */
+    .bubble{
+      font-size:14px !important;
+      padding:8px 14px !important;
+    }
+    .cloud-tip{
+      font-size:10px !important;
+      padding:6px 10px !important;
+    }
+
+    /* 基本信息页 */
+    .info-wrap{padding:24px 18px 60px !important;max-width:100% !important;}
+    .info-title{font-size:28px !important;margin-bottom:4px !important;}
+    .info-sub{font-size:11px !important;letter-spacing:.2em !important;margin-bottom:24px !important;}
+    .info-section{margin-bottom:28px !important;}
+    .reveal-title{font-size:19px !important;margin-bottom:16px !important;padding-bottom:10px !important;}
+    
+    /* 时间线 - 手机改为竖直排列 */
+    .timeline{
+      flex-direction:column !important;
+      align-items:flex-start !important;
+      padding:0 0 0 8px !important;
+      margin:12px 0 !important;
+      gap:0 !important;
+    }
+    .timeline::before{
+      left:14px !important;
+      right:auto !important;
+      top:8px !important;
+      bottom:8px !important;
+      width:2px !important;
+      height:auto !important;
+      background:linear-gradient(to bottom, var(--seal), rgba(176,58,46,.3), var(--seal)) !important;
+    }
+    .timeline-item{
+      text-align:left !important;
+      flex:none !important;
+      padding:0 0 20px 36px !important;
+      position:relative !important;
+      width:100% !important;
+    }
+    .timeline-item::before{
+      position:absolute !important;
+      left:7px !important;
+      top:2px !important;
+      margin:0 !important;
+      width:14px !important;
+      height:14px !important;
+    }
+    .timeline-item .tl-year{
+      font-size:14px !important;
+      margin-bottom:2px !important;
+      display:inline-block !important;
+    }
+    .timeline-item .tl-text{
+      font-size:14px !important;
+      line-height:1.6 !important;
+    }
+    .timeline-item .tl-sub{
+      font-size:12px !important;
+      color:rgba(43,36,32,.5) !important;
+    }
+    
+    /* 个人经历 */
+    .experience-list{margin:12px 0 !important;}
+    .exp-item{gap:14px !important;padding:16px 0 !important;}
+    .exp-item .exp-dot{width:10px !important;height:10px !important;margin-top:7px !important;}
+    .exp-item .exp-title{font-size:16px !important;margin-bottom:6px !important;}
+    .exp-item .exp-text{font-size:14px !important;line-height:1.8 !important;}
+    
+    /* 兴趣爱好 - 手机改为2列，大图标样式 */
+    .hobby-grid{
+      grid-template-columns:repeat(2, 1fr) !important;
+      gap:14px !important;
+      margin:14px 0 !important;
+    }
+    .hobby-item{
+      padding:22px 14px 18px !important;
+      border-radius:14px !important;
+      display:flex !important;
+      flex-direction:column !important;
+      align-items:center !important;
+    }
+    .hobby-icon-wrap{
+      width:60px !important;
+      height:60px !important;
+      margin-bottom:12px !important;
+    }
+    .hobby-svg{width:52px !important;height:52px !important;}
+    .hobby-name{font-size:16px !important;margin-bottom:6px !important;}
+    .hobby-divider{display:none !important;}
+    .hobby-desc{font-size:12px !important;line-height:1.5 !important;}
+
+    /* 生活集锦入口按钮 - 手机版 */
+    .life-gallery-entry{
+      padding:14px 16px !important;
+      gap:12px !important;
+      margin:20px auto 0 !important;
+    }
+    .life-entry-icon{
+      width:40px !important;height:40px !important;
+    }
+    .life-entry-icon svg{
+      width:20px !important;height:20px !important;
+    }
+    .life-entry-title{
+      font-size:16px !important;
+    }
+    .life-entry-sub{
+      font-size:11px !important;
+    }
+
+    /* 专业信息页 */
+    .major-wrap{padding:24px 18px 60px !important;max-width:100% !important;}
+    .major-title{font-size:28px !important;margin-bottom:4px !important;}
+    .major-sub{font-size:11px !important;letter-spacing:.2em !important;margin-bottom:24px !important;}
+    .major-card{
+      padding:20px 18px !important;
+      border-radius:16px !important;
+      margin-bottom:18px !important;
+    }
+    .major-card h3{
+      font-size:18px !important;
+      margin-bottom:14px !important;
+      padding-bottom:10px !important;
+      gap:10px !important;
+    }
+    .major-card h3 .card-icon{width:26px !important;height:26px !important;}
+    .major-card p{font-size:14px !important;line-height:1.9 !important;}
+    
+    /* 专业与学院 - 高亮信息 */
+    .major-highlight{
+      padding:12px 14px !important;
+      margin-bottom:10px !important;
+      border-radius:10px !important;
+    }
+    .mh-label{font-size:10px !important;margin-bottom:4px !important;}
+    .mh-value{font-size:15px !important;line-height:1.5 !important;}
+    
+    /* 统计行 */
+    .stat-row{
+      gap:8px !important;
+      margin-top:14px !important;
+    }
+    .stat-item{
+      padding:12px 6px !important;
+      border-radius:10px !important;
+    }
+    .stat-num{font-size:16px !important;margin-bottom:2px !important;}
+    .stat-label{font-size:10px !important;}
+    
+    /* 课程标签 */
+    .course-tags{gap:8px !important;margin-top:12px !important;}
+    .course-tags span{
+      font-size:12px !important;
+      padding:6px 14px !important;
+      border-radius:20px !important;
+    }
+    
+    /* 学习规划 - 手机改为竖直时间线 */
+    .plan-timeline{
+      flex-direction:column !important;
+      gap:0 !important;
+      padding-left:8px !important;
+      margin:12px 0 !important;
+    }
+    .plan-timeline::before{
+      left:14px !important;
+      top:8px !important;
+      bottom:8px !important;
+      width:2px !important;
+      height:auto !important;
+      background:linear-gradient(to bottom, var(--seal), rgba(176,58,46,.3)) !important;
+    }
+    .plan-item{
+      flex:none !important;
+      text-align:left !important;
+      padding:0 0 22px 36px !important;
+      position:relative !important;
+      width:100% !important;
+    }
+    .plan-node{
+      position:absolute !important;
+      left:7px !important;
+      top:3px !important;
+      width:14px !important;
+      height:14px !important;
+    }
+    .plan-year{
+      font-size:15px !important;
+      margin-bottom:4px !important;
+      display:inline-block !important;
+    }
+    .plan-text{font-size:13px !important;line-height:1.7 !important;}
+    
+    /* 彩蛋提示 */
+    .hint-easter{
+      font-size:10px !important;
+      padding:3px 10px !important;
+      margin-left:8px !important;
+    }
+
+    /* 交互内容页 */
+    .interact-wrap{padding:20px 16px !important;}
+    .interact-title{font-size:24px !important;}
+    .contact-tabs{gap:8px !important;}
+    .contact-tab{font-size:13px !important;padding:8px 14px !important;}
+    .contact-content{font-size:14px !important;padding:16px !important;}
+    /* 四个导航横向排列在一行 */
+    .tab-nav{
+      flex-direction:row !important;
+      flex-wrap:nowrap !important;
+      justify-content:center !important;
+      align-items:center !important;
+      gap:8px !important;
+    }
+    .tab-btn{
+      width:auto !important;
+      max-width:none !important;
+      padding:10px 14px !important;
+      font-size:14px !important;
+      flex:1 !important;
+      white-space:nowrap !important;
+    }
+  }
+
+  @media (max-width: 480px){
+    /* 小屏适配 - 更紧凑 */
+    .seal-wrap{top:12px !important;left:10px !important;}
+    .seal{width:110px !important;height:110px !important;}
+    .seal .name-top{font-size:30px !important;}
+    .seal .name-bottom{font-size:17px !important;}
+    #page2 .nav{top:14px !important;left:128px !important;right:8px !important;gap:3px !important;}
+    #page2 .nav a{font-size:10px !important;padding:6px 3px !important;gap:3px !important;border-radius:6px !important;}
+    .nav-icon{width:12px !important;height:12px !important;}
+    .greeting{top:130px !important;}
+    .greeting .gl{font-size:17px !important;}
+    .note{top:180px !important;font-size:11px !important;padding:6px 14px !important;}
+    .profile-info{
+      top:225px !important;
+      bottom:auto !important;
+      left:50% !important;
+      right:auto !important;
+      transform:translateX(-50%) !important;
+      width:85% !important;
+      text-align:center !important;
+    }
+    .profile-info .school{font-size:11px !important;}
+    .profile-info .major{font-size:10px !important;}
+    .mobile-layout{
+      top:280px !important;
+      bottom:45px !important;
+      padding:0 8px !important;
+      gap:8px !important;
+    }
+    .mobile-poster img{height:68% !important;}
+    .mobile-quote-card{padding:5px 6px !important;height:auto !important;flex:1 !important;width:100% !important;max-width:100% !important;margin-top:3px !important;}
+    .mobile-quote-who{font-size:13px !important;}
+    .mobile-quote-text{font-size:11px !important;line-height:1.35 !important;}
+    .back-btn{bottom:10px !important;left:10px !important;top:auto !important;right:auto !important;transform:none !important;font-size:11px !important;padding:6px 16px !important;}
+    #page2 .back-btn{bottom:10px !important;left:10px !important;font-size:11px !important;padding:6px 16px !important;top:auto !important;transform:none !important;}
+    #page2 .next-btn{bottom:10px !important;right:10px !important;left:auto !important;font-size:11px !important;padding:6px 16px !important;display:inline-block !important;}
+  }
+
+  /* 强制手机模式 */
+  body.mobile-mode .nav{
+    gap:8px !important;
+    padding:10px 12px !important;
+  }
+  body.mobile-mode .nav a{
+    font-size:13px !important;
+    padding:6px 10px !important;
+  }
+  body.mobile-mode .seal-wrap{
+    top:60px !important;
+    left:50% !important;
+    transform:translateX(-50%) !important;
+  }
+  body.mobile-mode .seal{
+    width:160px !important;
+    height:160px !important;
+  }
+  body.mobile-mode .seal .name-top{font-size:40px !important;}
+  body.mobile-mode .seal .name-bottom{font-size:22px !important;}
+  body.mobile-mode .greeting{
+    top:250px !important;
+    left:50% !important;
+    right:auto !important;
+    transform:translateX(-50%) !important;
+    text-align:center !important;
+    width:90% !important;
+  }
+  body.mobile-mode .greeting .gl{
+    font-size:22px !important;
+    display:block !important;
+  }
+  body.mobile-mode .note{
+    top:340px !important;
+    left:50% !important;
+    right:auto !important;
+    transform:translateX(-50%) !important;
+    max-width:85% !important;
+    font-size:14px !important;
+    padding:12px 18px !important;
+  }
+  body.mobile-mode .profile-info{
+    top:430px !important;
+    left:50% !important;
+    transform:translateX(-50%) !important;
+    max-width:85% !important;
+    text-align:center !important;
+  }
+  body.mobile-mode .profile-info .school{
+    font-size:16px !important;
+    padding-left:0 !important;
+    border-left:none !important;
+  }
+  body.mobile-mode .profile-info .major{
+    font-size:14px !important;
+    padding-left:0 !important;
+    border-left:none !important;
+  }
+  body.mobile-mode .bottom-row{
+    bottom:20px !important;
+    gap:10px !important;
+    padding:0 10px !important;
+  }
+  body.mobile-mode .star-card{max-width:45% !important;}
+  body.mobile-mode .star-card img{max-height:180px !important;}
+  body.mobile-mode .blade{padding:8px 10px !important;}
+  body.mobile-mode .blade .who{font-size:14px !important;}
+  body.mobile-mode .blade .quote-text{font-size:11px !important;}
+  body.mobile-mode .back-btn{
+    top:10px !important;
+    left:10px !important;
+    font-size:13px !important;
+    padding:6px 14px !important;
+  }
+  body.mobile-mode .next-btn{
+    bottom:10px !important;
+    padding:8px 16px !important;
+  }
+  body.mobile-mode .next-label{font-size:12px !important;}
+  body.mobile-mode .enter-btn-square{
+    top:60% !important;
+    left:50% !important;
+    padding:16px 32px !important;
+    font-size:20px !important;
+  }
+  body.mobile-mode .bubble{
+    font-size:14px !important;
+    padding:8px 14px !important;
+  }
+  body.mobile-mode .cloud-tip{
+    font-size:10px !important;
+    padding:6px 10px !important;
+  }
+  body.mobile-mode .info-wrap{padding:20px 16px !important;}
+  body.mobile-mode .info-title{font-size:24px !important;}
+  body.mobile-mode .reveal-card{padding:16px !important;}
+  body.mobile-mode .reveal-title{font-size:18px !important;}
+  body.mobile-mode .reveal-body p{font-size:13px !important;}
+  body.mobile-mode .major-wrap{padding:20px 16px !important;}
+  body.mobile-mode .major-title{font-size:24px !important;}
+  body.mobile-mode .major-card{padding:16px !important;}
+  body.mobile-mode .major-card h3{font-size:17px !important;}
+  body.mobile-mode .major-card p{font-size:13px !important;}
+  body.mobile-mode .course-tags span{font-size:12px !important;padding:4px 10px !important;}
+  body.mobile-mode .interact-wrap{padding:20px 16px !important;}
+  body.mobile-mode .interact-title{font-size:24px !important;}
+  body.mobile-mode .contact-tabs{gap:8px !important;}
+  body.mobile-mode .contact-tab{font-size:13px !important;padding:8px 14px !important;}
+  body.mobile-mode .contact-content{font-size:14px !important;padding:16px !important;}
+  body.mobile-mode .tab-nav{flex-direction:row !important;flex-wrap:nowrap !important;justify-content:center !important;align-items:center !important;gap:8px !important;}
+  body.mobile-mode .tab-btn{width:auto !important;max-width:none !important;padding:10px 14px !important;font-size:14px !important;flex:1 !important;white-space:nowrap !important;}
+
+  /* ===== 数字分身页 ===== */
+  #page6{overflow:visible !important;}
+  .avatar-page{
+    padding:20px;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    background:var(--paper);
+  }
+  .avatar-page .avatar-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:8px 4px 16px;
+  }
+  .avatar-page .avatar-back{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--seal);border:1px solid var(--seal);color:#fff;
+    padding:8px 20px;border-radius:999px;
+    font-size:14px;font-family:inherit;font-weight:700;
+    text-decoration:none;cursor:pointer;transition:all .2s ease;
+    box-shadow:0 4px 12px rgba(176,58,46,.25);
+  }
+  .avatar-page .avatar-back:hover{
+    background:#8E2E24;transform:translateX(-3px);
+    box-shadow:0 6px 16px rgba(176,58,46,.35);
+  }
+  .avatar-page .avatar-back svg{width:16px;height:16px;}
+  .avatar-page .avatar-tag{
+    font-size:12px;color:var(--seal);letter-spacing:1px;
+    border:1px solid var(--seal);padding:4px 12px;border-radius:999px;
+  }
+  .avatar-page .avatar-stage{
+    flex:1;display:grid;grid-template-columns:440px 1fr;gap:24px;
+    background:var(--card);border:1px solid var(--line);border-radius:20px;
+    box-shadow:0 10px 30px rgba(43,36,32,.08);overflow:hidden;min-height:0;
+  }
+  .avatar-page .char-area{
+    background:linear-gradient(180deg,#FBF3E4 0%,#F0E3CB 100%);
+    display:flex;align-items:flex-start;justify-content:center;
+    position:relative;border-right:1px dashed var(--line);
+    overflow:hidden;padding-top:44px;
+  }
+  .avatar-page .char-area::before{
+    content:"";position:absolute;left:0;right:0;bottom:60px;height:1px;background:var(--line);
+  }
+  .avatar-page .char-area img{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+    transform:scale(1);
+    transform-origin:center center;
+    transition:opacity .26s ease, transform .26s ease;
+    filter:drop-shadow(0 8px 12px rgba(43,36,32,.15));
+  }
+  .avatar-page .char-area img.swap{opacity:0;transform:scale(1.1) translateY(-10px);}
+  .avatar-page .char-name{
+    position:absolute;top:16px;left:50%;transform:translateX(-50%);
+    font-size:14px;font-weight:700;letter-spacing:3px;color:var(--seal);
+  }
+  .avatar-page .char-role{
+    position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
+    font-size:12px;color:var(--ink);opacity:.7;white-space:nowrap;
+  }
+  .avatar-page .chat-area{display:flex;flex-direction:column;min-height:0;}
+  .avatar-page .messages{
+    position:relative;
+    flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;
+  }
+  .avatar-page .msg{position:relative;max-width:80%;animation:avatarPop .25s ease;}
+  @keyframes avatarPop{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .avatar-page .msg.me{align-self:flex-end;}
+  .avatar-page .bubble{
+    position:relative;
+    padding:10px 16px;border-radius:14px;font-size:15px;line-height:1.7;
+    box-shadow:0 2px 8px rgba(43,36,32,.06);
+  }
+  .avatar-page .msg.bot .bubble{
+    background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px;
+  }
+  .avatar-page .msg.me .bubble{
+    background:var(--seal);color:#fff;border-bottom-right-radius:4px;
+  }
+  .avatar-page .who{font-size:11px;color:var(--ink);opacity:.6;margin-bottom:4px;}
+  .avatar-page .msg.me .who{text-align:right;}
+  .avatar-page .quick{
+    padding:10px 16px;display:flex;gap:8px;flex-wrap:wrap;border-top:1px dashed var(--line);
+  }
+  .avatar-page .qbtn{
+    background:#fff;border:1px solid var(--line);border-radius:999px;
+    padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit;
+    transition:all .15s ease;color:var(--ink);
+  }
+  .avatar-page .qbtn:hover{border-color:var(--seal);color:var(--seal);}
+  .avatar-page .input-row{
+    padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:10px;
+  }
+  .avatar-page .input-row input{
+    flex:1;border:1px solid var(--line);border-radius:999px;
+    padding:10px 18px;font-size:14px;font-family:inherit;background:#fff;outline:none;
+  }
+  .avatar-page .input-row input:focus{border-color:var(--seal);}
+  .avatar-page .input-row button{
+    background:var(--seal);color:#fff;border:none;border-radius:999px;
+    padding:10px 22px;font-size:14px;cursor:pointer;font-family:inherit;transition:all .15s ease;
+  }
+  .avatar-page .input-row button:hover{opacity:.9;}
+  .avatar-page .avatar-footer{
+    text-align:center;padding:10px;font-size:11px;color:var(--ink);opacity:.5;
+  }
+  @media (max-width:800px){
+    .avatar-page .avatar-stage{grid-template-columns:1fr;grid-template-rows:280px 1fr;}
+    .avatar-page .char-area{border-right:none;border-bottom:1px dashed var(--line);padding-top:20px;}
+    .avatar-page .char-area img{max-height:100%;max-width:100%;transform:scale(1);}
+  }
+
+  /* ===== 第七页：反馈页面 ===== */
+  .feedback-page{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    padding:clamp(20px,4vw,48px) 16px;
+    overflow-y:auto;
+  }
+  .feedback-card{
+    width:100%;max-width:640px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:22px;
+    box-shadow:0 14px 44px rgba(43,36,32,.10);
+    padding:clamp(28px,5vw,52px);
+    position:relative;
+  }
+  .feedback-seal{
+    position:absolute;top:24px;right:28px;
+    width:56px;height:56px;
+    border:2.5px solid var(--seal);color:var(--seal);
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Kaiti SC','STKaiti','楷体',serif;
+    font-size:16px;font-weight:700;
+    writing-mode:vertical-rl;letter-spacing:.1em;
+    opacity:.85;
+  }
+  .feedback-head{
+    font-family:'Kaiti SC','STKaiti','楷体',serif;
+    font-size:clamp(24px,3.5vw,34px);
+    color:var(--ink);font-weight:700;
+    margin-bottom:8px;
+  }
+  .feedback-sub{
+    font-size:clamp(13px,1.6vw,15px);
+    color:rgba(43,36,32,.6);
+    line-height:1.7;margin-bottom:24px;
+  }
+  .feedback-divider{
+    border:none;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(176,58,46,.3),transparent);
+    margin-bottom:24px;
+  }
+  .feedback-field{margin-bottom:18px;}
+  .feedback-field label{
+    display:block;
+    font-family:'Kaiti SC','STKaiti','楷体',serif;
+    font-size:15px;font-weight:600;color:var(--ink);
+    margin-bottom:8px;
+  }
+  .feedback-field .req{color:var(--seal);margin-left:2px;}
+  .feedback-field input,
+  .feedback-field select,
+  .feedback-field textarea{
+    width:100%;
+    padding:12px 16px;
+    border:1px solid rgba(43,36,32,.18);
+    border-radius:12px;
+    background:rgba(255,253,247,.8);
+    font-family:inherit;font-size:14px;color:var(--ink);
+    transition:border-color .25s,box-shadow .25s;
+    outline:none;
+  }
+  .feedback-field input:focus,
+  .feedback-field select:focus,
+  .feedback-field textarea:focus{
+    border-color:var(--seal);
+    box-shadow:0 0 0 3px rgba(176,58,46,.1);
+  }
+  .feedback-field textarea{
+    min-height:120px;resize:vertical;line-height:1.6;
+  }
+  .feedback-row2{
+    display:grid;grid-template-columns:1fr 1fr;gap:16px;
+  }
+  .feedback-actions{
+    display:flex;gap:12px;margin-top:24px;
+  }
+  .feedback-btn{
+    padding:12px 32px;
+    border-radius:12px;
+    font-family:'Kaiti SC','STKaiti','楷体',serif;
+    font-size:16px;font-weight:600;
+    cursor:pointer;border:none;
+    transition:all .25s ease;
+  }
+  .feedback-btn-primary{
+    background:var(--seal);color:#F5EFE3;
+  }
+  .feedback-btn-primary:hover{
+    background:#8B2E22;transform:translateY(-2px);
+    box-shadow:0 6px 16px rgba(176,58,46,.3);
+  }
+  .feedback-btn-ghost{
+    background:transparent;color:var(--ink);
+    border:1px solid rgba(43,36,32,.2);
+    text-decoration:none;display:inline-flex;align-items:center;
+  }
+  .feedback-btn-ghost:hover{
+    border-color:var(--seal);color:var(--seal);
+  }
+  .feedback-msg{
+    margin-top:16px;padding:12px 16px;
+    border-radius:10px;font-size:14px;
+    display:none;
+  }
+  .feedback-msg.ok{
+    display:block;background:rgba(76,175,80,.1);color:#2E7D32;
+    border:1px solid rgba(76,175,80,.3);
+  }
+  .feedback-msg.err{
+    display:block;background:rgba(176,58,46,.1);color:var(--seal);
+    border:1px solid rgba(176,58,46,.3);
+  }
+  .feedback-foot{
+    margin-top:24px;text-align:center;
+    font-size:12px;color:rgba(43,36,32,.4);
+  }
+  @media (max-width: 768px){
+    .feedback-row2{grid-template-columns:1fr;}
+    .feedback-seal{width:44px;height:44px;font-size:13px;top:16px;right:16px;}
+  }
+
+  /* ===== 全局顶部导航 ===== */
+  .global-nav{
+    position:fixed;
+    top:12px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    gap:4px;
+    padding:6px 10px;
+    background:rgba(255,253,247,.88);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border:1px solid rgba(176,58,46,.2);
+    border-radius:40px;
+    box-shadow:0 4px 20px rgba(43,36,32,.15);
+    transition:opacity .3s, transform .3s;
+  }
+  .global-nav.hidden{
+    opacity:0;
+    transform:translateX(-50%) translateY(-20px);
+    pointer-events:none;
+  }
+  .global-nav a{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:2px;
+    padding:6px 12px;
+    border-radius:24px;
+    text-decoration:none;
+    color:rgba(43,36,32,.6);
+    font-family:'KaiTi','STKaiti','楷体',serif;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.05em;
+    transition:all .25s;
+    cursor:pointer;
+  }
+  .global-nav a:hover{
+    background:rgba(176,58,46,.08);
+    color:#B03A2E;
+  }
+  .global-nav a.active{
+    background:linear-gradient(135deg,#B03A2E,#8B2E22);
+    color:#FFFEF7;
+    box-shadow:0 2px 10px rgba(176,58,46,.4);
+  }
+  .global-nav a .nav-icon{
+    width:18px;
+    height:18px;
+  }
+  .global-nav a .nav-icon svg{
+    width:100%;
+    height:100%;
+  }
+  @media (max-width: 768px){
+    .global-nav{
+      top:8px;
+      padding:5px 8px;
+      gap:2px;
+    }
+    .global-nav a{
+      padding:5px 8px;
+      font-size:10px;
+    }
+    .global-nav a .nav-icon{
+      width:16px;
+      height:16px;
+    }
+  }
+  @media (max-width: 480px){
+    .global-nav a{
+      padding:5px 6px;
+      font-size:9px;
+    }
+    .global-nav a .nav-label{
+      display:none;
+    }
+    .global-nav a{
+      padding:6px 8px;
+    }
+  }
+
+</style>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- 全局顶部导航 -->
+  <nav class="global-nav" id="globalNav">
+    <a onclick="goPage(3)" data-page="3">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+      <span class="nav-label">基本信息</span>
+    </a>
+    <a onclick="goPage(4)" data-page="4">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
+      <span class="nav-label">专业信息</span>
+    </a>
+    <a onclick="goPage(5)" data-page="5">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+      <span class="nav-label">交互内容</span>
+    </a>
+    <a onclick="goPage(6)" data-page="6">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 2v2"/><path d="M12 2v2"/></svg></span>
+      <span class="nav-label">数字分身</span>
+    </a>
+    <a onclick="goPage(7)" data-page="7">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
+      <span class="nav-label">浏览反馈</span>
+    </a>
+  </nav>
+
+  <!-- 第一页：对话气泡排版 -->
+  <div class="page active" id="page1">
+    <div class="page1-bg">
+      <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none" stroke="#2B2420" stroke-width="1.5">
+          <path d="M0,600 Q150,560 300,590 T600,580 T900,595 T1200,575"/>
+          <path d="M0,640 Q200,600 400,630 T800,620 T1200,610"/>
+          <path d="M100,200 Q140,170 180,200 Q220,230 260,200 Q300,170 340,200"/>
+          <path d="M850,150 Q890,120 930,150 Q970,180 1010,150 Q1050,120 1090,150"/>
+        </g>
+      </svg>
+    </div>
+    <button class="enter-btn-square" type="button" onclick="goPage(2)">来康康吗</button>
+    <button class="next-btn next-btn-text" type="button" onclick="goPage(2)" aria-label="下一页">
+      <span class="next-label">下一页</span>
+    </button>
+  </div>
+
+  <!-- 第二页：主页 -->
+  <div class="page" id="page2">
+    <nav class="nav" aria-label="导航">
+      <a href="javascript:void(0)" onclick="goPage(3)" data-en="Basic Info"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>基本信息</a>
+      <a href="javascript:void(0)" onclick="goPage(4)" data-en="Major Info"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>专业信息</a>
+      <a href="javascript:void(0)" onclick="goPage(5)" data-en="Interactive"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>交互内容</a>
+      <a href="javascript:void(0)" onclick="goPage(6)" data-en="Digital Clone"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/><path d="M12 2v2"/></svg>数字分身</a>
+      <a href="javascript:void(0)" onclick="goPage(7)" data-en="View Feedback"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>浏览反馈</a>
+    </nav>
+
+    <div class="seal-wrap">
+      <div class="seal">
+        <img src="钱柯天头像.jpg" alt="钱柯天">
+        <span class="name-top">钱</span>
+        <span class="name-bottom">柯天</span>
+      </div>
+    </div>
+
+    <p class="greeting" id="greeting" data-en="Hello, I'm Qian Ketian. Nice to meet you!">
+      <span class="gl">你好呀，我是钱柯天</span>
+      <span class="gl">，很高兴与你相遇</span>
+    </p>
+
+    <div class="note" role="note" data-en="A warm and cheerful college student from Hangzhou">一个来自杭州的热情开朗的大学生</div>
+
+    <div class="profile-info">
+      <div class="school" data-en="Tianjin University & PolyU Shenzhen Institute of Future Technology">天津大学香港理工大学深圳未来技术学院</div>
+      <div class="major" data-en="Computer Science and Technology · Freshman">计算机科学与技术 · 大一新生</div>
+    </div>
+
+    <div class="bottom-row">
+      <div class="star-card star-left">
+        <img src="C罗.jpg" alt="C罗">
+        <div class="blade blade-l">
+          <span class="who">C罗</span>
+          <span class="quote-text" data-en="Your love makes me stronger, your hate makes me unstoppable">你们的爱让我变强，你们的恨让我不可阻挡</span>
+        </div>
+      </div>
+      <div class="star-card star-right">
+        <div class="blade blade-r">
+          <span class="who">梅西</span>
+          <span class="quote-text" data-en="To achieve your dreams, you must strive, sacrifice, and work hard">为了实现梦想，你必须奋斗，你必须做出牺牲，必须为之努力</span>
+        </div>
+        <img src="梅西.jpg" alt="梅西">
+      </div>
+    </div>
+
+    <!-- 移动端专用布局 -->
+    <div class="mobile-layout">
+      <div class="mobile-poster mobile-poster-left">
+        <img src="C罗.jpg" alt="C罗">
+        <div class="mobile-quote-card">
+          <span class="mobile-quote-who">C罗</span>
+          <span class="mobile-quote-text" data-en="Your love makes me stronger, your hate makes me unstoppable">你们的爱让我变强，你们的恨让我不可阻挡</span>
+        </div>
+      </div>
+      <div class="mobile-poster mobile-poster-right">
+        <img src="梅西.jpg" alt="梅西">
+        <div class="mobile-quote-card">
+          <span class="mobile-quote-who">梅西</span>
+          <span class="mobile-quote-text" data-en="To achieve your dreams, you must strive, sacrifice, and work hard">为了实现梦想，你必须奋斗，你必须做出牺牲，必须为之努力</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="back-btn" type="button" onclick="goPage(1)" data-en="Back">返回</button>
+    <button class="next-btn" type="button" onclick="goPage(3)" aria-label="下一页">
+      <svg class="next-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      <span class="next-label" data-en="Next">下一页</span>
+    </button>
+  </div>
+
+  <!-- 第三页：基本信息 -->
+  <div class="page" id="page3">
+    <button class="back-btn" type="button" onclick="goPage(2)" data-en="Back Home">返回主页</button>
+    <button class="next-btn" type="button" onclick="goPage(4)" aria-label="下一页">
+      <svg class="next-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      <span class="next-label" data-en="Next">下一页</span>
+    </button>
+    <div class="info-page">
+      <div class="hint-slide" id="slideHint">持续下滑有惊喜</div>
+      <div class="info-wrap">
+        <h2 class="info-title" data-en="Basic Information">基本信息</h2>
+        <p class="info-sub">BASIC INFORMATION</p>
+
+        <div class="info-section fade-in-section">
+          <h3 class="reveal-title fade-child" data-en="Education">求学经历</h3>
+          <div class="timeline fade-child">
+            <div class="timeline-item">
+              <div class="tl-year">小学</div>
+              <div class="tl-text">星洲小学<br><span class="tl-sub">杭州西湖区 · 启蒙成长</span></div>
+            </div>
+            <div class="timeline-item">
+              <div class="tl-year">初中</div>
+              <div class="tl-text">翠苑中学<br><span class="tl-sub">担任班长 · 课代表</span></div>
+            </div>
+            <div class="timeline-item">
+              <div class="tl-year">高中</div>
+              <div class="tl-text">学军中学西溪校区<br><span class="tl-sub">数学竞赛 · 刻苦钻研</span></div>
+            </div>
+            <div class="timeline-item">
+              <div class="tl-year">大学</div>
+              <div class="tl-text">天津大学香港理工大学深圳未来技术学院<br><span class="tl-sub">计算机科学与技术 · 大一新生</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-section fade-in-section">
+          <h3 class="reveal-title fade-child" data-en="Personal Experience">个人经历</h3>
+          <div class="experience-list fade-child">
+            <div class="exp-item">
+              <div class="exp-dot"></div>
+              <div class="exp-content">
+                <div class="exp-title">游历经历</div>
+                <div class="exp-text">闲暇时游历十余个国家，培养了一定的自理和沟通能力。</div>
+              </div>
+            </div>
+            <div class="exp-item">
+              <div class="exp-dot"></div>
+              <div class="exp-content">
+                <div class="exp-title">学习历程</div>
+                <div class="exp-text">学习成绩在波动中提升，培养了不轻言放弃的毅力，最终升入梦想学府。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-section fade-in-section">
+          <h3 class="reveal-title fade-child" data-en="Hobbies">兴趣爱好</h3>
+          <div class="hobby-grid fade-child">
+            <div class="hobby-item highlight">
+              <div class="hobby-icon-wrap">
+                <svg class="hobby-svg" viewBox="0 0 48 48" fill="none">
+                  <circle cx="24" cy="24" r="20" stroke="#B03A2E" stroke-width="1.5"/>
+                  <path d="M24 4 L24 44 M4 24 L44 24 M10 10 L38 38 M38 10 L10 38" stroke="#B03A2E" stroke-width="1" opacity=".4"/>
+                  <circle cx="24" cy="24" r="6" fill="#B03A2E" opacity=".15"/>
+                </svg>
+              </div>
+              <div class="hobby-name">足球</div>
+              <div class="hobby-divider"></div>
+              <div class="hobby-desc">区级市级前三 · 市队</div>
+            </div>
+            <div class="hobby-item highlight">
+              <div class="hobby-icon-wrap">
+                <svg class="hobby-svg" viewBox="0 0 48 48" fill="none">
+                  <rect x="8" y="12" width="14" height="20" rx="2" stroke="#B03A2E" stroke-width="1.5"/>
+                  <rect x="26" y="12" width="14" height="20" rx="2" stroke="#B03A2E" stroke-width="1.5"/>
+                  <path d="M15 18 L15 26 M21 18 L21 26 M33 18 L33 26 M39 18 L39 26" stroke="#B03A2E" stroke-width="1" opacity=".5"/>
+                  <circle cx="24" cy="38" r="3" fill="#B03A2E" opacity=".2"/>
+                </svg>
+              </div>
+              <div class="hobby-name">桥牌</div>
+              <div class="hobby-divider"></div>
+              <div class="hobby-desc">市级比赛前八</div>
+            </div>
+            <div class="hobby-item">
+              <div class="hobby-icon-wrap">
+                <svg class="hobby-svg" viewBox="0 0 48 48" fill="none">
+                  <path d="M18 8 L30 8 L28 28 L20 28 Z" stroke="#B03A2E" stroke-width="1.5"/>
+                  <path d="M24 28 L24 40" stroke="#B03A2E" stroke-width="1.5"/>
+                  <path d="M20 40 L28 40" stroke="#B03A2E" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M22 14 L26 14 M22 18 L26 18 M22 22 L26 22" stroke="#B03A2E" stroke-width=".8" opacity=".5"/>
+                </svg>
+              </div>
+              <div class="hobby-name">小提琴</div>
+              <div class="hobby-divider"></div>
+              <div class="hobby-desc">音乐修养</div>
+            </div>
+            <div class="hobby-item">
+              <div class="hobby-icon-wrap">
+                <svg class="hobby-svg" viewBox="0 0 48 48" fill="none">
+                  <rect x="6" y="6" width="36" height="36" rx="3" stroke="#B03A2E" stroke-width="1.5"/>
+                  <path d="M6 18 L42 18 M6 30 L42 30 M18 6 L18 42 M30 6 L30 42" stroke="#B03A2E" stroke-width=".8" opacity=".4"/>
+                  <circle cx="12" cy="12" r="3" fill="#2B2420"/>
+                  <circle cx="36" cy="36" r="3" fill="#2B2420"/>
+                  <circle cx="24" cy="24" r="3" fill="#B03A2E" opacity=".3"/>
+                </svg>
+              </div>
+              <div class="hobby-name">围棋</div>
+              <div class="hobby-divider"></div>
+              <div class="hobby-desc">思维训练</div>
+            </div>
+          </div>
+
+          <!-- 生活集锦入口按钮 -->
+          <div class="life-gallery-entry" onclick="window.location.href='生活集锦.html'">
+            <div class="life-entry-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <path d="M21 15l-5-5L5 21"/>
+              </svg>
+            </div>
+            <div class="life-entry-text">
+              <div class="life-entry-title">生活集锦</div>
+              <div class="life-entry-sub">沿途风景 · 球星风采 · 体育爱好 · 文学小憩</div>
+            </div>
+            <div class="life-entry-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="life-gallery-hint" id="lifeGalleryHint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14M19 12l-7 7-7-7"/>
+      </svg>
+      <p>继续下滑 · 进入生活集锦</p>
+    </div>
+  </div>
+
+  <!-- 第四页：专业信息 -->
+  <div class="page" id="page4">
+    <button class="back-btn" type="button" onclick="goPage(2)" data-en="Back Home">返回主页</button>
+    <button class="next-btn" type="button" onclick="goPage(5)" aria-label="下一页">
+      <svg class="next-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      <span class="next-label" data-en="Next">下一页</span>
+    </button>
+    <div class="major-page">
+      <div class="major-wrap">
+        <h2 class="major-title" data-en="Major Information">专业信息</h2>
+        <p class="major-sub">MAJOR INFORMATION</p>
+
+        <div class="major-card fade-in-section">
+          <h3 data-en="Major & College" class="fade-child"><svg class="card-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M32 16L8 28l24 12 24-12-24-12z"/><path d="M18 34v10c0 3 6 6 14 6s14-3 14-6V34"/><path d="M56 28v12"/></svg>专业与学院</h3>
+          <div class="major-highlight">
+            <div class="mh-label">专业 MAJOR</div>
+            <div class="mh-value clickable" onclick="openMajorModal()" data-en="Computer Science and Technology">计算机科学与技术</div>
+          </div>
+          <div class="major-highlight">
+            <div class="mh-label">学院 COLLEGE</div>
+            <div class="mh-value clickable" onclick="openCollegeModal()" data-en="Tianjin University & PolyU Shenzhen Institute of Future Technology">天津大学香港理工大学深圳未来技术学院</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-item">
+              <div class="stat-num">大一</div>
+              <div class="stat-label">年级</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">2026</div>
+              <div class="stat-label">入学年份</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">深圳</div>
+              <div class="stat-label">就读地点</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="major-card fade-in-section">
+          <h3 data-en="Willpower & Character" class="fade-child"><svg class="card-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8l20 8v16c0 14-8 24-20 28-12-4-20-14-20-28V16l20-8z"/><path d="M22 32l7 7 13-14"/></svg>意志品格</h3>
+          <p data-en="Participated in math competitions in high school, cultivating a spirit of diligent study; served as class monitor and subject representative in middle and high school, demonstrating a serious and responsible attitude.">高中参与数学学科竞赛，具有刻苦钻研的精神；初高中担任班长、课代表等职位，具有认真负责的精神。</p>
+        </div>
+
+        <div class="major-card fade-in-section">
+          <h3 data-en="Professional Competence" class="fade-child"><svg class="card-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8c-11 0-20 9-20 20 0 8 5 15 12 18v10h16V46c7-3 12-10 12-18 0-11-9-20-20-20z"/><path d="M26 54h12"/><path d="M28 28l4 4 8-8"/></svg>专业素养</h3>
+          <p data-en="Has a solid foundation in information technology and mathematics, excellent Chinese language skills, and can clearly formulate AI prompts.">有一定信息技术和数学的功底，语文基础优良，可以明确下达AI指令。</p>
+        </div>
+
+        <div class="major-card course-card fade-in-section" onclick="window.open('我的课程学习之旅.html','_blank')" style="cursor:pointer;">
+          <h3 data-en="Research Courses"><svg class="card-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14h28a8 8 0 018 8v30H20a8 8 0 01-8-8V14z"/><path d="M12 14v30a8 8 0 008 8"/><path d="M22 24h16M22 32h16M22 40h10"/></svg>研究课程<span class="hint-easter" id="easterHint">点击有彩蛋</span></h3>
+          <div class="course-tags">
+            <span data-en="Calculus">微积分</span>
+            <span data-en="Linear Algebra">线性代数</span>
+            <span data-en="Programming">编程</span>
+            <span data-en="Personal Homepage Design">个人主页设计</span>
+            <span data-en="AI Learning Strategy">AI学习策略</span>
+          </div>
+        </div>
+
+        <div class="major-card fade-in-section">
+          <h3 data-en="Study Plan" class="fade-child"><svg class="card-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="14" width="44" height="42" rx="4"/><path d="M10 26h44"/><path d="M20 8v12M44 8v12"/><circle cx="22" cy="38" r="3" fill="currentColor"/><circle cx="32" cy="38" r="3" fill="currentColor"/><circle cx="42" cy="38" r="3" fill="currentColor"/><path d="M22 47h20"/></svg>学习规划</h3>
+          <div class="plan-timeline">
+            <div class="plan-item">
+              <div class="plan-node"></div>
+              <div class="plan-year">大一</div>
+              <div class="plan-text">夯实数学与编程基础，培养计算思维</div>
+            </div>
+            <div class="plan-item">
+              <div class="plan-node"></div>
+              <div class="plan-year">大二</div>
+              <div class="plan-text">深入专业核心课程，参与科研项目</div>
+            </div>
+            <div class="plan-item">
+              <div class="plan-node"></div>
+              <div class="plan-year">大三</div>
+              <div class="plan-text">确定方向，开展实习与竞赛</div>
+            </div>
+            <div class="plan-item">
+              <div class="plan-node"></div>
+              <div class="plan-year">大四</div>
+              <div class="plan-text">完成毕业设计，规划升学或就业</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-mask" id="collegeModal" onclick="closeCollegeModal()">
+      <div class="modal-box" onclick="event.stopPropagation()">
+        <button class="modal-close" type="button" onclick="closeCollegeModal()">×</button>
+        <h3 class="modal-title" data-en="College Introduction">学院介绍</h3>
+        <p class="modal-text" data-en="Tianjin University & PolyU Shenzhen Institute of Future Technology is a <strong>Chinese-foreign cooperatively-run institution approved on May 25, 2026</strong>, jointly established by <strong>Tianjin University and The Hong Kong Polytechnic University</strong>. Located at <strong>Shenzhen University Town International Campus, Nanshan District, Shenzhen</strong>, it is included in the national unified college admission plan. The first undergraduate enrollment began in 2026, adopting a 'dual-school enrollment, dual-school certificates' model, allowing graduates to receive degree certificates from both universities.">天津大学香港理工大学深圳未来技术学院是<strong>2026年5月25日获批</strong>的<strong>中外合作办学机构</strong>，由<strong>天津大学与香港理工大学</strong>合作共建，位于<strong>深圳市南山区深圳大学城国际校区</strong>，纳入国家普通高等学校统一招生计划。2026年启动首批本科招生，实行"双校学籍、双校证书"模式，毕业可同时获得两校学位证书。</p>
+      </div>
+    </div>
+    <div class="modal-mask" id="majorModal" onclick="closeMajorModal()">
+      <div class="modal-box" onclick="event.stopPropagation()">
+        <button class="modal-close" type="button" onclick="closeMajorModal()">×</button>
+        <h3 class="modal-title" data-en="Major Introduction">专业介绍</h3>
+        <p class="modal-text" data-en="Computer Science and Technology is <strong>one of the undergraduate programs enrolling in 2026</strong> at the Shenzhen Institute of Future Technology, covering fields such as <strong>general artificial intelligence and digital economy</strong>. The program emphasizes '<strong>solid foundations, strong practice, interdisciplinary focus, broad vision</strong>', with a curriculum that integrates systematic knowledge and intelligent algorithms. Leveraging Shenzhen's industrial advantages, it collaborates with industry enterprises to emphasize practical ability development.">计算机科学与技术是深圳未来技术学院于<strong>2026年招生的本科专业之一</strong>，该专业涉及<strong>通用人工智能、数字经济</strong>等相关领域。专业培养强调"<strong>厚基础、强实践、重交叉、宽视野</strong>"，课程体系注重系统知识与智能算法的结合。依托深圳的产业区位，与相关行业企业合作，强调实践能力的培养。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第五页：交互内容 -->
+  <div class="page" id="page5">
+    <button class="back-btn" type="button" onclick="goPage(2)" data-en="Back Home">返回主页</button>
+    <div class="interact-page">
+      <div class="interact-wrap">
+        <h2 class="interact-title" data-en="Contact Information">联系方式</h2>
+        <p class="interact-sub">CONTACT INFORMATION</p>
+
+        <div class="tab-nav">
+          <button class="tab-btn active" type="button" data-tab="phone" data-en="Phone">手机号</button>
+          <button class="tab-btn" type="button" data-tab="email1" data-en="Email">邮箱号</button>
+          <button class="tab-btn" type="button" data-tab="email2" data-en="TJU Email">天大邮箱</button>
+          <button class="tab-btn" type="button" data-tab="email3" data-en="PolyU Email">港理邮箱</button>
+        </div>
+
+        <div class="tab-content">
+          <div class="tab-pane active" id="tab-phone">
+            <a class="contact-link" href="tel:19357075820">193****5820</a>
+            <p class="contact-hint" data-en="Click to call directly">点击可直接拨打</p>
+          </div>
+          <div class="tab-pane" id="tab-email1">
+            <a class="contact-link" href="mailto:19357075820@163.com">19357075820@163.com</a>
+            <p class="contact-hint" data-en="Click to send email">点击可发送邮件</p>
+          </div>
+          <div class="tab-pane" id="tab-email2">
+            <a class="contact-link" href="mailto:qkt_5820@tju.edu.cn">qkt_5820@tju.edu.cn</a>
+            <p class="contact-hint" data-en="Click to send email">点击可发送邮件</p>
+          </div>
+          <div class="tab-pane" id="tab-email3">
+            <a class="contact-link" href="mailto:26129466d@connect.polyu.hk">26129466d@connect.polyu.hk</a>
+            <p class="contact-hint" data-en="Click to send email">点击可发送邮件</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chibi-grid" id="chibiGrid">
+      <div class="chibi-cell"></div><div class="chibi-cell"></div><div class="chibi-cell"></div>
+      <div class="chibi-cell"></div><div class="chibi-cell"></div><div class="chibi-cell"></div>
+      <div class="chibi-cell"></div><div class="chibi-cell"></div><div class="chibi-cell"></div>
+    </div>
+    <div class="chibi-spot chibi-left" id="chibiLeft"></div>
+    <div class="chibi-spot chibi-bottom" id="chibiBottom"></div>
+
+    <button class="next-btn" type="button" onclick="goPage(6)" aria-label="下一页">
+      <svg class="next-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14M6 12l6 6 6-6"/>
+      </svg>
+      <span class="next-label" data-en="Next">下一页</span>
+    </button>
+  </div>
+
+
+  <!-- 第六页：数字分身 -->
+  <div class="page" id="page6">
+    <div class="avatar-page">
+      <div class="avatar-header">
+        <button class="avatar-back" type="button" onclick="goPage(2)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          返回主页
+        </button>
+        <div class="avatar-tag">QIAN KETIAN · DIGITAL CLONE</div>
+      </div>
+      <section class="avatar-stage">
+        <div class="char-area">
+          <div class="char-name">钱柯天</div>
+          <img id="avatarCharImg" src="02-relax-stand.png" alt="钱柯天 Q 版形象">
+          <div class="char-role">计算机科学与技术 · 大一新生</div>
+        </div>
+        <div class="chat-area">
+          <div class="messages" id="avatarMessages"></div>
+          <div class="quick" id="avatarQuick"></div>
+          <div class="input-row">
+            <input id="avatarInput" placeholder="想问点啥？（回车发送）" autocomplete="off">
+            <button id="avatarSend">发送</button>
+          </div>
+        </div>
+      </section>
+      <div class="avatar-footer">本页为数字分身演示，信息基于个人主页公开内容 · 联系方式见主页</div>
+    </div>
+  </div>
+
+  <!-- 第七页：反馈 -->
+  <div class="page" id="page7">
+    <button class="back-btn" type="button" onclick="goPage(2)" data-en="Back Home">返回主页</button>
+    <div class="feedback-page">
+      <div class="feedback-card">
+        <div class="feedback-seal" aria-hidden="true">感谢</div>
+
+        <h1 class="feedback-head">留下你的足迹</h1>
+        <p class="feedback-sub">每一份反馈，都是继续打磨这个小站点的动力。你的留言会直接送达到我，不会公开展示。</p>
+
+        <hr class="feedback-divider">
+
+        <form id="feedbackForm" novalidate>
+          <div class="feedback-field">
+            <label for="fb_name">怎么称呼你<span class="req">*</span></label>
+            <input type="text" id="fb_name" name="name" placeholder="名字或昵称" maxlength="40" required>
+          </div>
+
+          <div class="feedback-row2">
+            <div class="feedback-field">
+              <label for="fb_relation">你和我的关系</label>
+              <select id="fb_relation" name="relation">
+                <option value="">请选择</option>
+                <option value="朋友">朋友</option>
+                <option value="同学">同学</option>
+                <option value="同事">同事</option>
+                <option value="家人">家人</option>
+                <option value="网友">网友</option>
+                <option value="其他">其他</option>
+              </select>
+            </div>
+            <div class="feedback-field">
+              <label for="fb_device">你在用什么浏览</label>
+              <select id="fb_device" name="device">
+                <option value="">请选择</option>
+                <option value="手机">手机</option>
+                <option value="电脑">电脑</option>
+                <option value="平板">平板</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="feedback-field">
+            <label for="fb_message">想对我说的话<span class="req">*</span></label>
+            <textarea id="fb_message" name="message" placeholder="随便聊聊：喜欢哪里、哪里卡住了、想要什么新内容……" maxlength="2000" required></textarea>
+          </div>
+
+          <div class="feedback-actions">
+            <button type="submit" class="feedback-btn feedback-btn-primary" id="fb_submitBtn">提交反馈</button>
+            <button type="button" class="feedback-btn feedback-btn-ghost" onclick="goPage(2)">返回主页</button>
+          </div>
+
+          <div class="feedback-msg" id="fb_msg" role="status" aria-live="polite"></div>
+        </form>
+
+        <p class="feedback-foot">个人主页 V2.5 · 反馈 · 持续改进</p>
+      </div>
+    </div>
+  </div>
+
+
+<script>
+  function goPage(n){
+    document.getElementById('page1').classList.toggle('active', n===1);
+    document.getElementById('page2').classList.toggle('active', n===2);
+    document.getElementById('page3').classList.toggle('active', n===3);
+    document.getElementById('page4').classList.toggle('active', n===4);
+    document.getElementById('page5').classList.toggle('active', n===5);
+    document.getElementById('page6').classList.toggle('active', n===6);
+    document.getElementById('page7').classList.toggle('active', n===7);
+    // 更新全局导航状态
+    var nav = document.getElementById('globalNav');
+    if(nav){
+      // 欢迎页和主页隐藏全局导航，其他页面显示
+      nav.classList.toggle('hidden', n<=2);
+      // 更新active状态
+      nav.querySelectorAll('a').forEach(function(a){
+        a.classList.toggle('active', parseInt(a.dataset.page)===n);
+      });
+    }
+    // 切换页面后触发渐入动画
+    setTimeout(function(){initFadeInObserver();}, 100);
+    // 进入数字分身页时触发开场白
+    if(n===6 && typeof avatarInit === 'function'){ avatarInit(); }
+  }
+
+  // 滚动渐入动画
+  var fadeObserver = null;
+  function initFadeInObserver(){
+    var sections = document.querySelectorAll('.fade-in-section:not(.visible)');
+    if(!sections.length) return;
+    if(fadeObserver){
+      sections.forEach(function(s){fadeObserver.observe(s);});
+      return;
+    }
+    fadeObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          fadeObserver.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.15, rootMargin:'0px 0px -50px 0px'});
+    sections.forEach(function(s){fadeObserver.observe(s);});
+  }
+  // 页面加载时初始化
+  window.addEventListener('load', function(){
+    setTimeout(initFadeInObserver, 300);
+  });
+
+  // 第一页：对话气泡错落排列
+  (function(){
+    var bubbles=[
+      {text:'你好',lang:'中文',color:'gray',large:true,left:'5%',top:'5%'},
+      {text:'こんにちは',lang:'日本語',color:'blue',left:'3%',top:'18%'},
+      {text:'BONJOUR',lang:'FRANÇAIS',color:'gray',large:true,left:'7%',top:'32%'},
+      {text:'Привет',lang:'РУССКИЙ',color:'blue',large:true,left:'2%',top:'47%'},
+      {text:'CIAO',lang:'ITALIANO',color:'gray',left:'8%',top:'62%'},
+      {text:'Olá',lang:'PORTUGUÊS',color:'blue',left:'4%',top:'75%'},
+      {text:'नमस्ते',lang:'हिन्दी',color:'gray',large:true,left:'12%',top:'88%'},
+      {text:'Hello',lang:'ENGLISH',color:'blue',large:true,left:'60%',top:'4%',clickable:true},
+      {text:'안녕하세요',lang:'한국어',color:'gray',left:'64%',top:'17%'},
+      {text:'HOLA',lang:'ESPAÑOL',color:'blue',large:true,left:'58%',top:'31%'},
+      {text:'HALLO',lang:'DEUTSCH',color:'gray',left:'66%',top:'45%'},
+      {text:'مرحبا',lang:'العربية',color:'blue',large:true,left:'59%',top:'58%'},
+      {text:'Merhaba',lang:'TÜRKÇE',color:'gray',left:'65%',top:'72%'},
+      {text:'สวัสดี',lang:'ไทย',color:'blue',large:true,left:'70%',top:'85%'},
+      {text:'Hallo',lang:'NEDERLANDS',color:'gray',left:'80%',top:'12%'},
+      {text:'Hei',lang:'NORSK',color:'blue',left:'83%',top:'26%'},
+      {text:'Ahoj',lang:'ČEŠTINA',color:'gray',left:'79%',top:'40%'},
+      {text:'Szia',lang:'MAGYAR',color:'blue',left:'84%',top:'53%'},
+      {text:'Bună',lang:'ROMÂNĂ',color:'gray',left:'80%',top:'66%'},
+      {text:'Jambo',lang:'SWAHILI',color:'blue',left:'83%',top:'79%'},
+      {text:'Hej',lang:'SVENSKA',color:'gray',left:'32%',top:'12%'},
+      {text:'Xin chào',lang:'TIẾNG VIỆT',color:'blue',left:'40%',top:'25%'},
+      {text:'Cześć',lang:'POLSKI',color:'gray',left:'30%',top:'70%'},
+      {text:'Γεια',lang:'ΕΛΛΗΝΙΚΆ',color:'blue',left:'42%',top:'82%'},
+      {text:'Kamusta',lang:'FILIPINO',color:'gray',left:'36%',top:'90%'}
+    ];
+    var p1=document.getElementById('page1');
+    for(var i=0;i<bubbles.length;i++){
+      (function(idx){
+        var b=bubbles[idx];
+        var d=document.createElement('div');
+        d.className='bubble bubble-'+b.color+(b.large?' bubble-large':'')+(b.clickable?' bubble-clickable':'');
+        d.style.left=b.left;
+        d.style.top=b.top;
+        d.style.animationDelay=(idx*0.08)+'s';
+        d.innerHTML='<span class="bubble-text">'+b.text+'</span><span class="bubble-lang">'+b.lang+'</span>';
+        if(b.clickable){
+          d.addEventListener('click',toggleLanguage);
+          d.id='helloBubble';
+          var tip=document.createElement('div');
+          tip.className='cloud-tip';
+          tip.id='helloTip';
+          tip.textContent='If you speak English, please click here';
+          d.appendChild(tip);
+        }
+        p1.appendChild(d);
+      })(i);
+    }
+  })();
+
+  // 问候语逐字动画
+  (function(){
+    var el=document.getElementById('greeting');
+    var lines=el.querySelectorAll('.gl');
+    var d2=0;
+    for(var j=0;j<lines.length;j++){
+      var text=lines[j].textContent;
+      lines[j].textContent='';
+      for(var k=0;k<text.length;k++){
+        var s=document.createElement('span');
+        s.textContent=text.charAt(k);
+        s.style.animationDelay=(d2*0.11)+'s';
+        lines[j].appendChild(s);
+        d2++;
+      }
+    }
+  })();
+
+  // 中英文切换
+  var isEnglish=false;
+  function toggleLanguage(){
+    isEnglish=!isEnglish;
+    var tip=document.getElementById('helloTip');
+    if(tip){
+      tip.textContent=isEnglish?'中文请按这里':'If you speak English, please click here';
+    }
+    var pi=document.querySelector('.profile-info');
+    if(pi){
+      pi.style.top=isEnglish?'clamp(330px,45vh,490px)':'';
+    }
+    var els=document.querySelectorAll('[data-en]');
+    for(var i=0;i<els.length;i++){
+      if(els[i].id==='greeting'){
+        if(isEnglish){
+          els[i].innerHTML='<span class="gl">Hello, I\'m Qian Ketian</span><span class="gl">Nice to meet you!</span>';
+        }else{
+          els[i].innerHTML='<span class="gl">你好呀，我是钱柯天</span><span class="gl">，很高兴与你相遇</span>';
+          var lines=els[i].querySelectorAll('.gl');
+          var d2=0;
+          for(var j=0;j<lines.length;j++){
+            var text=lines[j].textContent;
+            lines[j].textContent='';
+            for(var k=0;k<text.length;k++){
+              var s=document.createElement('span');
+              s.textContent=text.charAt(k);
+              s.style.animationDelay=(d2*0.11)+'s';
+              s.style.opacity='1';
+              lines[j].appendChild(s);
+              d2++;
+            }
+          }
+        }
+        continue;
+      }
+      if(isEnglish){
+        if(!els[i].getAttribute('data-zh')){
+          els[i].setAttribute('data-zh',els[i].innerHTML);
+        }
+        if(els[i].querySelector('strong')){
+          els[i].innerHTML=els[i].getAttribute('data-en');
+        }else{
+          els[i].textContent=els[i].getAttribute('data-en');
+        }
+      }else{
+        if(els[i].querySelector('strong')){
+          els[i].innerHTML=els[i].getAttribute('data-zh');
+        }else{
+          els[i].textContent=els[i].getAttribute('data-zh');
+        }
+      }
+    }
+  }
+
+  // 弹窗
+  function openCollegeModal(){document.getElementById('collegeModal').classList.add('show');}
+  function closeCollegeModal(){document.getElementById('collegeModal').classList.remove('show');}
+  function openMajorModal(){document.getElementById('majorModal').classList.add('show');}
+  function closeMajorModal(){document.getElementById('majorModal').classList.remove('show');}
+
+  // 基本信息页：宣纸掀页转场
+  function revealCard(maskEl){
+    var card=maskEl.closest('.reveal-card');
+    if(card.classList.contains('revealed'))return;
+    card.classList.add('revealed');
+    spawnParticles(maskEl);
+  }
+  function spawnParticles(el){
+    var rect=el.getBoundingClientRect();
+    var cx=rect.left+rect.width/2;
+    var cy=rect.top+rect.height/2;
+    var container=document.getElementById('particleContainer');
+    if(!container){
+      container=document.createElement('div');
+      container.className='particle-container';
+      container.id='particleContainer';
+      document.body.appendChild(container);
+    }
+    for(var i=0;i<16;i++){
+      var p=document.createElement('div');
+      p.className='particle';
+      var size=Math.random()*5+2;
+      var angle=(Math.PI*2*i)/16+Math.random()*0.4;
+      var dist=Math.random()*70+30;
+      p.style.cssText='left:'+cx+'px;top:'+cy+'px;width:'+size+'px;height:'+size+'px;background:#c9a96e;box-shadow:0 0 '+(size*2)+'px rgba(201,169,110,.6);--tx:'+(Math.cos(angle)*dist)+'px;--ty:'+(Math.sin(angle)*dist)+'px;';
+      container.appendChild(p);
+      (function(node){setTimeout(function(){node.remove();},700);})(p);
+    }
+  }
+
+  // 联系方式选项卡
+  (function(){
+    var btns=document.querySelectorAll('.tab-btn');
+    var panes=document.querySelectorAll('.tab-pane');
+    for(var i=0;i<btns.length;i++){
+      btns[i].addEventListener('click',function(){
+        var tab=this.getAttribute('data-tab');
+        for(var j=0;j<btns.length;j++)btns[j].classList.remove('active');
+        for(var k=0;k<panes.length;k++)panes[k].classList.remove('active');
+        this.classList.add('active');
+        document.getElementById('tab-'+tab).classList.add('active');
+        showRandomChibis();
+      });
+    }
+  })();
+
+  // Q版人物
+  var chibiImages=[
+    'Q版角色1.jpg',
+    'Q版角色2.jpg',
+    'Q版角色3.jpg',
+    'Q版角色4.jpg',
+    'Q版角色5.jpg',
+    'Q版角色6.jpg'
+  ];
+  function showRandomChibis(){
+    var cells=document.querySelectorAll('#chibiGrid .chibi-cell');
+    var indices=[];
+    while(indices.length<2){
+      var r=Math.floor(Math.random()*chibiImages.length);
+      if(indices.indexOf(r)===-1)indices.push(r);
+    }
+    var cellIndices=[];
+    while(cellIndices.length<2){
+      var c=Math.floor(Math.random()*9);
+      if(cellIndices.indexOf(c)===-1)cellIndices.push(c);
+    }
+    for(var i=0;i<cells.length;i++)cells[i].innerHTML='';
+    for(var j=0;j<2;j++){
+      var img=document.createElement('img');
+      img.src=chibiImages[indices[j]];
+      img.style.animationDelay=(j*0.15)+'s';
+      cells[cellIndices[j]].appendChild(img);
+    }
+    var leftImg=document.createElement('img');
+    leftImg.src=chibiImages[Math.floor(Math.random()*chibiImages.length)];
+    document.getElementById('chibiLeft').innerHTML='';
+    document.getElementById('chibiLeft').appendChild(leftImg);
+    var bottomImg=document.createElement('img');
+    bottomImg.src=chibiImages[Math.floor(Math.random()*chibiImages.length)];
+    document.getElementById('chibiBottom').innerHTML='';
+    document.getElementById('chibiBottom').appendChild(bottomImg);
+  }
+  setTimeout(showRandomChibis,500);
+
+  // 生活集锦隐藏入口：基本信息页底部下滑触发
+  var lifeGalleryHint=document.getElementById('lifeGalleryHint');
+  var hintShown=false;
+  var touchStartY=0;
+
+  lifeGalleryHint.addEventListener('click',function(){
+    window.location.href='生活集锦.html';
+  });
+
+  // 检查是否滚动到底部
+  function isAtBottom(){
+    var infoPage = document.querySelector('#page3 .info-page');
+    if(!infoPage) return false;
+    var scrollBottom = infoPage.scrollTop + infoPage.clientHeight;
+    var scrollHeight = infoPage.scrollHeight;
+    return scrollHeight - scrollBottom < 80;
+  }
+
+  // 显示生活集锦提示
+  function showLifeHint(){
+    if(!document.getElementById('page3').classList.contains('active')) return;
+    if(!isAtBottom()) return;
+    if(!hintShown){
+      hintShown=true;
+      lifeGalleryHint.classList.add('show');
+    }
+  }
+
+  // 鼠标滚轮事件
+  document.addEventListener('wheel',function(e){
+    if(!document.getElementById('page3').classList.contains('active')) return;
+    if(e.deltaY > 30){
+      showLifeHint();
+    } else if(e.deltaY < -30){
+      hintShown=false;
+      lifeGalleryHint.classList.remove('show');
+    }
+  });
+
+  // 触摸事件支持（手机）
+  document.addEventListener('touchstart',function(e){
+    touchStartY = e.touches[0].clientY;
+  }, {passive:true});
+
+  document.addEventListener('touchend',function(e){
+    if(!document.getElementById('page3').classList.contains('active')) return;
+    var touchEndY = e.changedTouches[0].clientY;
+    var diff = touchStartY - touchEndY;
+    if(diff > 30){ // 向下滑动
+      showLifeHint();
+    } else if(diff < -30){ // 向上滑动
+      hintShown=false;
+      lifeGalleryHint.classList.remove('show');
+    }
+  }, {passive:true});
+
+  // 滚动事件监听
+  var infoPageEl = document.querySelector('#page3 .info-page');
+  if(infoPageEl){
+    infoPageEl.addEventListener('scroll',function(){
+      if(isAtBottom()){
+        showLifeHint();
+      }
+    });
+  }
+
+  // 切换页面时重置
+  var origGoPage=goPage;
+  goPage=function(n){
+    origGoPage(n);
+    if(n!==3){
+      hintShown=false;
+      lifeGalleryHint.classList.remove('show');
+    }
+  };
+
+
+
+  // ===== 数字分身页 =====
+  var avatarInited = false;
+  var AVATAR_POSES = {
+    stand:  '02-relax-stand.png',
+    talk:   '03-talk.png',
+    wave:   '04-wave.png',
+    think:  '05-push-glasses.png',
+    sit:    '06-sit-think.png',
+    cool:   '09-cool-sit.png'
+  };
+  var AVATAR_KB = [
+    {keys:['名字','你是谁','介绍','你叫','谁是','hello','hi','你好'],pose:'talk',reply:'嘿嘿，我是钱柯天！今年刚上大一，在天津大学和香港理工大学合办的深圳未来技术学院读计算机科学与技术。爱踢球，也玩点小提琴、围棋、桥牌，有啥想唠的尽管开口～'},
+    {keys:['学校','大学','哪个学校','天大','港理','香港理工','天津大学','学院'],pose:'talk',reply:'我读的是天津大学香港理工大学深圳未来技术学院，2026年刚获批的中外合作办学机构，就在深圳南山大学城。我们这届是第一届本科生，毕业能同时拿天大和港理两个学位，双校学籍双校证书，听着就很酷哈哈。'},
+    {keys:['专业','计算机','学什么','方向','ai','人工智能','数字经济'],pose:'talk',reply:'专业是计算机科学与技术，方向主要涉及通用人工智能和数字经济。我们专业强调"厚基础、强实践、重交叉、宽视野"，课程里系统知识和智能算法一起抓，还会依托深圳的产业优势跟企业合作，动手的机会应该不少。'},
+    {keys:['年级','大一','新生','大几'],pose:'stand',reply:'妥妥大一新生一枚，2026年刚入学，算学校的"开国元老"了哈哈。一切都还新鲜着呢。'},
+    {keys:['足球','踢球','运动','体育','比赛','市队'],pose:'wave',reply:'足球是我最爱！从小学就开始踢，代表学校打了不少区级、市级比赛，拿过好几次前三，还进过市队呢。位置嘛……边锋，跑得快是我的优势哈哈。'},
+    {keys:['小提琴','乐器','音乐','琴'],pose:'talk',reply:'小提琴小时候学过，虽然现在没天天练了，但拿起来还能拉两下。属于那种"培养过的爱好"，陶冶情操用的。'},
+    {keys:['围棋','桥牌','下棋','牌'],pose:'think',reply:'围棋和桥牌也都玩过，烧脑但上头。围棋让我学会沉住气，桥牌更讲究和队友配合，都是好东西。'},
+    {keys:['小学','中学','高中','学历','经历','学军','翠苑','星洲'],pose:'talk',reply:'我一路是星洲小学 → 翠苑中学 → 学军西溪，然后就考到深圳来了。从杭州到深圳，跨度有点大，但挺期待的。'},
+    {keys:['城市','深圳','位置','在哪','地址'],pose:'stand',reply:'学校在深圳市南山区深圳大学城国际校区，南边靠海，附近就是科技园，实习找工作应该挺方便。'},
+    {keys:['性格','开朗','活泼','爱好','兴趣','喜欢'],pose:'wave',reply:'朋友们说我属于那种一进门就有点热闹的人，坐不住，爱运动，爱聊天。有事没事喊我踢球或者唠嗑都行～'},
+    {keys:['联系','邮箱','微信','电话','怎么找你','contact','email'],pose:'talk',reply:'想找我的话，主页上有三个邮箱：个人邮箱、天大邮箱、港理邮箱，挑一个发就行。我看到会回的～'},
+    {keys:['双校','学位','证书','毕业'],pose:'cool',reply:'我们毕业能拿天津大学和香港理工大学两个学位证，双校学籍双校证书。这也是这个项目最香的地方之一吧。'}
+  ];
+  var AVATAR_FALLBACK = '不好意思，我好像未能明白你的意思，请联系本人，联系方式已附，如有不便，请原谅。';
+  var avatarPoseIdx = 0;
+  var AVATAR_POSE_ORDER = ['talk','wave','think','sit','cool','stand'];
+
+  function avatarSetPose(p){
+    var img = document.getElementById('avatarCharImg');
+    if(!img) return;
+    var src = AVATAR_POSES[p] || AVATAR_POSES.stand;
+    if(img.src.endsWith(src)) return;
+    img.classList.add('swap');
+    setTimeout(function(){
+      img.src = src;
+      img.alt = p;
+      img.onload = function(){ img.classList.remove('swap'); };
+    }, 260);
+  }
+
+  function avatarNextPose(){
+    var p = AVATAR_POSE_ORDER[avatarPoseIdx % AVATAR_POSE_ORDER.length];
+    avatarPoseIdx++;
+    return p;
+  }
+
+  function avatarAddMsg(who, text){
+    var msgs = document.getElementById('avatarMessages');
+    if(!msgs) return;
+    var div = document.createElement('div');
+    div.className = 'msg ' + (who === 'me' ? 'me' : 'bot');
+    div.innerHTML = '<div class="who">' + (who === 'me' ? '你' : '钱柯天') + '</div><div class="bubble">' + text + '</div>';
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    if(who === 'bot'){ avatarSetPose(avatarNextPose()); }
+  }
+
+  function avatarReplyTo(text){
+    var lower = text.toLowerCase();
+    for(var i=0;i<AVATAR_KB.length;i++){
+      var item = AVATAR_KB[i];
+      for(var j=0;j<item.keys.length;j++){
+        if(lower.indexOf(item.keys[j].toLowerCase()) !== -1){ return item; }
+      }
+    }
+    return {pose:'think', reply:AVATAR_FALLBACK};
+  }
+
+  function avatarSend(){
+    var input = document.getElementById('avatarInput');
+    if(!input) return;
+    var v = input.value.trim();
+    if(!v) return;
+    avatarAddMsg('me', v);
+    input.value = '';
+    setTimeout(function(){
+      var r = avatarReplyTo(v);
+      avatarAddMsg('bot', r.reply);
+    }, 450);
+  }
+
+  function avatarInit(){
+    if(avatarInited) return;
+    avatarInited = true;
+    // 预加载立绘
+    Object.keys(AVATAR_POSES).forEach(function(k){
+      var pre = new Image();
+      pre.src = AVATAR_POSES[k];
+    });
+    // 绑定事件
+    var sendBtn = document.getElementById('avatarSend');
+    var input = document.getElementById('avatarInput');
+    if(sendBtn) sendBtn.addEventListener('click', avatarSend);
+    if(input) input.addEventListener('keydown', function(e){ if(e.key === 'Enter') avatarSend(); });
+    // 快捷问题
+    var quickBox = document.getElementById('avatarQuick');
+    if(quickBox){
+      var QUICKS = ['你是谁呀？','学校在哪个城市？','学什么专业？','平时爱做什么？','足球踢得怎么样？','怎么联系你？'];
+      QUICKS.forEach(function(q){
+        var b = document.createElement('button');
+        b.className = 'qbtn';
+        b.textContent = q;
+        b.addEventListener('click', function(){
+          var inp = document.getElementById('avatarInput');
+          if(inp){ inp.value = q; avatarSend(); }
+        });
+        quickBox.appendChild(b);
+      });
+    }
+    // 开场白
+    setTimeout(function(){
+      avatarAddMsg('bot', '嘿，伙计，欢迎光临！我是钱柯天，有啥想聊的尽管问～');
+    }, 400);
+  }
+
+  /* ===== 反馈表单 ===== */
+  (function(){
+    var CONFIG = {
+      url: "https://ohrynibjvvlxtshtvgzc.supabase.co",
+      anonKey: "sb_publishable_dfPTMTzvoLj-T0QkyJrgyw_UCQBgALF"
+    };
+
+    var form = document.getElementById("feedbackForm");
+    var msg = document.getElementById("fb_msg");
+    var btn = document.getElementById("fb_submitBtn");
+
+    if(!form) return;
+
+    var isConfigured = function(){
+      return CONFIG.url.indexOf("你的项目名") === -1
+          && CONFIG.anonKey.indexOf("eyJ...") === -1
+          && CONFIG.anonKey.length > 20;
+    };
+
+    var show = function(type, text){
+      msg.className = "feedback-msg " + type;
+      msg.textContent = text;
+    };
+
+    var clearMsg = function(){
+      msg.className = "feedback-msg";
+      msg.textContent = "";
+    };
+
+    form.addEventListener("submit", async function(e){
+      e.preventDefault();
+      clearMsg();
+
+      var name = document.getElementById("fb_name").value.trim();
+      var relation = document.getElementById("fb_relation").value;
+      var device = document.getElementById("fb_device").value;
+      var message = document.getElementById("fb_message").value.trim();
+
+      if(!name){ show("err","请填写你的称呼"); return; }
+      if(!message){ show("err","请写点想对我说的话吧"); return; }
+
+      btn.disabled = true;
+      btn.textContent = "提交中…";
+
+      try{
+        if(!isConfigured()){
+          // 未配置Supabase时，本地模拟成功
+          await new Promise(r => setTimeout(r, 800));
+          show("ok","感谢你的反馈！（演示模式：未连接数据库）");
+          form.reset();
+        } else {
+          var sb = window.supabase.createClient(CONFIG.url, CONFIG.anonKey);
+          var { error } = await sb.from("feedback").insert({
+            name: name,
+            relation: relation || null,
+            device: device || null,
+            message: message,
+            created_at: new Date().toISOString()
+          });
+          if(error) throw error;
+          show("ok","感谢你的反馈！已收到，我会认真看每一条。");
+          form.reset();
+        }
+      }catch(err){
+        console.error(err);
+        show("err","提交失败，请稍后再试。");
+      }finally{
+        btn.disabled = false;
+        btn.textContent = "提交反馈";
+      }
+    });
+  })();
+
+
+  /* ===== 反馈表单 ===== */
+  (function(){
+    var CONFIG = {
+      url: "https://ohrynibjvvlxtshtvgzc.supabase.co",
+      anonKey: "sb_publishable_dfPTMTzvoLj-T0QkyJrgyw_UCQBgALF"
+    };
+
+    var form = document.getElementById("feedbackForm");
+    var msg = document.getElementById("fb_msg");
+    var btn = document.getElementById("fb_submitBtn");
+
+    if(!form) return;
+
+    var isConfigured = function(){
+      return CONFIG.url.indexOf("你的项目名") === -1
+          && CONFIG.anonKey.indexOf("eyJ...") === -1
+          && CONFIG.anonKey.length > 20;
+    };
+
+    var show = function(type, text){
+      msg.className = "feedback-msg " + type;
+      msg.textContent = text;
+    };
+
+    var clearMsg = function(){
+      msg.className = "feedback-msg";
+      msg.textContent = "";
+    };
+
+    form.addEventListener("submit", async function(e){
+      e.preventDefault();
+      clearMsg();
+
+      var name = document.getElementById("fb_name").value.trim();
+      var relation = document.getElementById("fb_relation").value;
+      var device = document.getElementById("fb_device").value;
+      var message = document.getElementById("fb_message").value.trim();
+
+      if(!name){ show("err","请填写你的称呼"); return; }
+      if(!message){ show("err","请写点想对我说的话吧"); return; }
+
+      btn.disabled = true;
+      btn.textContent = "提交中…";
+
+      try{
+        if(!isConfigured()){
+          await new Promise(r => setTimeout(r, 800));
+          show("ok","感谢你的反馈！（演示模式：未连接数据库）");
+          form.reset();
+        } else {
+          var sb = window.supabase.createClient(CONFIG.url, CONFIG.anonKey);
+          var { error } = await sb.from("feedback").insert({
+            name: name,
+            relation: relation || null,
+            device: device || null,
+            message: message,
+            created_at: new Date().toISOString()
+          });
+          if(error) throw error;
+          show("ok","感谢你的反馈！已收到，我会认真看每一条。");
+          form.reset();
+        }
+      }catch(err){
+        console.error(err);
+        show("err","提交失败，请稍后再试。");
+      }finally{
+        btn.disabled = false;
+        btn.textContent = "提交反馈";
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
