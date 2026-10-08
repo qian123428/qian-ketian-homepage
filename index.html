@@ -3464,6 +3464,9 @@
         setTimeout(function(){
           var mmySecondHtml = '<img src="' + MAOMENGYUAN_IMG2 + '" style="max-width:180px;border-radius:10px;display:block;margin:6px 0;"><br>哈哈，开玩笑的，他是我最好的哥们儿';
           avatarAddMsg('bot', mmySecondHtml);
+          setTimeout(function(){
+            avatarAddMsg('bot', '你说他帅啊？真的假的');
+          }, 3000);
         }, 3000);
       } else if(r.reply === '__ZHANGXIAOYIN_EASTER_EGG__'){
         var zhangHtml1 = '<img src="' + ZHANGXIAOYIN_IMG + '" style="max-width:180px;border-radius:10px;display:block;margin:6px 0;"><br>是这位人士吗';
