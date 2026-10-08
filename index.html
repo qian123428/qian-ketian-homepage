@@ -3408,10 +3408,13 @@
     if(img.src.endsWith(src)){ img.classList.remove('swap'); return; }
     img.classList.add('swap');
     setTimeout(function(){
-      img.onload = function(){ img.classList.remove('swap'); };
-      img.onerror = function(){ img.classList.remove('swap'); };
+      var done = false;
+      var finish = function(){ if(!done){ done = true; img.classList.remove('swap'); } };
+      img.onload = finish;
+      img.onerror = finish;
       img.src = src;
       img.alt = p;
+      if(img.complete){ finish(); }
     }, 260);
   }
 
